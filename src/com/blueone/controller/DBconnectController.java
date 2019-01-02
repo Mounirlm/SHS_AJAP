@@ -1,20 +1,24 @@
 package com.blueone.controller;
 
-import com.blueone.model.DBConnectModel;
+import java.sql.SQLException;
+
+import com.blueone.model.JDBCConnectionPoolModel;
 import com.blueone.view.SHSView;
  
 public class DBconnectController {
-	 private DBConnectModel dbConnectModel;
+	 private JDBCConnectionPoolModel poolModel;
 	 private SHSView shsView;
 	 
-	 public DBconnectController(DBConnectModel m, SHSView v) {
-	  dbConnectModel = m;
+	 public DBconnectController(JDBCConnectionPoolModel m, SHSView v) {
+	  poolModel = m;
 	  shsView = v;
 	 
 	 }
 	 
-	 public void start() {
-		 shsView.printScreen(dbConnectModel.startConnection());
+	 public void start() throws SQLException {
+		 shsView.printScreen(" "+poolModel.getSize());
+		 shsView.printScreen(String.valueOf(poolModel.getConnection()));
+		 poolModel.shutdown();
 	 }
  
 }
