@@ -14,7 +14,7 @@ public class DBconnectController {
 	 }
 	 
 	 public void start() {
-		 shsView.printScreen(dbConnectModel.startConnexion());
+		 shsView.printScreen(dbConnectModel.startConnection());
 	 }
  
 }

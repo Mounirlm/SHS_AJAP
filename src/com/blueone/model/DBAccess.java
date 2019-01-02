@@ -9,29 +9,28 @@ import java.util.Properties;
 public class DBAccess {
 	//singleton
 	private static DBAccess dbAccess = new DBAccess();
-	private String dbType;
-	private String url;
-	private String user;
-	private String password;
+	private static  String DB_DRIVER_CLASS;
+	private static String DB_URL;
+	private static String DB_USERNAME;
+	private static String DB_PASSWORD;
     
 	//private Constructor
 	private DBAccess(){
 		Properties prop = new Properties();
 		InputStream input = null;
-
+		
 		try {
-
+			
 			input = new FileInputStream("db.properties");
 
 			// load a properties file
 			prop.load(input);
-
+			
 			// get the property value and print it out
-			this.dbType = prop.getProperty("dbType");
-			this.url = prop.getProperty("url");
-			this.user = prop.getProperty("user");
-			this.password = prop.getProperty("password");
-			System.out.println("###"+dbAccess.toString());
+			this.DB_DRIVER_CLASS = prop.getProperty("DB_DRIVER_CLASS");
+			this.DB_URL = prop.getProperty("DB_URL");
+			this.DB_USERNAME = prop.getProperty("DB_USERNAME");
+			this.DB_PASSWORD = prop.getProperty("DB_PASSWORD");
 			
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -53,25 +52,25 @@ public class DBAccess {
 	    return dbAccess;
 	}
 	
-	public String getDbType() {
-		return dbType;
+	public static String getDB_DRIVER_CLASS() {
+		return DB_DRIVER_CLASS;
 	}
 	
-	public String getUrl() {
-		return url;
+	public static String getDB_URL() {
+		return DB_URL;
 	}
 
-	public String getUser() {
-		return user;
+	public static String getDB_USERNAME() {
+		return DB_USERNAME;
 	}
 
-	public String getPassword() {
-		return password;
+	public static String getDB_PASSWORD() {
+		return DB_PASSWORD;
 	}
 
 	@Override
 	public String toString() {
-		return "DBAccess [dbType=" + dbType + ", url=" + url + ", user=" + user + ", password=" + password + "]";
+		return "DBAccess [dbType=" + DB_DRIVER_CLASS + ", url=" + DB_URL + ", user=" + DB_USERNAME + ", password=" + DB_PASSWORD + "]";
 	}
 	   
 }

@@ -5,19 +5,18 @@ import java.sql.DriverManager;
 import java.util.Properties;
 
 public class DBConnectModel {
-	private static DBAccess dbAccess;
 	private Connection con;
 	
-	public DBConnectModel() {
-		dbAccess.getInstance();
-	}
+	public DBConnectModel() {DBAccess.getInstance();}
 	
-	public String startConnexion() {
+	public String startConnection() {
 		String message="";
+		
 		try {
-		      Class.forName(dbAccess.getDbType());
+			System.out.println(DBAccess.getDB_URL());
+		      Class.forName(DBAccess.getDB_DRIVER_CLASS());
 		      message="Driver ok";
-		      con = DriverManager.getConnection(dbAccess.getUrl(), dbAccess.getUser(), dbAccess.getPassword());
+		      con = DriverManager.getConnection(DBAccess.getDB_URL(), DBAccess.getDB_USERNAME(), DBAccess.getDB_PASSWORD());
 		      message+="\n Connection ok";
 		    } catch (Exception e) {
 		      message="Error";
