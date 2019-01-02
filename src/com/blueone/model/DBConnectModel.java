@@ -13,11 +13,10 @@ public class DBConnectModel {
 		String message="";
 		
 		try {
-			System.out.println(DBAccess.getDB_URL());
 		      Class.forName(DBAccess.getDB_DRIVER_CLASS());
 		      message="Driver ok";
 		      con = DriverManager.getConnection(DBAccess.getDB_URL(), DBAccess.getDB_USERNAME(), DBAccess.getDB_PASSWORD());
-		      message+="\n Connection ok";
+		      message+="\nConnection ok";
 		    } catch (Exception e) {
 		      message="Error";
 		      e.printStackTrace();
