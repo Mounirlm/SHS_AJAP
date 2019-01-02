@@ -2,8 +2,8 @@ package com.blueone.app;
 
 import javax.swing.SwingUtilities;
 
-import com.blueone.controller.SHSController;
-import com.blueone.model.SHSModel;
+import com.blueone.controller.DBconnectController;
+import com.blueone.model.DBConnectModel;
 import com.blueone.view.SHSView;
 
 public class Main {

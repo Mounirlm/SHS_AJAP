@@ -1,14 +1,14 @@
 package com.blueone.app;
 
-import com.blueone.controller.SHSController;
-import com.blueone.model.SHSModel;
+import com.blueone.controller.DBconnectController;
+import com.blueone.model.DBConnectModel;
 import com.blueone.view.SHSView;
 
 public class Application {
-	SHSController shsController;
+	DBconnectController shsController;
 	
 	public Application() {
-		shsController = new SHSController( new SHSModel(),new SHSView());
+		shsController = new DBconnectController( new DBConnectModel(),new SHSView());
 		
 	}
 	
