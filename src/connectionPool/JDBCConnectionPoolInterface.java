@@ -1,9 +1,12 @@
-package com.blueone.model;
+package connectionPool;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public interface JDBCConnectionPool {
-    Connection getConnection() throws SQLException;
-    boolean releaseConnection(Connection connection)throws SQLException;
+import com.blueone.exceptions.DBException;
+
+public interface JDBCConnectionPoolInterface {
+    public Connection getConnection() throws DBException;
+    public boolean releaseConnection(Connection connection)throws DBException;
+    public void shutdown()throws DBException;
 }

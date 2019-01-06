@@ -1,4 +1,4 @@
-package com.blueone.model;
+package connectionPool;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -26,10 +26,10 @@ public class DBAccess {
 			prop.load(input);
 			
 			// get the property value and print it out
-			this.DB_DRIVER_CLASS = prop.getProperty("DB_DRIVER_CLASS");
-			this.DB_URL = prop.getProperty("DB_URL");
-			this.DB_USERNAME = prop.getProperty("DB_USERNAME");
-			this.DB_PASSWORD = prop.getProperty("DB_PASSWORD");
+			DB_DRIVER_CLASS = prop.getProperty("DB_DRIVER_CLASS");
+			DB_URL = prop.getProperty("DB_URL");
+			DB_USERNAME = prop.getProperty("DB_USERNAME");
+			DB_PASSWORD = prop.getProperty("DB_PASSWORD");
 			
 		} catch (IOException ex) {
 			ex.printStackTrace();

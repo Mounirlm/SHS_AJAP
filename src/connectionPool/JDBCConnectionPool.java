@@ -1,69 +1,80 @@
-package com.blueone.model;
+package connectionPool;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class JDBCConnectionPoolModel implements JDBCConnectionPool {
+import com.blueone.exceptions.DBException;
+
+public class JDBCConnectionPool implements JDBCConnectionPoolInterface {
     private static final int INITIAL_POOL_SIZE = 5;
 	private static final int MAX_POOL_SIZE = 50;
 	private ArrayList<Connection> connectionPool;
     private ArrayList<Connection> usedConnections;
 	
-	public JDBCConnectionPoolModel() throws SQLException {
+	public JDBCConnectionPool() throws DBException  {
 		DBAccess.getInstance();
+		connectionPool=new ArrayList<Connection>();
+		usedConnections = new ArrayList<Connection>();
 		addInitialConnections();
-		connectionPool=new ArrayList<>(MAX_POOL_SIZE);
-		usedConnections = new ArrayList<>(MAX_POOL_SIZE);
 	}
 	
-	public void addInitialConnections() throws SQLException {
+	private void addInitialConnections() throws DBException{
 		for (int i = 0; i < INITIAL_POOL_SIZE; i++) {
-			Connection c = createConnection(DBAccess.getDB_URL(),DBAccess.getDB_USERNAME(), DBAccess.getDB_PASSWORD());
-			System.out.println(c);
-			//this.connectionPool.add(c);
+			try {
+				this.connectionPool.add(DriverManager.getConnection(DBAccess.getDB_URL(),DBAccess.getDB_USERNAME(), DBAccess.getDB_PASSWORD()));
+			} catch (SQLException e) {
+				throw new DBException("Can't create connection",e);
+			}
         }
-		System.out.println(connectionPool.size());
 	}
 	
-	private static Connection createConnection(String url, String user, String password) throws SQLException {
-		return DriverManager.getConnection(url, user, password);
-	}
 		     
 	public int getSize() {
 		return connectionPool.size() + usedConnections.size();
 	}
 
 	@Override
-	public Connection getConnection() throws SQLException {
+	public synchronized Connection getConnection() throws DBException {
 		if (connectionPool.isEmpty()) {
 	        if (usedConnections.size() < MAX_POOL_SIZE) {
-	            connectionPool.add(createConnection(DBAccess.getDB_URL(),DBAccess.getDB_USERNAME(), DBAccess.getDB_PASSWORD()));
+	            try {
+					connectionPool.add(DriverManager.getConnection(DBAccess.getDB_URL(),DBAccess.getDB_USERNAME(), DBAccess.getDB_PASSWORD()));
+				} catch (SQLException e) {
+					throw new DBException("Can't create connection", e);
+				}
 	        } else {
 	            throw new RuntimeException(
 	              "Maximum pool size reached, no available connections!");
 	        }
 	    }
 	 
-	    Connection connection = connectionPool
-	      .remove(connectionPool.size() - 1);
+	    Connection connection = connectionPool.remove(connectionPool.size() - 1);
 	    usedConnections.add(connection);
 	    return connection;
 	}
 
 	@Override
-	public boolean releaseConnection(Connection connection) throws SQLException{
+	public synchronized boolean releaseConnection(Connection connection) {
 		connectionPool.add(connection);
         return usedConnections.remove(connection);
 	}
 	
-	public void shutdown() throws SQLException {
-	    for (Connection c : usedConnections) {
-	    	releaseConnection(c);
-	    }
+	@Override
+	public synchronized void shutdown() throws DBException {
+		if(!usedConnections.isEmpty()) {
+			while (!usedConnections.isEmpty()) {
+				releaseConnection(usedConnections.get(0));
+			}
+		}
+	    
 	    for (Connection c : connectionPool) {
-	        c.close();
+	        try {
+				c.close();
+			} catch (SQLException e) {
+				throw new DBException("Can't close connection", e);
+			}
 	    }
 	    connectionPool.clear();
 	}
