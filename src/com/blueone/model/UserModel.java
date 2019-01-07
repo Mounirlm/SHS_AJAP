@@ -10,6 +10,7 @@ import java.sql.Statement;
 import com.blueone.exceptions.DBException;
 
 import connectionPool.DataSource;
+// Utulise la pool pour faire une requete sur la table Utilisateur
 
 public class UserModel {
 	private DataSource poolModel;

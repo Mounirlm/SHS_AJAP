@@ -1,5 +1,7 @@
 package com.blueone.view;
- 
+
+
+// La vue s'occupe de l'afffichage
 public class SHSView {
  
  

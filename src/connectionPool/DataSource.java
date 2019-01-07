@@ -13,6 +13,9 @@ import com.blueone.exceptions.DBException;
  * Copyright 07/01/2019 (@author Kadia Toure)
  * @version 1.0
  */
+
+// Data source permet d'utiliser la poll
+
 public class DataSource {
 	private static JDBCConnectionPool pool=null;
 	
