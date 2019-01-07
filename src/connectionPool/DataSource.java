@@ -23,7 +23,7 @@ public class DataSource {
 	/**
      * init an instance of JDBCConnectionPool
      */
-	private static void initPool() throws DBException{
+	public static void initPool() throws DBException{
 		if(pool == null) {
 			pool = new JDBCConnectionPool();  
 		}

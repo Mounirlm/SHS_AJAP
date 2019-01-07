@@ -1,5 +1,7 @@
 package com.blueone.app;
 
+import java.sql.SQLException;
+
 import com.blueone.controller.DBConnectController;
 import com.blueone.exceptions.DBException;
 import com.blueone.view.SHSView;
@@ -12,7 +14,7 @@ public class Application {
 		
 	}
 	
-	public void start() throws DBException {
+	public void start() throws SQLException {
 		shsController.start();	
 	}
 }
