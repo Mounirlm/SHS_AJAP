@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 import com.blueone.exceptions.DBException;
 
+// La pool
+
 public class JDBCConnectionPool implements JDBCConnectionPoolInterface {
     private static final int INITIAL_POOL_SIZE = 5;
 	private static final int MAX_POOL_SIZE = 50;
