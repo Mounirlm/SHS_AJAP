@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-// permet de lire le fichier db properties qui contient les configurations de la base de données
 
 public class DBAccess {
-	//singleton pattern de verifier qu'il y a une seule et unique instance de cette class DBAcces
+	//singleton
+
 	private static DBAccess dbAccess = new DBAccess();
 	private static  String DB_DRIVER_CLASS;
 	private static String DB_URL;
