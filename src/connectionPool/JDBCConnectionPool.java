@@ -20,9 +20,9 @@ public class JDBCConnectionPool implements JDBCConnectionPoolInterface {
 		} catch (ClassNotFoundException  ex) {
 			throw new ClassNotFoundException("Error driver",ex);
 		}
-		DBAccess.getInstance();
+		//DBAccess.getInstance();
 		connections=new ArrayList<Connection>(INITIAL_SIZE);
-		usedConnections = new ArrayList<Connection>();
+		usedConnections = new ArrayList<Connection>(INITIAL_SIZE);
 		addInitialConnections();
 	}
 	
