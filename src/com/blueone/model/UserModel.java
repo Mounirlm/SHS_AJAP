@@ -12,7 +12,7 @@ import connectionPool.DataSource;
 public class UserModel {
 	private DataSource poolModel;
 	
-	public UserModel() throws SQLException {
+	public UserModel() throws SQLException, ClassNotFoundException {
 		poolModel = new DataSource();
 	}
 	

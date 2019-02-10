@@ -9,14 +9,15 @@ import java.sql.SQLException;
 public class DataSource {
 	private static JDBCConnectionPool pool=null;
 	
-	public DataSource() throws SQLException{
+	public DataSource() throws SQLException, ClassNotFoundException{
 		initPool();
 	}
 	
 	/**
      * init an instance of JDBCConnectionPool
+	 * @throws ClassNotFoundException 
      */
-	public static void initPool() throws SQLException{
+	public static void initPool() throws SQLException, ClassNotFoundException{
 		if(pool == null) {
 			pool = new JDBCConnectionPool();  
 		}

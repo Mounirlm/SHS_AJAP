@@ -13,7 +13,7 @@ public class DBConnectController {
 	 private UserModel poolModel;
 	 private SHSView shsView;
 	 
-	 public DBConnectController(SHSView v) throws SQLException {
+	 public DBConnectController(SHSView v) throws SQLException, ClassNotFoundException {
 		 DataSource.initPool();  
 		 poolModel = new UserModel();
 		 shsView = v;

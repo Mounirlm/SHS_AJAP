@@ -7,7 +7,7 @@ import com.blueone.view.SHSView;
 public class Application {
 	DBConnectController shsController;
 	
-	public Application() throws SQLException {
+	public Application() throws SQLException, ClassNotFoundException {
 		shsController = new DBConnectController(new SHSView());
 		
 	}
