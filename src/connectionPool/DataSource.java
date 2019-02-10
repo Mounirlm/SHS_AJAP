@@ -7,22 +7,13 @@ import java.sql.SQLException;
 // Data source permet d'utiliser la poll
 
 public class DataSource {
-	private static JDBCConnectionPool pool=null;
+	private static JDBCConnectionPool pool = null;  
+
 	
 	public DataSource() throws SQLException, ClassNotFoundException{
-		initPool();
+		pool = new JDBCConnectionPool(); 
 	}
-	
-	/**
-     * init an instance of JDBCConnectionPool
-	 * @throws ClassNotFoundException 
-     */
-	public static void initPool() throws SQLException, ClassNotFoundException{
-		if(pool == null) {
-			pool = new JDBCConnectionPool();  
-		}
-	}
-	
+		
 	public static Connection getConnection() throws SQLException {
 		return pool.getConnection();
 	}

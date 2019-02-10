@@ -25,17 +25,11 @@ public class UserModel {
        
         ResultSetMetaData resultMeta = RS.getMetaData();
 
-       
-           
-
         while(RS.next()){         
-
-          for(int i = 1; i <= resultMeta.getColumnCount(); i++)
-
-        	  message+="\t" + RS.getObject(i).toString() + "\t |";
-
-          
-	}
+        	for(int i = 1; i <= resultMeta.getColumnCount(); i++)
+        		message+="\t" + RS.getObject(i).toString() + "\t |";
+                 
+        }
         
         // Fermetures
 
