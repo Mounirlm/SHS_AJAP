@@ -15,7 +15,11 @@ public class JDBCConnectionPool implements JDBCConnectionPoolInterface {
     private ArrayList<Connection> usedConnections;
 	
 	public JDBCConnectionPool() throws SQLException, ClassNotFoundException  {
-		Class.forName(DBAccess.getDB_DRIVER_CLASS());
+		try {
+			Class.forName(DBAccess.getDB_DRIVER_CLASS());
+		} catch (ClassNotFoundException  ex) {
+			throw new ClassNotFoundException("Error driver",ex);
+		}
 		DBAccess.getInstance();
 		connections=new ArrayList<Connection>(INITIAL_SIZE);
 		usedConnections = new ArrayList<Connection>();
