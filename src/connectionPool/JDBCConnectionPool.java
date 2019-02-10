@@ -9,8 +9,8 @@ import java.util.ArrayList;
 // La pool
 
 public class JDBCConnectionPool implements JDBCConnectionPoolInterface {
-    private static final int INITIAL_SIZE = 5;
-	private static final int MAX_SIZE = 50;
+    private static final int INITIAL_SIZE = DBAccess.getINITIAL_SIZE();
+	private static final int MAX_SIZE = DBAccess.getMAX_SIZE();
 	private ArrayList<Connection> connections;
     private ArrayList<Connection> usedConnections;
 	
