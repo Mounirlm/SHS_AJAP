@@ -7,22 +7,19 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import com.blueone.exceptions.DBException;
-
 import connectionPool.DataSource;
-// Utulise la pool pour faire une requete sur la table Utilisateur
 
 public class UserModel {
 	private DataSource poolModel;
 	
-	public UserModel() throws DBException {
+	public UserModel() throws SQLException {
 		poolModel = new DataSource();
 	}
 	
 	public String getUsers() throws SQLException {
 		Connection conn = DataSource.getConnection();
 		Statement Stmt = conn.createStatement();
-        ResultSet RS = Stmt.executeQuery("SELECT * FROM utilisateur");
+        ResultSet RS = Stmt.executeQuery("SELECT * FROM users");
         String message="";
        
        

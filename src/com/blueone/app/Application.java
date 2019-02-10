@@ -1,15 +1,13 @@
 package com.blueone.app;
 
 import java.sql.SQLException;
-
 import com.blueone.controller.DBConnectController;
-import com.blueone.exceptions.DBException;
 import com.blueone.view.SHSView;
 
 public class Application {
 	DBConnectController shsController;
 	
-	public Application() throws DBException {
+	public Application() throws SQLException {
 		shsController = new DBConnectController(new SHSView());
 		
 	}
