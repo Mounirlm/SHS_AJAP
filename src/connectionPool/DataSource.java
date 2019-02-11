@@ -11,7 +11,14 @@ public class DataSource {
 
 	
 	public DataSource() throws SQLException, ClassNotFoundException{
-		pool = new JDBCConnectionPool(); 
+		initPool();
+	}
+	
+	public JDBCConnectionPool initPool() throws ClassNotFoundException, SQLException {
+		if(pool==null)
+			pool = new JDBCConnectionPool();
+		
+		return pool;
 	}
 		
 	public static Connection getConnection() throws SQLException {
