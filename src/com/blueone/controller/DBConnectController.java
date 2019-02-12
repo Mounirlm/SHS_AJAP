@@ -3,6 +3,8 @@ package com.blueone.controller;
 
 
 import java.sql.SQLException;
+
+import com.blueone.model.User;
 import com.blueone.model.UserModel;
 import com.blueone.view.SHSView;
 import connectionPool.DataSource;
@@ -27,7 +29,7 @@ public class DBConnectController {
 		 }
 		 System.out.println("######get a user by id###########");
 		 shsView.printScreen(UserModel.getUser(1).toString());
-		 
+
 		 DataSource.shutdown();	
 		 shsView.printScreen("Size of the pool after shutdown: "+DataSource.getSize());
 		
