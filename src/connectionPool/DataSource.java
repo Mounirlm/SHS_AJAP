@@ -14,6 +14,7 @@ public class DataSource {
 		initPool();
 	}
 	
+	//instanciation of the pool if it was'nt the case
 	public JDBCConnectionPool initPool() throws ClassNotFoundException, SQLException {
 		if(pool==null)
 			pool = new JDBCConnectionPool();
