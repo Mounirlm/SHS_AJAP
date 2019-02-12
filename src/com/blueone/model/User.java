@@ -5,7 +5,6 @@ public class User {
 	private String first_name;
 	private String last_name;
 	private String email;
-	private String login;
 	private String password;
 	private String function;
 	
@@ -30,12 +29,7 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getLogin() {
-		return login;
-	}
-	public void setLogin(String login) {
-		this.login = login;
-	}
+	
 	public String getPassword() {
 		return password;
 	}
@@ -48,16 +42,19 @@ public class User {
 	public void setFunction(String function) {
 		this.function = function;
 	}
-	public User(int id, String first_name, String last_name, String email, String login, String password,
-			String function) {
+	public User(int id, String first_name, String last_name, String email, String password, String function) {
 		super();
 		this.id = id;
 		this.first_name = first_name;
 		this.last_name = last_name;
 		this.email = email;
-		this.login = login;
 		this.password = password;
 		this.function = function;
 	}
 	
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", first_name=" + first_name + ", last_name=" + last_name + ", email=" + email
+				+ ", password=" + password + ", function=" + function + "]";
+	}
 }
