@@ -24,7 +24,7 @@ public class DBAccess {
 		
 		try {
 			
-			input = new FileInputStream("db.properties");
+			input = new FileInputStream("./MyRessources/db.properties");
 
 			// load a properties file
 			prop.load(input);

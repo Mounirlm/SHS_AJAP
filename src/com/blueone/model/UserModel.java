@@ -10,10 +10,10 @@ import java.sql.Statement;
 import connectionPool.DataSource;
 
 public class UserModel {
-	private DataSource poolModel;
+	private DataSource data;
 	
 	public UserModel() throws SQLException, ClassNotFoundException {
-		poolModel = new DataSource();
+		data = new DataSource();
 	}
 	
 	public String getUsers() throws SQLException {
