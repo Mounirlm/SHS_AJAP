@@ -39,7 +39,10 @@ public class RequestHandler implements Runnable {
 			resp = in.readLine();
 		} catch (IOException e) {}
         System.out.println(resp);
-        		
+        
+        try {
+			stopConnection();
+		} catch (IOException e) {}
 	}
 	
 	public void stopConnection() throws IOException {

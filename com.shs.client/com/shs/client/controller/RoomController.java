@@ -39,7 +39,7 @@ public class RoomController {
 		      server = new Socket(InetAddress.getLocalHost(),port) ;
 		      PrintWriter out = new PrintWriter(server.getOutputStream(), true);
 		      BufferedReader in = new BufferedReader(new InputStreamReader(server.getInputStream()));
-		      
+		      System.out.println("send salut");
 		      out.println("salut");
 		      out.close() ;
 		      } 
