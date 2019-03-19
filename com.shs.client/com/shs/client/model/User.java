@@ -1,4 +1,4 @@
-package com.shs.model;
+package com.shs.client.model;
 
 public class User {
 	private int id;

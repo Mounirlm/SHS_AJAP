@@ -1,15 +1,14 @@
-package com.shs.controller;
+package com.shs.client.controller;
 
 
 
 import java.sql.SQLException;
 import java.util.List;
 
-import com.shs.model.User;
-import com.shs.model.UserModel;
-import com.shs.view.SHSView;
-
-import connectionPool.DataSource;
+import com.shs.client.model.User;
+import com.shs.client.model.UserModel;
+import com.shs.client.view.SHSView;
+import com.shs.server.connection.pool.DataSource;
 
 // Fais le lien entre la vue(print) et le model(getteur)
 

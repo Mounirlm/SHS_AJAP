@@ -1,4 +1,4 @@
-package com.shs.app;
+package com.shs.client.app;
 
 import java.sql.SQLException;
 

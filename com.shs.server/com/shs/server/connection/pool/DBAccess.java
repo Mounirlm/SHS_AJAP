@@ -1,4 +1,4 @@
-package connectionPool;
+package com.shs.server.connection.pool;
 
 import java.io.FileInputStream;
 import java.io.IOException;

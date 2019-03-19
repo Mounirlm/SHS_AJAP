@@ -1,4 +1,4 @@
-package com.shs.model;
+package com.shs.client.model;
 
 
 import java.sql.Connection;
@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import connectionPool.DataSource;
+import com.shs.server.connection.pool.DataSource;
 
 public class UserModel {
 	private DataSource data;

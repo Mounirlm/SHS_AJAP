@@ -1,4 +1,4 @@
-package com.shs.view;
+package com.shs.client.view;
 
 
 // La vue s'occupe de l'afffichage

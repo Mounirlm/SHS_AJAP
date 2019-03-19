@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="client_shs"/>
-	<classpathentry kind="src" path="server_shs"/>
-	<classpathentry kind="src" path="commons_shs"/>
+	<classpathentry kind="src" path="com.shs.client"/>
+	<classpathentry kind="src" path="com.shs.server"/>
+	<classpathentry kind="src" path="com.shs.commons"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>
