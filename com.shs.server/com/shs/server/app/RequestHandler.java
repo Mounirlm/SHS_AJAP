@@ -37,8 +37,9 @@ public class RequestHandler implements Runnable {
 		String resp = null;
 		try {
 			resp = in.readLine();
+			System.out.println(resp);
 		} catch (IOException e) {}
-        System.out.println(resp);
+        
         
         try {
 			stopConnection();
