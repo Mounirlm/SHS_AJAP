@@ -2,14 +2,14 @@ package com.shs.client.app;
 
 import java.sql.SQLException;
 
-import com.shs.client.controller.DBConnectController;
+import com.shs.client.controller.RoomController;
 import com.shs.client.view.SHSView;
 
 public class Application {
-	DBConnectController shsController;
+	RoomController shsController;
 	
 	public Application() throws SQLException, ClassNotFoundException {
-		shsController = new DBConnectController(new SHSView());
+		shsController = new RoomController(new SHSView());
 		
 	}
 	

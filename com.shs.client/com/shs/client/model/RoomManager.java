@@ -11,10 +11,10 @@ import java.util.ArrayList;
 
 import com.shs.server.connection.pool.DataSource;
 
-public class UserModel {
+public class RoomManager {
 	private DataSource data;
 	
-	public UserModel() throws SQLException, ClassNotFoundException {
+	public RoomManager() throws SQLException, ClassNotFoundException {
 		data = new DataSource();
 	}
 	
