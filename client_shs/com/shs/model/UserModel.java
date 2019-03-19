@@ -1,4 +1,4 @@
-package com.blueone.model;
+package com.shs.model;
 
 
 import java.sql.Connection;

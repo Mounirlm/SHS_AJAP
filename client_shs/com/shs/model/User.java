@@ -1,4 +1,4 @@
-package com.blueone.model;
+package com.shs.model;
 
 public class User {
 	private int id;

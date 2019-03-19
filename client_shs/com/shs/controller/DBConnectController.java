@@ -1,13 +1,14 @@
-package com.blueone.controller;
+package com.shs.controller;
 
 
 
 import java.sql.SQLException;
 import java.util.List;
 
-import com.blueone.model.User;
-import com.blueone.model.UserModel;
-import com.blueone.view.SHSView;
+import com.shs.model.User;
+import com.shs.model.UserModel;
+import com.shs.view.SHSView;
+
 import connectionPool.DataSource;
 
 // Fais le lien entre la vue(print) et le model(getteur)

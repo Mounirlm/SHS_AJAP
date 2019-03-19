@@ -1,4 +1,4 @@
-package com.blueone.app;
+package com.shs.app;
 
 import java.sql.SQLException;
 

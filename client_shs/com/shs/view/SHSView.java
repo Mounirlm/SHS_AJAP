@@ -1,4 +1,4 @@
-package com.blueone.view;
+package com.shs.view;
 
 
 // La vue s'occupe de l'afffichage

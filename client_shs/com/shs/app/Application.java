@@ -1,8 +1,9 @@
-package com.blueone.app;
+package com.shs.app;
 
 import java.sql.SQLException;
-import com.blueone.controller.DBConnectController;
-import com.blueone.view.SHSView;
+
+import com.shs.controller.DBConnectController;
+import com.shs.view.SHSView;
 
 public class Application {
 	DBConnectController shsController;
