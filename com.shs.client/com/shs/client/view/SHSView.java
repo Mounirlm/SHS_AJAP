@@ -30,12 +30,13 @@ public class SHSView {
 		//Panel Titre
 		JPanel pTitle = new JPanel(new FlowLayout());
 		pTitle.setBackground(Color.white);
-		pTitle.add(new JLabel("New secured room"));
+		JLabel title = new JLabel("New secured room");
+		pTitle.add(title);
 		frame.add(pTitle,BorderLayout.NORTH);
 		
 		//Panel Formulaire
 		JPanel pForm = new JPanel(new GridLayout(4, 1));
-		JTextField jtfRoomType = new JTextField("Room",20);
+		JTextField jtfRoomType = new JTextField("Bedroom",20);
 		JTextField jtfFloor = new JTextField(20);
 		pForm.add(new JLabel("Type"));
 		pForm.add(jtfRoomType);
@@ -46,7 +47,6 @@ public class SHSView {
 		//Panel Valider
 		JPanel pValidate = new JPanel();
 		JButton validateButton = new JButton("Confirm");
-		//validateButton.addActionListener(new RoomController());
 		validateButton.addActionListener(new ActionListener() {
 			
 			@Override
@@ -56,8 +56,10 @@ public class SHSView {
 				form[1] = jtfFloor.getText();
 				try {
 					RoomController.insert(form);
+					title.setText("New secured room");
+					
 				} catch (Exception e1) {
-					e1.printStackTrace();
+					title.setText(e1.getMessage());
 				}
 				
 			}

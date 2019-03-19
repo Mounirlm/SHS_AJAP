@@ -3,37 +3,29 @@ package com.shs.client.controller;
 
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.sql.SQLException;
-import java.util.List;
-
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonWriter;
 import com.shs.client.model.Room;
-import com.shs.client.model.RoomManager;
 import com.shs.client.view.SHSView;
-import com.shs.server.connection.pool.DataSource;
 
 // Fais le lien entre la vue(print) et le model(getteur)
 
 public class RoomController {
-	 private RoomManager roomManager;
 	 private SHSView shsView;
 	 
 	 public RoomController(SHSView v) throws SQLException, ClassNotFoundException {
-		 roomManager = new RoomManager();
 		 shsView = v;
-		 
-	 
 	 }
 	 
 	 
-	 public static void sendToServer(Room room) throws SQLException  {
+	 public static void sendToServer(String s) throws SQLException  {
 		 	Socket server ;
 		    int port = 6533;
 		    try {
@@ -41,7 +33,7 @@ public class RoomController {
 		      PrintWriter out = new PrintWriter(server.getOutputStream());
 		      BufferedReader in = new BufferedReader(new InputStreamReader(server.getInputStream()));
 		      System.out.println("send room");
-		      out.println(room.toString());
+		      out.println(s);
 		      out.flush();
 		      out.close() ;
 		      } 
@@ -62,7 +54,19 @@ public class RoomController {
 			room.setFloor(Integer.parseInt(form[1]));
 			//RoomManager.create(room);
 			System.out.println(room);
-			sendToServer(room);
+			Gson gson = new Gson();
+			String json = gson.toJson(room);  
+			
+		    JsonWriter writer = new JsonWriter(new OutputStreamWriter(System.out, "UTF-8"));
+		    writer.setIndent("	");
+		    writer.beginObject();
+		    writer.name("request").value("insert-room");
+		    writer.name("room").value(gson.toJson(room));
+		    writer.endObject();
+		    writer.flush();
+		    writer.close();
+		    
+			sendToServer(writer.toString());
 		}
 
 		private static boolean isInteger(String s) {
