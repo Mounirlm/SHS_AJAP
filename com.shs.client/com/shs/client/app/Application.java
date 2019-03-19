@@ -14,6 +14,6 @@ public class Application {
 	}
 	
 	public void start() throws SQLException {
-		shsController.start();	
+		//shsController.start();	
 	}
 }

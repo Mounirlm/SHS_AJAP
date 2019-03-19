@@ -24,6 +24,8 @@ public class ServerAcceptor {
 				        System.out.println("Connection established");      
 				        //creation RequsetHandlre
 				        RequestHandler req = new RequestHandler(client, connDB);
+				        Thread service = new Thread(req);
+				        service.start();
 				        //client.close() ; 
 			    	  //}
 			      } 
