@@ -3,22 +3,24 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import com.shs.server.connection.pool.DBAccess;
 import com.shs.server.connection.pool.DataSource;
 
 public class ServerAcceptor {
-	 public static void main (String[] args) throws SQLException {
+	 public static void main (String[] args) throws SQLException, ClassNotFoundException {
 		 	ServerSocket server;
 		    int port = 6533;
+		    DataSource dt = new DataSource();
 		    try {
 			      server = new ServerSocket(port) ;
 			      System.out.println("Server Ok") ;
 			      while ( true ) {
-			    	  Connection connDB = null;
-			    	  connDB = DataSource.getConnection();
+			    	  Connection connDB =DataSource.getConnection();
 			    	  System.out.println("Connection ok");
-			    	 // if(connDB != null) {
+			    	  if(connDB != null) {
 				        System.out.println("Waiting client") ;
 				        Socket client = server.accept() ;
 				        System.out.println("Connection established");      
@@ -26,8 +28,7 @@ public class ServerAcceptor {
 				        RequestHandler req = new RequestHandler(client, connDB);
 				        Thread service = new Thread(req);
 				        service.start();
-				        //client.close() ; 
-			    	  //}
+			    	  }
 			      } 
 		      }
 		    catch(IOException e) { }
