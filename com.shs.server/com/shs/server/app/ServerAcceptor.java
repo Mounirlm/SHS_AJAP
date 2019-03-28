@@ -16,8 +16,8 @@ public class ServerAcceptor {
 			      System.out.println("Server Ok") ;
 			      while ( true ) {
 			    	  Connection connDB = null;
-			    	  //connDB = DataSource.getConnection();
-			    	  //System.out.println(connDB);
+			    	  connDB = DataSource.getConnection();
+			    	  System.out.println("Connection ok");
 			    	 // if(connDB != null) {
 				        System.out.println("Waiting client") ;
 				        Socket client = server.accept() ;

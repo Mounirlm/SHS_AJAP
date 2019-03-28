@@ -23,7 +23,13 @@ public class DataSource {
 	}
 		
 	public static Connection getConnection() throws SQLException {
-		return pool.getConnection();
+		Connection con=null;
+		try {
+			con=  pool.getConnection();
+		} catch (SQLException e) {
+			throw new SQLException("Can't create connection",e);
+		}
+		return con;
 	}
 	
 	public static void releaseConnection(Connection c) throws SQLException {
