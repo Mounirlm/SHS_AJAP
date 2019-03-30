@@ -5,6 +5,7 @@ package com.shs.client.controller;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.InetAddress;
@@ -25,17 +26,20 @@ public class RoomController {
 	 }
 	 
 	 
-	 public static void sendToServer(String s) throws SQLException  {
+	 public static void sendToServer(Object s) throws SQLException  {
 		 	Socket server ;
 		    int port = 6533;
 		    try {
 		      server = new Socket(InetAddress.getLocalHost(),port) ;
 		      PrintWriter out = new PrintWriter(server.getOutputStream());
 		      BufferedReader in = new BufferedReader(new InputStreamReader(server.getInputStream()));
+		      ObjectOutputStream oout = new ObjectOutputStream(server.getOutputStream());
 		      System.out.println("send room");
-		      out.println(s);
+		      oout.writeObject(s);
+		      //out.println(s);
 		      out.flush();
 		      out.close() ;
+		      oout.close();
 		      } 
 		    catch (IOException ioe) { } ;
 		 
@@ -64,9 +68,10 @@ public class RoomController {
 		    writer.name("room").value(gson.toJson(room));
 		    writer.endObject();
 		    writer.flush();
+		    sendToServer(writer.toString());
 		    writer.close();
 		    
-			sendToServer(writer.toString());
+			
 		}
 
 		private static boolean isInteger(String s) {
