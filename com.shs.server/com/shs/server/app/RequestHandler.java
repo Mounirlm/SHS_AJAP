@@ -13,9 +13,9 @@ import com.google.gson.stream.JsonWriter;
 
 public class RequestHandler implements Runnable {
 	private Socket client= null;
-	Connection connDB;
-	JsonReader reader;
-	JsonWriter writer;
+	private Connection connDB;
+	private JsonReader reader;
+	private JsonWriter writer;
 	
 	public RequestHandler(Socket client, Connection connDB) {
 		this.client = client;

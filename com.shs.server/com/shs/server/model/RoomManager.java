@@ -1,4 +1,4 @@
-package com.shs.client.model;
+package com.shs.server.model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

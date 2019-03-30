@@ -16,6 +16,8 @@ public class DBAccess {
 	private static String DB_PASSWORD;
 	private static int INITIAL_SIZE;
 	private static int MAX_SIZE;
+	private static String SERVER;
+	private static int PORT_SERVER;
 	
 	//private Constructor
 	private DBAccess(){
@@ -84,6 +86,14 @@ public class DBAccess {
 	@Override
 	public String toString() {
 		return "DBAccess [dbType=" + DB_DRIVER_CLASS + ", url=" + DB_URL + ", user=" + DB_USERNAME + ", password=" + DB_PASSWORD + "]";
+	}
+
+	public static String getSERVER() {
+		return SERVER;
+	}
+
+	public static int getPORT_SERVER() {
+		return PORT_SERVER;
 	}
 	   
 }
