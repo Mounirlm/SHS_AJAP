@@ -1,4 +1,4 @@
-package com.shs.client.model;
+package com.shs.commons.model;
 
 public class Room {
 	private Integer id;

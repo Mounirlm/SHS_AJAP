@@ -4,6 +4,7 @@ package com.shs.client.controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
@@ -13,8 +14,8 @@ import java.net.Socket;
 import java.sql.SQLException;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonWriter;
-import com.shs.client.model.Room;
 import com.shs.client.view.SHSView;
+import com.shs.commons.model.Room;
 
 // Fais le lien entre la vue(print) et le model(getteur)
 
@@ -26,22 +27,29 @@ public class RoomController {
 	 }
 	 
 	 
-	 public static void sendToServer(Object s) throws SQLException  {
-		 	Socket server ;
+	 public static void sendToServer(Object room) throws SQLException, IOException  {
+		 	Socket server = null ;
 		    int port = 6533;
+		    JsonWriter writer = null;
 		    try {
-		      server = new Socket(InetAddress.getLocalHost(),port) ;
-		      PrintWriter out = new PrintWriter(server.getOutputStream());
-		      BufferedReader in = new BufferedReader(new InputStreamReader(server.getInputStream()));
-		      ObjectOutputStream oout = new ObjectOutputStream(server.getOutputStream());
-		      System.out.println("send room");
-		      oout.writeObject(s);
-		      //out.println(s);
-		      out.flush();
-		      out.close() ;
-		      oout.close();
+		      server = new Socket(InetAddress.getLocalHost(),port);
+		      writer = new JsonWriter(new OutputStreamWriter(server.getOutputStream(), "UTF-8"));
+		      Gson gson = new Gson();	
+		      
+			    writer.setIndent("	");
+			    writer.beginObject();
+			    writer.name("request").value("insert-room");
+			    writer.name("room").value(gson.toJson(room));
+			    writer.endObject();
+			    writer.flush();
+			    System.out.println("send room to server for insert");
+			 
 		      } 
-		    catch (IOException ioe) { } ;
+		    catch (IOException ioe) { }
+		    finally {
+		    	server.close();
+		    	writer.close();
+		    }
 		 
 	 } 
 	
@@ -56,22 +64,8 @@ public class RoomController {
 			Room room = new Room();
 			room.setType_room(form[0]);
 			room.setFloor(Integer.parseInt(form[1]));
-			//RoomManager.create(room);
 			System.out.println(room);
-			Gson gson = new Gson();
-			String json = gson.toJson(room);  
-			
-		    JsonWriter writer = new JsonWriter(new OutputStreamWriter(System.out, "UTF-8"));
-		    writer.setIndent("	");
-		    writer.beginObject();
-		    writer.name("request").value("insert-room");
-		    writer.name("room").value(gson.toJson(room));
-		    writer.endObject();
-		    writer.flush();
-		    sendToServer(writer.toString());
-		    writer.close();
-		    
-			
+			sendToServer(room);
 		}
 
 		private static boolean isInteger(String s) {
