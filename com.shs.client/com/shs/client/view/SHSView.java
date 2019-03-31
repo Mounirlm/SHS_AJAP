@@ -44,7 +44,8 @@ public class SHSView {
 		
 		//panel top menu
 		JPanel pTopMenu = new JPanel();
-		//pTopMenu.setSize(350, 90);
+		pTopMenu.setLayout(new BorderLayout());
+		pTopMenu.setSize(350, 90);
 		//logo
 		blogo = new  JButton(new ImageIcon("ressources\\shs-logo.png"));
 		blogo.setBackground(bgApp);
@@ -55,11 +56,11 @@ public class SHSView {
 		JLabel jmenu = new JLabel();
 		jmenu.setText("MENU");
 		jmenu.setHorizontalAlignment(JLabel.CENTER);
-		jmenu.setFont(new Font("Arial", Font.BOLD, 20));
+		jmenu.setFont(new Font("Arial", Font.BOLD, 25));
 		jmenu.setForeground(bgApp);
 		
 		pTopMenu.setBackground(bgTitle);
-		//pTopMenu.add(jmenu, BorderLayout.SOUTH);
+		pTopMenu.add(jmenu, BorderLayout.SOUTH);
 		
 		pMenu.add(pTopMenu, BorderLayout.NORTH);
 		frame.getContentPane().add(pMenu);
