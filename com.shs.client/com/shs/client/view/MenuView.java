@@ -24,19 +24,16 @@ public class MenuView extends JPanel {
 		cdApp = new ColorsDimApp();
 		//Panel Menu
 		this.setLayout(new BorderLayout());
-		//pMenu.setBackground(bgThem);
-		this.setSize(cdApp.getMENU_WIDTH(),HEIGHT);
+		
 		
 		//Panel top menu
 		pTopMenu = new JPanel();
 		pTopMenu.setLayout(new BorderLayout());
 		pTopMenu.setBackground(cdApp.getBgTitle());
-		pTopMenu.setSize(cdApp.getMENU_WIDTH(), 90);
 		//logo
 		blogo = new  JButton(new ImageIcon("ressources\\shs-logo.png"));
 		blogo.setActionCommand("index");
 		blogo.setBackground(cdApp.getBgApp());
-		blogo.setSize(350, 50);
 		pTopMenu.add(blogo, BorderLayout.NORTH);
 		//title menu
 		JLabel lbmenu = new JLabel();
@@ -50,7 +47,6 @@ public class MenuView extends JPanel {
 		//Panel Center menu
 		JPanel pCenterMenu = new JPanel();
 		pCenterMenu.setLayout(new GridLayout(5,1));
-		//pCenterMenu.setBackground(bgThem);
 		//Items
 		menuItems = new ArrayList<JButton>();
 		menuItems.add(new JButton("Supervised Rooms"));
