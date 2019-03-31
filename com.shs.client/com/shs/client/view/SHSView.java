@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -56,7 +57,7 @@ public class SHSView {
 				form[1] = jtfFloor.getText();
 				try {
 					RoomController.insert(form);
-					title.setText("New secured room");
+					title.setText("Inserted new secured room with success");
 					
 				} catch (Exception e1) {
 					title.setText(e1.getMessage());

@@ -29,9 +29,9 @@ public class ServerHandler {
 	}
 	
 	public String insertObjectToServer(Object room)throws IOException  {
-	    try {
-	    	//connections
-	     	getFlux();
+		//connections
+     	getFlux();
+		try {
 	     	//Creation request Json
 		    writer.setIndent("	");
 		    writer.beginObject();
@@ -47,24 +47,29 @@ public class ServerHandler {
 		    return response;
 	      } 
 	    catch (IOException ioe) { 
-	    	throw new IOException("Error communication to server "+ioe);
-	    }finally {
+	    	throw new IOException("Error communication to server ");
+		}
+	    finally {
 	    	stopFlux();
 	    }
 	} 
-	public void getFlux() throws IOException {
-		try {  
+	public void getFlux() throws IOException { 
+		try {
 			this.server = new Socket(adress,port);		
 			reader = new JsonReader(new InputStreamReader(server.getInputStream(), "UTF-8"));
-		    writer = new JsonWriter(new OutputStreamWriter(server.getOutputStream(), "UTF-8"));
-		} catch (IOException e) {
-			throw new IOException("Error connection  to server");
+			writer = new JsonWriter(new OutputStreamWriter(server.getOutputStream(), "UTF-8"));
+		}catch(IOException e) {
+			throw new IOException("Error connection to server ");
 		}
 	}
 	
 	public void stopFlux() throws IOException {
-        reader.close();
-        writer.close();
-        server.close();
+        try{
+        	reader.close();
+	        writer.close();
+	        server.close();}
+        catch(IOException e) {
+        	throw new IOException("Error closed flux "+e);
+        }
     }
 }
