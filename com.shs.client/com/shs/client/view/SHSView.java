@@ -1,20 +1,12 @@
 package com.shs.client.view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.MouseAdapter;
-import java.util.ArrayList;
+import java.awt.event.ActionListener;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
-import javax.swing.border.LineBorder;
+
+import com.shs.client.controller.MenuController;
 
 // La vue s'occupe de l'afffichage
 public class SHSView {
@@ -22,8 +14,8 @@ public class SHSView {
 	public JFrame frame;
 	
 	//private int indexB=0;
-	private Menu pMenu;
-	private JPanel pApp;
+	private MenuView pMenu;
+	private AppView pApp;
 	private ColorsDimApp cdApp;
 	
 	public SHSView() {
@@ -39,13 +31,11 @@ public class SHSView {
 		BorderLayout layout = new BorderLayout();
 		frame.setLayout(layout);
 		
-		//pTopMenu
-		pMenu = new Menu();
+		//Panel Menu
+		pMenu = new MenuView();
 		
 		//Panel App
-		pApp= new JPanel();
-		pApp.setLayout(new GridLayout(2,1));
-		pApp.setBackground(cdApp.getBgApp());
+		pApp= new AppView();
 		
 		
 		//Window
@@ -100,4 +90,17 @@ public class SHSView {
 		frame.setVisible(true);
 	}
 	
+	public void addMenuListner(ActionListener act) {
+		pMenu.addMenuListner(act);
+	}
+
+	public void setCardAppView(String s) {
+		pApp.setCard(s);
+		
+	}
+
+	public void addLogoListner(ActionListener act) {
+		pMenu.addLogoListneract(act);
+		
+	}
 }

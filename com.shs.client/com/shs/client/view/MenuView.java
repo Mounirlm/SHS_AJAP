@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -12,13 +13,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
-public class Menu extends JPanel {
+public class MenuView extends JPanel {
 	private JButton blogo;
 	private ArrayList<JButton> menuItems;
 	private JPanel pTopMenu;
 	private ColorsDimApp cdApp;
 	
-	public Menu() {
+	public MenuView() {
 		super();
 		cdApp = new ColorsDimApp();
 		//Panel Menu
@@ -33,6 +34,7 @@ public class Menu extends JPanel {
 		pTopMenu.setSize(cdApp.getMENU_WIDTH(), 90);
 		//logo
 		blogo = new  JButton(new ImageIcon("ressources\\shs-logo.png"));
+		blogo.setActionCommand("index");
 		blogo.setBackground(cdApp.getBgApp());
 		blogo.setSize(350, 50);
 		pTopMenu.add(blogo, BorderLayout.NORTH);
@@ -92,5 +94,16 @@ public class Menu extends JPanel {
 
 	public void setpTopMenuBg(Color c) {
 		this.pTopMenu.setBackground(c);
+	}
+
+	public void addMenuListner(ActionListener act) {
+		for (int i = 0; i < menuItems.size(); i++) {
+			menuItems.get(0).addActionListener(act);
+		}
+	}
+
+	public void addLogoListneract(ActionListener act) {
+		blogo.addActionListener(act);
+		
 	}
 }
