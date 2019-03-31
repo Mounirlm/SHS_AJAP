@@ -2,41 +2,77 @@ package com.shs.client.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
+import java.awt.Component;
+import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-
-import com.shs.client.controller.RoomController;
 
 // La vue s'occupe de l'afffichage
 public class SHSView {
  
 	public JFrame frame;
-	private Color bckGApp = Color.white;
 	private static int WIDTH =1600 ;
 	private static int HEIGHT =850 ;
-	
+	private JPanel pMenu;
+	private JPanel pApp;
+	private Color bgThem = Color.decode("#5b9bd5");
+	private Color bgTitle = Color.decode("#1f4e79");
+	private Color bgApp = Color.WHITE;
+	private Component blogo;
 	
 	public SHSView() {
-		//window
+		//window properties
 		frame = new JFrame("SHS AutonHome");
 		frame.setSize(WIDTH,HEIGHT);
 		frame.setLocationRelativeTo(null);
-		frame.setBackground(bckGApp );
+		frame.getContentPane().setBackground(bgApp);
 		
-		
+		//main layout
 		BorderLayout layout = new BorderLayout();
 		frame.setLayout(layout);
 		
-		//Panel Titre
+		//Panel Menu
+		pMenu= new JPanel();
+		pMenu.setLayout(new BorderLayout());
+		pMenu.setBackground(bgThem);
+		pMenu.setSize(350,HEIGHT);
+		
+		//panel top menu
+		JPanel pTopMenu = new JPanel();
+		//pTopMenu.setSize(350, 90);
+		//logo
+		blogo = new  JButton(new ImageIcon("ressources\\shs-logo.png"));
+		blogo.setBackground(bgApp);
+		blogo.setSize(350, 50);
+		pTopMenu.add(blogo, BorderLayout.NORTH);
+		
+		//title menu
+		JLabel jmenu = new JLabel();
+		jmenu.setText("MENU");
+		jmenu.setHorizontalAlignment(JLabel.CENTER);
+		jmenu.setFont(new Font("Arial", Font.BOLD, 20));
+		jmenu.setForeground(bgApp);
+		
+		pTopMenu.setBackground(bgTitle);
+		//pTopMenu.add(jmenu, BorderLayout.SOUTH);
+		
+		pMenu.add(pTopMenu, BorderLayout.NORTH);
+		frame.getContentPane().add(pMenu);
+		
+		//Panel App
+		pApp= new JPanel();
+		pApp.setLayout(new GridLayout(2,1));
+		pApp.setBackground(bgApp);
+		pApp.setSize(10,20);
+		frame.getContentPane().add(pApp);
+		
+		
+		/*//Panel Titre
 		JPanel pTitle = new JPanel(new FlowLayout());
 		pTitle.setBackground(Color.white);
 		JLabel title = new JLabel("New secured room");
@@ -74,7 +110,7 @@ public class SHSView {
 			}
 		});
 		pValidate.add("inserer",validateButton);
-		frame.add(pValidate, BorderLayout.SOUTH);
+		frame.add(pValidate, BorderLayout.SOUTH);*/
 		show();
 	}
 	
