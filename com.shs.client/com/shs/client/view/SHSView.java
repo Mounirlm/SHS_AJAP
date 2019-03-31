@@ -20,13 +20,21 @@ import com.shs.client.controller.RoomController;
 public class SHSView {
  
 	public JFrame frame;
+	private Color bckGApp = Color.white;
+	private static int WIDTH =1600 ;
+	private static int HEIGHT =850 ;
+	
+	
 	public SHSView() {
-		frame = new JFrame("SHS");
+		//window
+		frame = new JFrame("SHS AutonHome");
+		frame.setSize(WIDTH,HEIGHT);
+		frame.setLocationRelativeTo(null);
+		frame.setBackground(bckGApp );
+		
+		
 		BorderLayout layout = new BorderLayout();
 		frame.setLayout(layout);
-		frame.setResizable(false);
-		frame.setBounds(500, 200, 500, 400);
-		frame.setBackground(Color.black);
 		
 		//Panel Titre
 		JPanel pTitle = new JPanel(new FlowLayout());
