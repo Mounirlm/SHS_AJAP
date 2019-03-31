@@ -28,7 +28,7 @@ public class ServerHandler {
 		gson = new Gson();
 	}
 	
-	public void insertRoomToServer(Room room)throws IOException  {
+	public String insertObjectToServer(Object room)throws IOException  {
 	    try {
 	    	//connections
 	     	getFlux();
@@ -40,15 +40,18 @@ public class ServerHandler {
 		    writer.endObject();
 		    writer.flush();
 		    System.out.println("send room to server for insert");
-		 
+		    //response
+		    reader.beginObject();
+		    String response = "Server "+reader.nextName()+": "+reader.nextString();
+		    reader.endObject();
+		    return response;
 	      } 
 	    catch (IOException ioe) { 
-	    	throw new IOException("Error communication to server");
+	    	throw new IOException("Error communication to server "+ioe);
 	    }finally {
 	    	stopFlux();
 	    }
-	 
- } 
+	} 
 	public void getFlux() throws IOException {
 		try {  
 			this.server = new Socket(adress,port);		

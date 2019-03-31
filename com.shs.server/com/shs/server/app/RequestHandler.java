@@ -12,12 +12,16 @@ import com.google.gson.stream.JsonWriter;
 
 
 public class RequestHandler implements Runnable {
+	private static int cpt=0;
+	private int num;
 	private Socket client= null;
 	private Connection connDB;
 	private JsonReader reader;
 	private JsonWriter writer;
+
 	
 	public RequestHandler(Socket client, Connection connDB) {
+		num=cpt++;
 		this.client = client;
 		this.connDB = connDB;
 			
@@ -28,11 +32,19 @@ public class RequestHandler implements Runnable {
 	}
 
 	@Override
-	public void run() {
+	public void run(){
 		//Communication Json
 		try {
-			System.out.println(readMessage(reader));
-		} catch (IOException e) {}
+			System.out.println("Thread:"+num+" "+readMessage(reader));
+			//Creation request Json
+		    writer.beginObject();
+		    writer.name("response").value("Room inserted");
+		    writer.endObject();
+		    writer.flush();
+		    System.out.println("Thread:"+num+" send response :Room inserted");
+		} catch (IOException e) {
+	    	System.out.println("Error communication to client "+e);
+		}
         finally{
 			try {
 				stopConnection();

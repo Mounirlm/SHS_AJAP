@@ -27,7 +27,7 @@ public class RoomController {
 			room.setFloor(Integer.parseInt(form[1]));
 			//System.out.println(room);
 			//send to server
-			servH.insertRoomToServer(room);
+			System.out.println(servH.insertObjectToServer(room));
 		}
 
 		private static boolean isInteger(String s) {
