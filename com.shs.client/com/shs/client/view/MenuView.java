@@ -46,18 +46,18 @@ public class MenuView extends JPanel {
 		
 		//Panel Center menu
 		JPanel pCenterMenu = new JPanel();
-		pCenterMenu.setLayout(new GridLayout(5,1));
+		pCenterMenu.setLayout(new GridLayout(6,1));
 		//Items
-		menuItems = new ArrayList<JButton>();
+		menuItems = new ArrayList<JButton>(6);
 		menuItems.add(new JButton("Supervised Rooms"));
 		//Items for R3
-		for (int i = 1; i < 5; i++) {
+		for (int i = 1; i < 6; i++) {
 			menuItems.add(new JButton());
 		}
 
 		//buttons colors
 		
-		for (int indexB = 0; indexB < 5; indexB++) {
+		for (int indexB = 0; indexB < menuItems.size(); indexB++) {
 			menuItems.get(indexB).setBackground(cdApp.getBgThem());
 			menuItems.get(indexB).setForeground(cdApp.getBgApp());
 			menuItems.get(indexB).setFont(new Font("Arial", Font.BOLD, 25));
@@ -66,7 +66,7 @@ public class MenuView extends JPanel {
 		}
 		
 		//add buttons to pCenterMenu
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < menuItems.size(); i++) {
 			pCenterMenu.add(menuItems.get(i));
 		}
 		

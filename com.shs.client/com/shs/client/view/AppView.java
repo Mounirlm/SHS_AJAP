@@ -21,7 +21,7 @@ public class AppView extends JPanel{
 		cdViewApp = new CardLayout();
 		this.setLayout(cdViewApp);
 		//new views
-		appView = new ArrayList<>(6);
+		appView = new ArrayList<>(7);
 		indexView = new IndexView();
 		supRoomView = new SupRoomView();
 		

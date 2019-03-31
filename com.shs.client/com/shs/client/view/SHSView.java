@@ -103,4 +103,7 @@ public class SHSView {
 		pMenu.addLogoListneract(act);
 		
 	}
+
+	
+	
 }
