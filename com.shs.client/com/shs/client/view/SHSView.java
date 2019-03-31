@@ -20,94 +20,37 @@ import javax.swing.border.LineBorder;
 public class SHSView {
  
 	public JFrame frame;
-	private static int WIDTH =1600 ;
-	private static int HEIGHT =850 ;
+	
 	//private int indexB=0;
-	private JPanel pMenu;
+	private Menu pMenu;
 	private JPanel pApp;
-	private Color bgThem = Color.decode("#5b9bd5");
-	private Color bgTitle = Color.decode("#1f4e79");
-	private Color bgApp = Color.WHITE;
-	private Component blogo;
-	private ArrayList<JButton> menuItems;
+	private ColorsDimApp cdApp;
 	
 	public SHSView() {
+		cdApp = new ColorsDimApp();
+		
 		//window properties
 		frame = new JFrame("SHS AutonHome");
-		frame.setSize(WIDTH,HEIGHT);
+		frame.setSize(cdApp.getWIDTH(),cdApp.getHEIGHT());
 		frame.setLocationRelativeTo(null);
-		frame.getContentPane().setBackground(bgApp);
+		frame.getContentPane().setBackground(cdApp.getBgApp());
 		
 		//main layout
 		BorderLayout layout = new BorderLayout();
 		frame.setLayout(layout);
 		
-		//Panel Menu
-		pMenu= new JPanel();
-		pMenu.setLayout(new BorderLayout());
-		//pMenu.setBackground(bgThem);
-		pMenu.setSize(350,HEIGHT);
-		
-		//Panel top menu
-		JPanel pTopMenu = new JPanel();
-		pTopMenu.setLayout(new BorderLayout());
-		pTopMenu.setBackground(bgTitle);
-		pTopMenu.setSize(350, 90);
-		//logo
-		blogo = new  JButton(new ImageIcon("ressources\\shs-logo.png"));
-		blogo.setBackground(bgApp);
-		blogo.setSize(350, 50);
-		pTopMenu.add(blogo, BorderLayout.NORTH);
-		//title menu
-		JLabel lbmenu = new JLabel();
-		lbmenu.setText("MENU");
-		lbmenu.setHorizontalAlignment(JLabel.CENTER);
-		lbmenu.setFont(new Font("Arial", Font.BOLD, 25));
-		lbmenu.setForeground(bgApp);
-		pTopMenu.add(lbmenu, BorderLayout.SOUTH);
-		
-		
-		//Panel Center menu
-		JPanel pCenterMenu = new JPanel();
-		pCenterMenu.setLayout(new GridLayout(5,1));
-		//pCenterMenu.setBackground(bgThem);
-		//Items
-		menuItems = new ArrayList<JButton>();
-		menuItems.add(new JButton("Supervised Rooms"));
-		//Items for R3
-		for (int i = 1; i < 5; i++) {
-			menuItems.add(new JButton());
-		}
-
-		//buttons colors
-		
-		for (int indexB = 0; indexB < 5; indexB++) {
-			menuItems.get(indexB).setBackground(bgThem);
-			menuItems.get(indexB).setForeground(bgApp);
-			menuItems.get(indexB).setFont(new Font("Arial", Font.BOLD, 25));
-			menuItems.get(indexB).setBorder(new LineBorder(bgTitle));
-			
-		}
-		
-		//add buttons to pCenterMenu
-		for (int i = 0; i < 5; i++) {
-			pCenterMenu.add(menuItems.get(i));
-		}
-		
-		//pMenu add
-		pMenu.add(pTopMenu, BorderLayout.NORTH);
-		pMenu.add(pCenterMenu, BorderLayout.CENTER);
-		
+		//pTopMenu
+		pMenu = new Menu();
 		
 		//Panel App
 		pApp= new JPanel();
 		pApp.setLayout(new GridLayout(2,1));
-		pApp.setBackground(bgApp);
+		pApp.setBackground(cdApp.getBgApp());
 		
 		
 		//Window
-		frame.getContentPane().add(pMenu);
-		frame.getContentPane().add(pApp);
+		frame.getContentPane().add(pMenu, BorderLayout.WEST);
+		frame.getContentPane().add(pApp, BorderLayout.CENTER);
 		
 		
 		/*//Panel Titre
@@ -156,12 +99,5 @@ public class SHSView {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}
-	public void setBgMenuItemByIndex(int i,Color c) {
-		menuItems.get(i).setBackground(c);
-	}
 	
-	public void setBgMenuItem(Color c) {
-		for(int i =0; i< menuItems.size(); i++)
-			menuItems.get(i).setBackground(c);
-	}
 }
