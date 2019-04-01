@@ -17,10 +17,29 @@ public class RoomController implements ActionListener{
 	 public RoomController(SHSView v) throws IOException {
 		 this.view = v;
 		 view.addRoomMenuListner(this);
+		 view.addJBInsertListner(jbInsert);
 		 servH  = new ServerHandler();
 	 }
+	 
+	 ActionListener jbInsert = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String[] form = new String[2];
+				form[0] = view.getJtfRoomType().getText();
+				form[1] = view.getJtfFloor().getText();
+				try {
+					insert(form);
+					view.setCreateTitle("Inserted new secured room with success");
+					
+				} catch (Exception e1) {
+					view.setCreateTitle(e1.getMessage());
+				}
+				
+			}
+		};
 	
-	 public static void insert(String[] form) throws Exception {
+	 public void insert(String[] form) throws Exception {
 			if(form[0].isEmpty() || form[1].isEmpty())
 				throw new Exception("Empty");
 			if (isInteger(Character.toString(form[0].charAt(0))))
@@ -36,7 +55,7 @@ public class RoomController implements ActionListener{
 			System.out.println(servH.insertObjectToServer(room));
 		}
 
-		private static boolean isInteger(String s) {
+		private boolean isInteger(String s) {
 			try {
 				Integer.parseInt(s);
 			} catch (Exception e) {
@@ -64,6 +83,8 @@ public class RoomController implements ActionListener{
 			}
 			
 		}
+		
+		
 		
 
 	}

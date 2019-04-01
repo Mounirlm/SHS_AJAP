@@ -7,9 +7,11 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
+import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
 public class SupRoomView extends JPanel{
@@ -84,11 +86,37 @@ public class SupRoomView extends JPanel{
 		
 	}
 
-
-
 	public void addRoomMenuListner(ActionListener act) {
 		jbCreate.addActionListener(act);
 		jbRUD.addActionListener(act);
 		
+	}
+
+
+
+
+
+	public JTextField getJtfRoomType() {
+		return pCreate.getJtfRoomType();
+	}
+
+
+
+
+
+	public JTextField getJtfFloor() {
+		return pCreate.getJtfFloor();
+	}
+
+
+
+	public void setCreateTitle(String text) {
+		pCreate.setTitle(text);
+	}
+
+
+
+	public void addJBInsertListner(ActionListener act) {
+		pCreate.addJBInsertListenr(act);
 	}
 }

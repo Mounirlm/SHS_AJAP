@@ -3,8 +3,10 @@ package com.shs.client.view;
 import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 
+import javax.swing.AbstractButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import com.shs.client.controller.MenuController;
 import com.shs.client.controller.RoomController;
@@ -114,6 +116,22 @@ public class SHSView {
 	public void setCardRoom(String name) {
 		pApp.getSupRoomView().setCard(name);
 		
+	}
+
+	public JTextField getJtfRoomType() {
+		return pApp.getSupRoomView().getJtfRoomType();
+	}
+
+	public JTextField getJtfFloor() {
+		return pApp.getSupRoomView().getJtfFloor();
+	}
+
+	public void setCreateTitle(String text) {
+		pApp.getSupRoomView().setCreateTitle(text);
+	}
+
+	public void addJBInsertListner(ActionListener act) {
+		pApp.getSupRoomView().addJBInsertListner(act);
 	}
 
 	

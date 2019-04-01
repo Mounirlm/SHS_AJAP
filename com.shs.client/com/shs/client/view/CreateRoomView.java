@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -18,6 +19,7 @@ public class CreateRoomView extends JPanel {
 	private ColorsDimApp cdApp = new ColorsDimApp();//TODO METTRE EN STATIC
 	private JTextField jtfRoomType;
 	private JTextField jtfFloor;
+	private JButton validateButton;
 	public CreateRoomView() {
 		super();
 		this.setLayout(new BorderLayout());
@@ -64,7 +66,7 @@ public class CreateRoomView extends JPanel {
 		
 		//Panel Valider
 		JPanel pValidate = new JPanel();
-		JButton validateButton = new JButton("INSERT");
+		validateButton = new JButton("INSERT");
 		validateButton.setBackground(cdApp.getBgThem());
 		validateButton.setForeground(cdApp.getBgApp());
 		validateButton.setHorizontalAlignment(JLabel.CENTER);
@@ -79,5 +81,17 @@ public class CreateRoomView extends JPanel {
 		this.add(title, BorderLayout.NORTH);
 		this.add(pCenter, BorderLayout.CENTER);
 		
+	}
+	public JTextField getJtfRoomType() {
+		return  jtfRoomType;
+	}
+	public JTextField getJtfFloor() {
+		return jtfFloor;
+	}
+	public void setTitle(String text) {
+		title.setText(text);
+	}
+	public void addJBInsertListenr(ActionListener act) {
+		validateButton.addActionListener(act);
 	}
 }
