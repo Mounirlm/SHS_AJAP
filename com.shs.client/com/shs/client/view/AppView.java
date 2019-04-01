@@ -50,4 +50,9 @@ public class AppView extends JPanel{
 		cdViewApp.show(this, name);
 		
 	}
+
+
+	public SupRoomView getSupRoomView() {
+		return supRoomView;
+	}
 }

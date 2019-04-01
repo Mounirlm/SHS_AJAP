@@ -1,16 +1,22 @@
 package com.shs.client.controller;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
+
+import javax.swing.JButton;
+
 import com.shs.client.model.ServerHandler;
 import com.shs.client.view.SHSView;
 import com.shs.commons.model.Room;
 
-public class RoomController {
-	 private SHSView shsView;
+public class RoomController implements ActionListener{
+	 private SHSView view;
 	 private static ServerHandler servH;
 	 
 	 public RoomController(SHSView v) throws IOException {
-		 shsView = v;
+		 this.view = v;
+		 view.addRoomMenuListner(this);
 		 servH  = new ServerHandler();
 	 }
 	
@@ -37,6 +43,26 @@ public class RoomController {
 				return false;
 			}
 			return true;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(e.getSource() instanceof JButton ){
+				String choix = e.getActionCommand();
+				switch (choix) {
+				case "CREATE":
+					view.setCardRoom("create");
+					break;
+					
+				case "READ - UPDATE - DELETE":
+					view.setCardRoom("rud");
+					break;
+
+				default:
+					break;
+				}
+			}
+			
 		}
 		
 

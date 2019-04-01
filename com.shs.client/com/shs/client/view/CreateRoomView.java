@@ -13,12 +13,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
-public class CreateView extends JPanel {
+public class CreateRoomView extends JPanel {
 	private JLabel title;
 	private ColorsDimApp cdApp = new ColorsDimApp();//TODO METTRE EN STATIC
 	private JTextField jtfRoomType;
 	private JTextField jtfFloor;
-	public CreateView() {
+	public CreateRoomView() {
 		super();
 		this.setLayout(new BorderLayout());
 		//title

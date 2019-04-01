@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import com.shs.client.controller.MenuController;
+import com.shs.client.controller.RoomController;
 
 // La vue s'occupe de l'afffichage
 public class SHSView {
@@ -101,6 +102,17 @@ public class SHSView {
 
 	public void addLogoListner(ActionListener act) {
 		pMenu.addLogoListneract(act);
+		
+	}
+
+	public void addRoomMenuListner(ActionListener act) {
+		pApp.getSupRoomView().addRoomMenuListner(act);
+		
+	}
+
+
+	public void setCardRoom(String name) {
+		pApp.getSupRoomView().setCard(name);
 		
 	}
 

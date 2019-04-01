@@ -2,8 +2,10 @@ package com.shs.client.view;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Container;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -12,16 +14,19 @@ import javax.swing.border.LineBorder;
 
 public class SupRoomView extends JPanel{
 	private ColorsDimApp cdApp;
+	private CardLayout cd;
 	private JButton jbCreate;
 	private JButton jbRUD;
-	private CreateView pCreate;
+	private CreateRoomView pCreate;
+	private RudRoomView pRud;
+	private JPanel pCenter;
 	
 	public SupRoomView() {
 		super();
 		cdApp = new ColorsDimApp();
 		this.setLayout(new BorderLayout());
 		JPanel pTop = new JPanel();
-		JPanel pCenter = new JPanel();
+		pCenter = new JPanel();
 		
 		//pTop
 		pTop.setLayout(new BorderLayout());
@@ -54,16 +59,36 @@ public class SupRoomView extends JPanel{
 		
 		//pCenter
 		pCenter.setBackground(cdApp.getBgApp());
-		pCenter.setLayout(new CardLayout());
+		cd = new CardLayout();
+		pCenter.setLayout(cd);
 		
-		pCreate = new CreateView();
-		
+		pCreate = new CreateRoomView();
 		pCenter.add("create", pCreate);
+		
+		pRud = new RudRoomView();
+		pCenter.add("rud", pRud);
 		
 		
 		this.add(pTop, BorderLayout.NORTH);
 		this.add(pCenter, BorderLayout.CENTER);
 		
+		cd.show(pCenter, "create");
+	}
+	
+				
+
+
+
+	public void setCard(String name) {
+		cd.show(pCenter, name);
+		
+	}
+
+
+
+	public void addRoomMenuListner(ActionListener act) {
+		jbCreate.addActionListener(act);
+		jbRUD.addActionListener(act);
 		
 	}
 }
