@@ -2,11 +2,11 @@ package com.shs.client.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Insets;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -31,9 +31,9 @@ public class CreateView extends JPanel {
 		title.setBorder(new LineBorder(cdApp.getBgTitle(), 2));
 		
 		//pCenter
-		JPanel pCenter = new JPanel(new GridLayout(2,1));
+		JPanel pCenter = new JPanel(new FlowLayout());
 		
-		JPanel pForm = new JPanel(new GridLayout(7, 1));
+		JPanel pForm = new JPanel(new GridLayout(8, 1));
 		jtfRoomType = new JTextField("Bedroom");
 		jtfFloor = new JTextField();
 		
@@ -70,9 +70,10 @@ public class CreateView extends JPanel {
 		validateButton.setHorizontalAlignment(JLabel.CENTER);
 		validateButton.setFont(new Font("Arial", Font.BOLD, 20));
 		pValidate.add("inserer",validateButton);
+		pForm.add(new JPanel());
 		pForm.add(pValidate);
 		
-		
+		pForm.setPreferredSize(new Dimension(cdApp.getWIDTH()-800, cdApp.getHEIGHT()-300));
 		pCenter.add(pForm);
 		
 		this.add(title, BorderLayout.NORTH);
