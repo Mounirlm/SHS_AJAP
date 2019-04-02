@@ -12,12 +12,13 @@ import com.shs.commons.model.Room;
 
 public class RoomController implements ActionListener{
 	 private SHSView view;
-	 private static ServerHandler servH;
+	 private ServerHandler servH;
 	 
 	 public RoomController(SHSView v) throws IOException {
 		 this.view = v;
 		 view.addRoomMenuListner(this);
 		 view.addJBInsertListner(jbInsert);
+		 view.addJBSearchListner(jbSearch);
 		 servH  = new ServerHandler();
 	 }
 	 
@@ -26,19 +27,70 @@ public class RoomController implements ActionListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String[] form = new String[2];
-				form[0] = view.getJtf(0).getText();
-				form[1] = view.getJtf(1).getText();
+				form[0] = view.getJtfCreate(0).getText();
+				form[1] = view.getJtfCreate(1).getText();
 				try {
 					insert(form);
-					view.setCreateTitle("Inserted new secured room with success");
+					view.getpApp().getSupRoomView().setCreateTitle("Inserted new secured room with success");
 					
 				} catch (Exception e1) {
-					view.setCreateTitle(e1.getMessage());
+					view.getpApp().getSupRoomView().setCreateTitle(e1.getMessage());
 				}
 				
 			}
 		};
-	
+		
+		ActionListener jbSearch = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String[] form = new String[3];
+				form[0] = view.getJtfRudSearch(0).getText();
+				form[1] = view.getJtfRudSearch(1).getText();
+				form[2] = view.getJtfRudSearch(2).getText();
+				try {
+					search(form);
+					view.getpApp().getSupRoomView().getRudView().getSearchView().getFormView().setSearchTitle("Search room with success");
+					
+				} catch (Exception e1) {
+					view.getpApp().getSupRoomView().getRudView().getSearchView().getFormView().setSearchTitle(e1.getMessage());
+				}
+				
+			}
+
+		};
+		
+		private void search(String[] form) throws Exception {
+			if(form[0].isEmpty() && form[1].isEmpty() && form[2].isEmpty())
+				throw new Exception("Empty");
+			if(!form[0].isEmpty()) {
+				if(!isInteger(form[0]))
+				throw new Exception("ID number must be a number");
+			}
+			
+			if(!form[1].isEmpty()){
+				if (isInteger(Character.toString(form[1].charAt(0))))
+				throw new Exception("Room type can't start by a number");
+			}
+			if(!form[2].isEmpty()) {
+				if(!isInteger(form[2]))
+					throw new Exception("Floor number must be a number");
+			}
+			
+			
+			
+			Room room = new Room();
+			if(!form[0].isEmpty())
+				room.setId(Integer.valueOf(form[0]));
+			if(!form[1].isEmpty())
+				room.setType_room(form[1]);
+			if(!form[2].isEmpty())
+				room.setFloor(Integer.valueOf(form[2]));
+			
+			//System.out.println(servH.searchObjectToServer(room));
+			
+		}
+		
 	 public void insert(String[] form) throws Exception {
 			if(form[0].isEmpty() || form[1].isEmpty())
 				throw new Exception("Empty");

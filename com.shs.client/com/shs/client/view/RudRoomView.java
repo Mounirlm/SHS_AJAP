@@ -58,6 +58,10 @@ public class RudRoomView extends JPanel {
 			this.add(formView, BorderLayout.CENTER);
 			
 		}
+		public FormView getFormView() {
+			return this.formView;
+		}
+		
 	}
 	
 	public class UpdateView extends JPanel{
@@ -123,4 +127,12 @@ public class RudRoomView extends JPanel {
 			}
 		}
 	}
+
+	public SearchView getSearchView() {
+		return searchView;
+	}
+
+
+
+	
 }

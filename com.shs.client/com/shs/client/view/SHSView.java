@@ -118,17 +118,31 @@ public class SHSView {
 		
 	}
 
-	public JTextField getJtf(int index) {
-		return pApp.getSupRoomView().getJtf(index);
+	public JTextField getJtfCreate(int index) {
+		return pApp.getSupRoomView().getCreateView().getFormView().getJtf(index);
+	}
+	
+	public JTextField getJtfRudSearch(int index) {
+		return pApp.getSupRoomView().getRudView().getSearchView().getFormView().getJtf(index);
 	}
 
 
-	public void setCreateTitle(String text) {
-		pApp.getSupRoomView().setCreateTitle(text);
-	}
 
 	public void addJBInsertListner(ActionListener act) {
 		pApp.getSupRoomView().addJBInsertListner(act);
+	}
+
+	public MenuView getpMenu() {
+		return pMenu;
+	}
+
+	public AppView getpApp() {
+		return pApp;
+	}
+
+	public void addJBSearchListner(ActionListener jbSearch) {
+		pApp.getSupRoomView().getRudView().getSearchView().getFormView().addJBSearchListner(jbSearch);
+		
 	}
 
 	

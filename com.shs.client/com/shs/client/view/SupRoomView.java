@@ -14,6 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
+import com.shs.client.view.RudRoomView.SearchView;
+
 public class SupRoomView extends JPanel{
 	private ColorsDimApp cdApp;
 	private CardLayout cd;
@@ -111,4 +113,18 @@ public class SupRoomView extends JPanel{
 	public void addJBInsertListner(ActionListener act) {
 		pCreate.addJBInsertListner(act);
 	}
+
+
+
+	public RudRoomView getRudView() {
+		return pRud;
+	}
+
+
+
+	public CreateRoomView getCreateView() {
+		return pCreate;
+	}
+	
+	
 }

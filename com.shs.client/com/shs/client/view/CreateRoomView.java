@@ -50,4 +50,7 @@ public class CreateRoomView extends JPanel {
 	public void addJBInsertListner(ActionListener act) {
 		formView.addJBInsertListner(act);
 	}
+	public FormView getFormView() {
+		return formView;
+	}
 }

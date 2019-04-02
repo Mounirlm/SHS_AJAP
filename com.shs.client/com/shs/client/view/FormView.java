@@ -137,5 +137,21 @@ public class FormView extends JPanel {
 			jtfs.get(i).setFont(new Font("Arial", Font.BOLD, sizeVal));
 		}
 	}
+
+
+
+	public void setSearchTitle(String string) {
+		this.lbTitle.setText(string);
+		
+	}
+
+
+
+	public void addJBSearchListner(ActionListener jbSearch) {
+		for (int i = 0; i < buttons.size() ;i++) {
+			buttons.get(i).addActionListener(jbSearch);
+		}
+		
+	}
 	
 }

@@ -6,6 +6,9 @@ import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
@@ -72,4 +75,44 @@ public class ServerHandler {
         	throw new IOException("Error closed flux "+e);
         }
     }
+
+	public List<Room> searchObjectToServer(Room room) throws IOException {
+		//connections
+     	getFlux();
+		try {
+	     	//Creation request Json
+		    writer.setIndent("	");
+		    writer.beginObject();
+		    writer.name("request").value("search-room");
+		    writer.name("room").value(gson.toJson(room));
+		    writer.endObject();
+		    writer.flush();
+		    System.out.println("send room to server for research");
+		    //response
+		    reader.beginObject();
+		    String response = "Server "+reader.nextName()+": "+reader.nextString();
+		    reader.endObject();
+	      } 
+	    catch (IOException ioe) { 
+	    	throw new IOException("Error communication to server ");
+		}
+	    finally {
+	    	stopFlux();
+	    }
+		return readRooms(reader);
+	}
+	
+	public List<Room> readRooms(JsonReader reader) throws IOException {
+		List<Room> rooms = new ArrayList<Room>();
+		reader.beginObject();
+	     reader.beginArray();
+	     while (reader.hasNext()) {
+	    	String roomJson = reader.nextString();
+	       rooms.add(new Gson().fromJson(roomJson, Room.class));
+	     }
+	     reader.endArray();
+	     reader.endObject();
+	     return rooms;
+	}
+	
 }
