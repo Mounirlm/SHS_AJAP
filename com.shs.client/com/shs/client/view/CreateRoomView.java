@@ -2,11 +2,15 @@ package com.shs.client.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -20,78 +24,38 @@ public class CreateRoomView extends JPanel {
 	private JTextField jtfRoomType;
 	private JTextField jtfFloor;
 	private JButton validateButton;
+	private FormView formView;
+	private LBTitle lbTitle;
+	
 	public CreateRoomView() {
 		super();
 		this.setLayout(new BorderLayout());
-		//title
-		title = new JLabel("New Secured Room");
-		title.setOpaque(true);
-		title.setBackground(Color.decode("#afabab"));
-		title.setForeground(cdApp.getBgApp());
-		title.setHorizontalAlignment(JLabel.CENTER);
-		title.setFont(new Font("Arial", Font.BOLD, 30));
-		title.setBorder(new LineBorder(cdApp.getBgTitle(), 2));
+		lbTitle = new LBTitle("New Secured Room");
+		this.add(lbTitle, BorderLayout.NORTH);
 		
-		//pCenter
-		JPanel pCenter = new JPanel(new FlowLayout());
+		Map<String, String> cols = new LinkedHashMap<>();
+		cols.put("ID","");cols.put("TYPE","");cols.put("FLOOR","");cols.put("ROOM NUMBER","");
 		
-		JPanel pForm = new JPanel(new GridLayout(8, 1));
-		jtfRoomType = new JTextField("Bedroom");
-		jtfFloor = new JTextField();
+		ArrayList<String> buttons = new ArrayList<>();
+		buttons.add("INSERT");
 		
-		pForm.add(new JPanel());
-		
-		JLabel lbType =new JLabel("TYPE");
-		lbType.setOpaque(true);
-		lbType.setBackground(cdApp.getBgThem());
-		lbType.setForeground(cdApp.getBgApp());
-		lbType.setHorizontalAlignment(JLabel.CENTER);
-		lbType.setFont(new Font("Arial", Font.BOLD, 25));
-		pForm.add(lbType);
-		jtfRoomType.setFont(new Font("Arial", Font.BOLD, 16));
-		pForm.add(jtfRoomType);
-
-		pForm.add(new JPanel());
-		
-		JLabel lbFloor =new JLabel("FLOOR");
-		lbFloor.setOpaque(true);
-		lbFloor.setBackground(cdApp.getBgThem());
-		lbFloor.setForeground(cdApp.getBgApp());
-		lbFloor.setHorizontalAlignment(JLabel.CENTER);
-		lbFloor.setFont(new Font("Arial", Font.BOLD, 25));
-		pForm.add(lbFloor);
-		jtfFloor.setFont(new Font("Arial", Font.BOLD,16 ));
-		pForm.add(jtfFloor);
-		
-		
-		//Panel Valider
-		JPanel pValidate = new JPanel();
-		validateButton = new JButton("INSERT");
-		validateButton.setBackground(cdApp.getBgThem());
-		validateButton.setForeground(cdApp.getBgApp());
-		validateButton.setHorizontalAlignment(JLabel.CENTER);
-		validateButton.setFont(new Font("Arial", Font.BOLD, 20));
-		pValidate.add("inserer",validateButton);
-		pForm.add(new JPanel());
-		pForm.add(pValidate);
-		
-		pForm.setPreferredSize(new Dimension(cdApp.getWIDTH()-800, cdApp.getHEIGHT()-300));
-		pCenter.add(pForm);
-		
-		this.add(title, BorderLayout.NORTH);
-		this.add(pCenter, BorderLayout.CENTER);
+		formView = new FormView("New Secured Room", cols, buttons, new ArrayList<String>(), "v", false);
+		formView.setPreferredSize(new Dimension(cdApp.getWIDTH()-900, cdApp.getHEIGHT()-300));
+		this.add(formView, BorderLayout.CENTER);
 		
 	}
 	public JTextField getJtfRoomType() {
-		return  jtfRoomType;
+		//return  jtfRoomType;
+		return null;
 	}
 	public JTextField getJtfFloor() {
-		return jtfFloor;
+		//return jtfFloor;
+		return null;
 	}
 	public void setTitle(String text) {
-		title.setText(text);
+		//title.setText(text);
 	}
 	public void addJBInsertListenr(ActionListener act) {
-		validateButton.addActionListener(act);
+		//validateButton.addActionListener(act);
 	}
 }

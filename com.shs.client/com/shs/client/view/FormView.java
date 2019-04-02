@@ -2,6 +2,7 @@ package com.shs.client.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class FormView extends JPanel {
 	private int sizeTitle=30, sizeLB=15, sizeVal=11, sizeButton=20;
 	private Map<String, String> pArgs;
 	private List<JButton> buttons;
+	private LBTitle lbTitle;
 	
 	
 	
@@ -34,14 +36,8 @@ public class FormView extends JPanel {
 		buttons = new ArrayList<>();
 		if(title) {
 			//title
-			JLabel lbtitle= new JLabel(titleView);
-			lbtitle.setOpaque(true);
-			lbtitle.setBackground(Color.decode("#afabab"));
-			lbtitle.setForeground(cdApp.getBgApp());
-			lbtitle.setHorizontalAlignment(JLabel.CENTER);
-			lbtitle.setFont(new Font("Arial", Font.BOLD, sizeTitle));
-			lbtitle.setBorder(new LineBorder(cdApp.getBgTitle(), 2));
-			this.add(lbtitle, BorderLayout.NORTH);
+			lbTitle =new LBTitle(titleView);
+			this.add(lbTitle, BorderLayout.NORTH);
 		}
 		
 		
@@ -106,4 +102,7 @@ public class FormView extends JPanel {
 		
 		this.add(pForm, BorderLayout.CENTER);
 	}
+	
+	
+	
 }

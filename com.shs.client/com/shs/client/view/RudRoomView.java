@@ -52,7 +52,7 @@ public class RudRoomView extends JPanel {
 			cols.put("ID","");cols.put("TYPE","");cols.put("FLOOR","");cols.put("ROOM NUMBER","");
 			
 			ArrayList<String> buttons = new ArrayList<>();
-			buttons.add("INSERT");
+			buttons.add("SEARCH");
 			
 			formView = new FormView("Search Secured Room", cols, buttons, new ArrayList<String>(), "h", true);
 			this.add(formView, BorderLayout.CENTER);
@@ -86,15 +86,8 @@ public class RudRoomView extends JPanel {
 		public ReadView() {
 			super();
 			this.setLayout(new BorderLayout());
-			//title
-			JLabel lbtitle= new JLabel("Read Secured Room");
-			lbtitle.setOpaque(true);
-			lbtitle.setBackground(Color.decode("#afabab"));
-			lbtitle.setForeground(cdApp.getBgApp());
-			lbtitle.setHorizontalAlignment(JLabel.CENTER);
-			lbtitle.setFont(new Font("Arial", Font.BOLD, 30));
-			lbtitle.setBorder(new LineBorder(cdApp.getBgTitle(), 2));
-			this.add(lbtitle, BorderLayout.NORTH);
+			//title			
+			this.add(new LBTitle("Read Secured Room"), BorderLayout.NORTH);
 			
 			//Elements
 			JPanel pElem = new JPanel(new GridLayout(50, 1));
