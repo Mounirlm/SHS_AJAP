@@ -26,8 +26,8 @@ public class RoomController implements ActionListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String[] form = new String[2];
-				form[0] = view.getJtfRoomType().getText();
-				form[1] = view.getJtfFloor().getText();
+				form[0] = view.getJtf(0).getText();
+				form[1] = view.getJtf(1).getText();
 				try {
 					insert(form);
 					view.setCreateTitle("Inserted new secured room with success");

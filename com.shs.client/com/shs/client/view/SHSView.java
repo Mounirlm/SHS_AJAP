@@ -118,13 +118,10 @@ public class SHSView {
 		
 	}
 
-	public JTextField getJtfRoomType() {
-		return pApp.getSupRoomView().getJtfRoomType();
+	public JTextField getJtf(int index) {
+		return pApp.getSupRoomView().getJtf(index);
 	}
 
-	public JTextField getJtfFloor() {
-		return pApp.getSupRoomView().getJtfFloor();
-	}
 
 	public void setCreateTitle(String text) {
 		pApp.getSupRoomView().setCreateTitle(text);

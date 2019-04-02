@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,13 +27,16 @@ public class FormView extends JPanel {
 	private Map<String, String> pArgs;
 	private List<JButton> buttons;
 	private LBTitle lbTitle;
-	
+	List<JTextField> jtfs;
+	List<JLabel> lbVals;
 	
 	
 	public FormView(String titleView,Map<String, String> tuples, List<String> but, List<String> labels, String alignement, boolean title) {
 		super();
 		this.setLayout(new BorderLayout());
 		pArgs = tuples;
+		jtfs = new ArrayList<>();
+		lbVals = new ArrayList<>();
 		buttons = new ArrayList<>();
 		if(title) {
 			//title
@@ -74,9 +78,11 @@ public class FormView extends JPanel {
 						lbVal.setBackground(cdApp.getBgApp());
 						lbVal.setBorder(new LineBorder(Color.BLACK, 1));
 						pCol.add(lbVal, BorderLayout.CENTER);
+						lbVals.add(lbVal);
 					}else {
 						jtf = new JTextField(entry.getValue());
 						jtf.setFont(new Font("Arial", Font.BOLD, sizeVal));
+						jtfs.add(jtf);
 						pCol.add(jtf, BorderLayout.CENTER);
 					
 				}
@@ -102,7 +108,34 @@ public class FormView extends JPanel {
 		
 		this.add(pForm, BorderLayout.CENTER);
 	}
+
+
+
+	public FormView(String title, Map<String, String> cols, ArrayList<String> buttons2, ArrayList<String> labels2,
+			String alignement2, boolean b, int i, int j, int k) {
+		this(title,cols, buttons2,labels2, alignement2, b);
+		setSizeArgs(i, j, k);
+	}
+
+
+
+	public void addJBInsertListner(ActionListener act) {
+		for (int i = 0; i < buttons.size(); i++) {
+			buttons.get(i).addActionListener(act);
+		}
+	}
+
+
+
+	public JTextField getJtf(int index) {
+		return jtfs.get(index);
+	}
 	
-	
+	public void setSizeArgs(int lb, int val, int but) {
+		sizeVal=val;
+		for (int i = 0; i < jtfs.size() ;i++) {
+			jtfs.get(i).setFont(new Font("Arial", Font.BOLD, sizeVal));
+		}
+	}
 	
 }

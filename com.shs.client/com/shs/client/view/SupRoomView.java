@@ -96,16 +96,8 @@ public class SupRoomView extends JPanel{
 
 
 
-	public JTextField getJtfRoomType() {
-		return pCreate.getJtfRoomType();
-	}
-
-
-
-
-
-	public JTextField getJtfFloor() {
-		return pCreate.getJtfFloor();
+	public JTextField getJtf(int index) {
+		return pCreate.getJtf(index);
 	}
 
 
@@ -117,6 +109,6 @@ public class SupRoomView extends JPanel{
 
 
 	public void addJBInsertListner(ActionListener act) {
-		pCreate.addJBInsertListenr(act);
+		pCreate.addJBInsertListner(act);
 	}
 }
