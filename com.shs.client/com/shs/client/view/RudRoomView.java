@@ -2,17 +2,17 @@ package com.shs.client.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 
@@ -48,8 +48,8 @@ public class RudRoomView extends JPanel {
 		public SearchView() {
 			super();
 			this.setLayout(new BorderLayout());
-			ArrayList<String> cols = new ArrayList<>();
-			cols.add("ID");cols.add("FLOOR");cols.add("TYPE");cols.add("ROOM NUMBER");
+			Map<String, String> cols = new LinkedHashMap<>();
+			cols.put("ID","");cols.put("TYPE","");cols.put("FLOOR","");cols.put("ROOM NUMBER","");
 			
 			ArrayList<String> buttons = new ArrayList<>();
 			buttons.add("INSERT");
@@ -66,8 +66,8 @@ public class RudRoomView extends JPanel {
 		public UpdateView() {
 			super();
 			this.setLayout(new BorderLayout());
-			ArrayList<String> cols = new ArrayList<>();
-			cols.add("ID");cols.add("FLOOR");cols.add("TYPE");cols.add("ROOM NUMBER");
+			Map<String, String> cols = new LinkedHashMap<>();
+			cols.put("ID","");cols.put("TYPE","");cols.put("FLOOR","");cols.put("ROOM NUMBER","");
 			
 			ArrayList<String> buttons = new ArrayList<>();
 			buttons.add("UPDATE");
@@ -116,14 +116,14 @@ public class RudRoomView extends JPanel {
 			public ElementRead(int id, String type, int floor,boolean title) {
 				super();
 				this.setLayout(new BorderLayout());
-				ArrayList<String> cols = new ArrayList<>();
-				cols.add("ID");cols.add("FLOOR");cols.add("TYPE");cols.add("ROOM NUMBER");
+				Map<String, String> cols = new LinkedHashMap<>();
+				cols.put("ID",""+id);cols.put("TYPE",type);cols.put("FLOOR",""+floor);cols.put("ROOM NUMBER",""+1);
 				
 				ArrayList<String> buttons = new ArrayList<>();
 				buttons.add("DELETE");buttons.add("UPDATE");
 				
 				ArrayList<String> labels = new ArrayList<>();
-				labels.add("ID");labels.add("FLOOR");labels.add("TYPE");labels.add("ROOM NUMBER");
+				labels.add("ID");labels.add("TYPE");labels.add("FLOOR");labels.add("ROOM NUMBER");
 				
 				formView = new FormView("Read Secured Room", cols, buttons,labels, "h",title);
 				this.add(formView, BorderLayout.CENTER);

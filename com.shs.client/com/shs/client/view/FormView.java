@@ -5,7 +5,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -19,14 +22,16 @@ public class FormView extends JPanel {
 	private JLabel lbVal;
 	private JButton validateButton;
 	private int sizeTitle=30, sizeLB=15, sizeVal=11, sizeButton=20;
-	private List<JPanel> pArgs;
+	private Map<String, String> pArgs;
+	private List<JButton> buttons;
 	
 	
 	
-	public FormView(String titleView,List<String> cols, List<String> buttons, List<String> labels, String alignement, boolean title) {
+	public FormView(String titleView,Map<String, String> tuples, List<String> but, List<String> labels, String alignement, boolean title) {
 		super();
 		this.setLayout(new BorderLayout());
-		pArgs = new ArrayList<>();
+		pArgs = tuples;
+		buttons = new ArrayList<>();
 		if(title) {
 			//title
 			JLabel lbtitle= new JLabel(titleView);
@@ -43,15 +48,15 @@ public class FormView extends JPanel {
 		//Form
 		JPanel pForm;
 		if(alignement.equals("h")) 
-			pForm = new JPanel(new GridLayout(1,cols.size()+buttons.size()));
+			pForm = new JPanel(new GridLayout(1,tuples.size()+but.size()));
 		else 
-			pForm = new JPanel(new GridLayout(cols.size()+buttons.size(),1));
+			pForm = new JPanel(new GridLayout(tuples.size()+but.size(),1));
 		
 		
 		
-		for (int i = 0; i < cols.size(); i++) {
+		for (Map.Entry<String, String> entry : tuples.entrySet()) {
 			
-				JLabel lb =new JLabel(cols.get(i));
+				JLabel lb =new JLabel(entry.getKey());
 				lb.setOpaque(true);
 				lb.setBackground(cdApp.getBgThem());
 				lb.setForeground(cdApp.getBgApp());
@@ -62,39 +67,39 @@ public class FormView extends JPanel {
 				pCol.add(lb, BorderLayout.NORTH);
 				boolean labelFound = false;
 				for (int j = 0; j < labels.size(); j++) {
-					if(labels.get(j)==cols.get(i)) {
+					if(labels.get(j)==entry.getKey()) {
 						labelFound=true;
 					}
 				}
 					if(labelFound) {
-						lbVal = new JLabel();
+						lbVal = new JLabel(entry.getValue());
 						lbVal.setFont(new Font("Arial", Font.BOLD, sizeVal));
 						lbVal.setOpaque(true);
 						lbVal.setBackground(cdApp.getBgApp());
 						lbVal.setBorder(new LineBorder(Color.BLACK, 1));
 						pCol.add(lbVal, BorderLayout.CENTER);
 					}else {
-						jtf = new JTextField();
+						jtf = new JTextField(entry.getValue());
 						jtf.setFont(new Font("Arial", Font.BOLD, sizeVal));
 						pCol.add(jtf, BorderLayout.CENTER);
 					
 				}
-				pArgs.add(pCol);
 				pForm.add(pCol);
 		
 			
 		}
 		
-		for (int i = 0; i < buttons.size(); i++) {
+		
+		for (int i = 0; i < but.size(); i++) {
 			//Panel Valider
 			JPanel pValidate = new JPanel();
-			validateButton = new JButton(buttons.get(i));
+			validateButton = new JButton(but.get(i));
+			buttons.add(validateButton);
 			validateButton.setBackground(cdApp.getBgThem());
 			validateButton.setForeground(cdApp.getBgApp());
 			validateButton.setHorizontalAlignment(JLabel.CENTER);
 			validateButton.setFont(new Font("Arial", Font.BOLD, sizeButton));
-			pValidate.add(buttons.get(i),validateButton);
-			pArgs.add(pValidate);
+			pValidate.add(but.get(i),validateButton);
 			pForm.add(pValidate);
 		}
 		
