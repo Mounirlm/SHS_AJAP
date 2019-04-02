@@ -4,14 +4,15 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Scrollbar;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 
 public class RudRoomView extends JPanel {
@@ -235,17 +236,17 @@ public class RudRoomView extends JPanel {
 			this.add(title, BorderLayout.NORTH);
 			
 			//Elements
-			JPanel pElem = new JPanel(new GridLayout(10,1));
-			pElem.add(new Scrollbar(Scrollbar.VERTICAL));
 			
-			elems = new ArrayList<>(10);
+			JPanel pElem = new JPanel(new GridLayout(50, 1));
+			elems = new ArrayList<>();
 			
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < 50; i++) {
 				elems.add(new ElementRead(1, "BedRoom", 3));
-				pElem.add(elems.get(0));
+				pElem.add(elems.get(i));
 			}
+			JScrollPane scrollElem = new JScrollPane(pElem,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 			
-			this.add(pElem, BorderLayout.CENTER);
+			this.add(scrollElem, BorderLayout.CENTER);
 			
 		}
 		
@@ -257,7 +258,8 @@ public class RudRoomView extends JPanel {
 			private JButton deleteButton;
 			
 			public ElementRead(int id, String type, int floor) {
-				
+				super();
+				this.setLayout(new BorderLayout());
 				JPanel pForm = new JPanel(new GridLayout(1,8));
 				lbRoomTypeVal = new JLabel(type);
 				lbFloorVal = new JLabel(""+floor);
