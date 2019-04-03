@@ -3,7 +3,8 @@ package com.shs.client.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 
@@ -96,6 +97,10 @@ public class RoomController implements ActionListener{
 					System.out.println(id);
 					delete(id);
 					view.getpApp().getSupRoomView().getRudView().getReadView().getTitle().setText("Deleted room with success");
+					List<Room> rooms = new ArrayList<>();
+					rooms.add(new Room(4,"Kitchen", 3));
+					rooms.add(new Room(2,"Kitchen", 5));
+					view.getpApp().getSupRoomView().getRudView().getReadView().setView(rooms);
 					
 				} catch (Exception e1) {
 					view.getpApp().getSupRoomView().getRudView().getReadView().getTitle().setText(e1.getMessage());

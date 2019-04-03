@@ -1,22 +1,19 @@
 package com.shs.client.view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.border.LineBorder;
+
+import com.shs.commons.model.Room;
 
 public class RudRoomView extends JPanel {
 	private ColorsDimApp cdApp;
@@ -92,6 +89,7 @@ public class RudRoomView extends JPanel {
 	public class ReadView extends JPanel{
 		private List<ElementRead> elems;
 		private LBTitle titleRead;
+		private JPanel pElem;
 		public ReadView() {
 			super();
 			this.setLayout(new BorderLayout());
@@ -100,7 +98,7 @@ public class RudRoomView extends JPanel {
 			this.add(titleRead, BorderLayout.NORTH);
 			
 			//Elements
-			JPanel pElem = new JPanel(new GridLayout(50, 1));
+			pElem = new JPanel(new GridLayout(50, 1));
 			elems = new ArrayList<>();
 			
 			for (int i = 0; i < 50; i++) {
@@ -110,6 +108,16 @@ public class RudRoomView extends JPanel {
 			JScrollPane scrollElem = new JScrollPane(pElem,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 			
 			this.add(scrollElem, BorderLayout.CENTER);
+			
+		}
+		
+		public void setView(List<Room> rooms) {
+			elems.clear();
+			pElem.removeAll();
+			for (int i = 0; i < rooms.size(); i++) {
+				elems.add(new ElementRead(rooms.get(i).getId(), rooms.get(i).getType_room(), rooms.get(i).getFloor(), false,i));
+				pElem.add(elems.get(i));
+			}
 			
 		}
 		
