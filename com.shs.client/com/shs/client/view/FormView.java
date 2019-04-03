@@ -29,7 +29,10 @@ public class FormView extends JPanel {
 	private LBTitle lbTitle;
 	List<JTextField> jtfs;
 	List<JLabel> lbVals;
-	
+	private List<String> labs;
+	private JPanel pForm;
+	private List<String> butLB;
+	private JPanel pValidate;
 	
 	public FormView(String titleView,Map<String, String> tuples, List<String> but, List<String> labels, String alignement, boolean title) {
 		super();
@@ -38,6 +41,9 @@ public class FormView extends JPanel {
 		jtfs = new ArrayList<>();
 		lbVals = new ArrayList<>();
 		buttons = new ArrayList<>();
+		labs=labels;
+		butLB=but;
+		
 		if(title) {
 			//title
 			lbTitle =new LBTitle(titleView);
@@ -46,15 +52,20 @@ public class FormView extends JPanel {
 		
 		
 		//Form
-		JPanel pForm;
 		if(alignement.equals("h")) 
 			pForm = new JPanel(new GridLayout(1,tuples.size()+but.size()));
 		else 
 			pForm = new JPanel(new GridLayout(tuples.size()+but.size(),1));
 		
+		createCols();
 		
-		
-		for (Map.Entry<String, String> entry : tuples.entrySet()) {
+	}
+
+
+
+	private void createCols() {
+
+		for (Map.Entry<String, String> entry : pArgs.entrySet()) {
 			
 				JLabel lb =new JLabel(entry.getKey());
 				lb.setOpaque(true);
@@ -66,8 +77,8 @@ public class FormView extends JPanel {
 				JPanel pCol = new JPanel(new BorderLayout());
 				pCol.add(lb, BorderLayout.NORTH);
 				boolean labelFound = false;
-				for (int j = 0; j < labels.size(); j++) {
-					if(labels.get(j)==entry.getKey()) {
+				for (int j = 0; j < labs.size(); j++) {
+					if(labs.get(j)==entry.getKey()) {
 						labelFound=true;
 					}
 				}
@@ -87,27 +98,23 @@ public class FormView extends JPanel {
 					
 				}
 				pForm.add(pCol);
-		
-			
 		}
-		
-		
-		for (int i = 0; i < but.size(); i++) {
+		for (int i = 0; i < butLB.size(); i++) {
 			//Panel Valider
-			JPanel pValidate = new JPanel();
-			validateButton = new JButton(but.get(i));
+			pValidate = new JPanel();
+			validateButton = new JButton(butLB.get(i));
 			buttons.add(validateButton);
 			validateButton.setBackground(cdApp.getBgThem());
 			validateButton.setForeground(cdApp.getBgApp());
 			validateButton.setHorizontalAlignment(JLabel.CENTER);
 			validateButton.setFont(new Font("Arial", Font.BOLD, sizeButton));
-			pValidate.add(but.get(i),validateButton);
+			pValidate.add(butLB.get(i),validateButton);
 			pForm.add(pValidate);
 		}
-		
-		
 		this.add(pForm, BorderLayout.CENTER);
 	}
+
+
 
 
 
@@ -118,12 +125,6 @@ public class FormView extends JPanel {
 	}
 
 
-
-	public void addJBInsertListner(ActionListener act) {
-		for (int i = 0; i < buttons.size(); i++) {
-			buttons.get(i).addActionListener(act);
-		}
-	}
 
 
 
@@ -140,18 +141,45 @@ public class FormView extends JPanel {
 
 
 
-	public void setSearchTitle(String string) {
+	public void setTitle(String string) {
 		this.lbTitle.setText(string);
 		
 	}
 
 
 
-	public void addJBSearchListner(ActionListener jbSearch) {
+	public void addJBListner(ActionListener act) {
 		for (int i = 0; i < buttons.size() ;i++) {
-			buttons.get(i).addActionListener(jbSearch);
+			buttons.get(i).addActionListener(act);
 		}
 		
 	}
+
+
+
+	public Map<String, String> getpArgs() {
+		return pArgs;
+	}
+
+
+
+	public void setpArgs(Map<String, String> pArgs) {
+		this.pArgs = pArgs;
+		//pForm.removeAll();
+		//createCols();
+		lbVals.get(0).setText(pArgs.get("ID"));int i=0;
+		for (Map.Entry<String, String> entry : pArgs.entrySet()) {
+			if(i==0) {
+				i++;
+				continue;
+			}
+			if(i<jtfs.size()) {
+				jtfs.get(i).setText(entry.getValue());
+				i++;
+			}
+		}
+		
+	}
+	
 	
 }

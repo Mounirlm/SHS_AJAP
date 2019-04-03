@@ -48,7 +48,7 @@ public class CreateRoomView extends JPanel {
 		lbTitle.setText(text);
 	}
 	public void addJBInsertListner(ActionListener act) {
-		formView.addJBInsertListner(act);
+		formView.addJBListner(act);
 	}
 	public FormView getFormView() {
 		return formView;

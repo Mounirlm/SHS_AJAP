@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -77,10 +78,13 @@ public class RudRoomView extends JPanel {
 			buttons.add("UPDATE");
 			
 			ArrayList<String> labels = new ArrayList<>();
-			labels.add("ID");
 			
 			formView = new FormView("Update Secured Room", cols, buttons,labels, "h",true);
 			this.add(formView, BorderLayout.CENTER);
+		}
+
+		public FormView getFormView() {
+			return formView;
 		}
 	}
 	
@@ -109,15 +113,16 @@ public class RudRoomView extends JPanel {
 		
 		public class ElementRead extends JPanel{
 			private FormView formView;
+			private Map<String, String> cols;
 			
 			public ElementRead(int id, String type, int floor,boolean title) {
 				super();
 				this.setLayout(new BorderLayout());
-				Map<String, String> cols = new LinkedHashMap<>();
+				cols = new LinkedHashMap<>();
 				cols.put("ID",""+id);cols.put("TYPE",type);cols.put("FLOOR",""+floor);cols.put("ROOM NUMBER",""+1);
 				
 				ArrayList<String> buttons = new ArrayList<>();
-				buttons.add("DELETE");buttons.add("UPDATE");
+				buttons.add("DELETE");
 				
 				ArrayList<String> labels = new ArrayList<>();
 				labels.add("ID");labels.add("TYPE");labels.add("FLOOR");labels.add("ROOM NUMBER");
@@ -125,11 +130,37 @@ public class RudRoomView extends JPanel {
 				formView = new FormView("Read Secured Room", cols, buttons,labels, "h",title);
 				this.add(formView, BorderLayout.CENTER);
 			}
+			
+			public FormView getFormView() {
+				return formView;
+			}
+			public Map<String, String> getCols(){
+				return cols;
+			}
 		}
+		
+		public void AddlistnerUpadateReadView(ActionListener act) {
+			for (int i = 0; i < elems.size(); i++) {
+				elems.get(i).getFormView().addJBListner(act);
+			}
+		}
+
+		public List<ElementRead> getElems() {
+			return elems;
+		}
+		
 	}
 
 	public SearchView getSearchView() {
 		return searchView;
+	}
+
+	public UpdateView getUpdateView() {
+		return updateView;
+	}
+
+	public ReadView getReadView() {
+		return readView;
 	}
 
 
