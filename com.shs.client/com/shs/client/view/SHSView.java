@@ -113,8 +113,12 @@ public class SHSView {
 	}
 
 	public void addJBDeleteListner(ActionListener act) {
-		pApp.getSupRoomView().getRudView().getReadView().AddJBDeleteListnerReadView(act);	
+		pApp.getSupRoomView().getRudView().getDeleteView().getFormView().addJBListner(act);	
 		
+	}
+
+	public JTextField getJtfRudDelete(int i) {
+		return pApp.getSupRoomView().getRudView().getDeleteView().getFormView().getJtf(i);
 	}
 
 	

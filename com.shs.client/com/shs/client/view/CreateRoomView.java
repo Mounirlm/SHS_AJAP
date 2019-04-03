@@ -35,7 +35,7 @@ public class CreateRoomView extends JPanel {
 		ArrayList<String> buttons = new ArrayList<>();
 		buttons.add("INSERT");
 		
-		formView = new FormView("New Secured Room", cols, buttons, new ArrayList<String>(), "v", false,1, 20,20,20);
+		formView = new FormView("New Secured Room", cols, buttons, new ArrayList<String>(), "v", false, 20,20,20);
 		formView.setPreferredSize(new Dimension(cdApp.getWIDTH()-900, cdApp.getHEIGHT()-300));
 		this.add(formView, BorderLayout.CENTER);
 		

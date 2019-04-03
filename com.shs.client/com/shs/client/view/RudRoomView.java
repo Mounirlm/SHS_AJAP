@@ -20,6 +20,7 @@ public class RudRoomView extends JPanel {
 	private JPanel pSearchUpd;
 	private SearchView searchView;
 	private UpdateView updateView;
+	private	DeleteView deleteView;
 	private	ReadView readView;
 	
 	public RudRoomView() {
@@ -28,13 +29,16 @@ public class RudRoomView extends JPanel {
 		this.setLayout(new BorderLayout());
 		
 		//Search and Update view
-		pSearchUpd = new JPanel(new GridLayout(2, 1));
+		pSearchUpd = new JPanel(new GridLayout(3, 1));
 		searchView = new SearchView();
+		deleteView = new DeleteView();
 		updateView = new UpdateView();
+		
 		readView = new ReadView();
 		
 		pSearchUpd.add(searchView);
 		pSearchUpd.add(updateView);
+		pSearchUpd.add(deleteView);
 		
 		
 		this.add(pSearchUpd, BorderLayout.NORTH);
@@ -51,9 +55,9 @@ public class RudRoomView extends JPanel {
 			cols.put("ID","");cols.put("TYPE","");cols.put("FLOOR","");cols.put("ROOM NUMBER","");
 			
 			ArrayList<String> buttons = new ArrayList<>();
-			buttons.add("SEARCH");
+			buttons.add("RESEARCH");buttons.add("RESEARCH ALL");
 			
-			formView = new FormView("Search Secured Room", cols, buttons, new ArrayList<String>(), "h", true,2);
+			formView = new FormView("Research Secured Room", cols, buttons, new ArrayList<String>(), "h", true);
 			this.add(formView, BorderLayout.CENTER);
 			
 		}
@@ -77,7 +81,30 @@ public class RudRoomView extends JPanel {
 			
 			ArrayList<String> labels = new ArrayList<>();
 			
-			formView = new FormView("Update Secured Room", cols, buttons,labels, "h",true,3);
+			formView = new FormView("Update Secured Room", cols, buttons,labels, "h",true);
+			this.add(formView, BorderLayout.CENTER);
+		}
+
+		public FormView getFormView() {
+			return formView;
+		}
+	}
+	
+	public class DeleteView extends JPanel{
+		private FormView formView;
+		
+		public DeleteView() {
+			super();
+			this.setLayout(new BorderLayout());
+			Map<String, String> cols = new LinkedHashMap<>();
+			cols.put("ID","");
+			
+			ArrayList<String> buttons = new ArrayList<>();
+			buttons.add("DELETE");buttons.add("DELETE ALL");
+			
+			ArrayList<String> labels = new ArrayList<>();
+			
+			formView = new FormView("Delete Secured Room", cols, buttons,labels, "h",true);
 			this.add(formView, BorderLayout.CENTER);
 		}
 
@@ -94,7 +121,7 @@ public class RudRoomView extends JPanel {
 			super();
 			this.setLayout(new BorderLayout());
 			//title			
-			titleRead =new LBTitle("Read Secured Room");
+			titleRead =new LBTitle("Display Secured Room");
 			this.add(titleRead, BorderLayout.NORTH);
 			
 			//Elements
@@ -102,7 +129,7 @@ public class RudRoomView extends JPanel {
 			elems = new ArrayList<>();
 			
 			for (int i = 0; i < 50; i++) {
-				elems.add(new ElementRead(1, "BedRoom", 3, false,i));
+				elems.add(new ElementRead(1, "BedRoom", 3, false));
 				pElem.add(elems.get(i));
 			}
 			JScrollPane scrollElem = new JScrollPane(pElem,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -115,7 +142,7 @@ public class RudRoomView extends JPanel {
 			elems.clear();
 			pElem.removeAll();
 			for (int i = 0; i < rooms.size(); i++) {
-				elems.add(new ElementRead(rooms.get(i).getId(), rooms.get(i).getType_room(), rooms.get(i).getFloor(), false,i));
+				elems.add(new ElementRead(rooms.get(i).getId(), rooms.get(i).getType_room(), rooms.get(i).getFloor(), false));
 				pElem.add(elems.get(i));
 			}
 			
@@ -125,19 +152,18 @@ public class RudRoomView extends JPanel {
 			private FormView formView;
 			private Map<String, String> cols;
 			
-			public ElementRead(int id, String type, int floor,boolean title, int indice) {
+			public ElementRead(int id, String type, int floor,boolean title) {
 				super();
 				this.setLayout(new BorderLayout());
 				cols = new LinkedHashMap<>();
 				cols.put("ID",""+id);cols.put("TYPE",type);cols.put("FLOOR",""+floor);cols.put("ROOM NUMBER",""+1);
 				
 				ArrayList<String> buttons = new ArrayList<>();
-				buttons.add("DELETE");
 				
 				ArrayList<String> labels = new ArrayList<>();
 				labels.add("ID");labels.add("TYPE");labels.add("FLOOR");labels.add("ROOM NUMBER");
 				
-				formView = new FormView("Read Secured Room", cols, buttons,labels, "h",title,indice);
+				formView = new FormView("Read Secured Room", cols, buttons,labels, "h",title,15,18,20);
 				this.add(formView, BorderLayout.CENTER);
 			}
 			
@@ -188,6 +214,10 @@ public class RudRoomView extends JPanel {
 
 	public ReadView getReadView() {
 		return readView;
+	}
+
+	public DeleteView getDeleteView() {
+		return deleteView;
 	}
 
 

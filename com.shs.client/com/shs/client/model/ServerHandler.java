@@ -114,5 +114,87 @@ public class ServerHandler {
 	     reader.endObject();
 	     return rooms;
 	}
+
+	public String delete(Room room) throws IOException {
+		//connections
+     	getFlux();
+		try {
+	     	//Creation request Json
+		    writer.setIndent("	");
+		    writer.beginObject();
+		    writer.name("request").value("delete-room");
+		    writer.name("id").value(gson.toJson(room));
+		    writer.endObject();
+		    writer.flush();
+		    System.out.println("send room to server for delete");
+		    //response
+		    reader.beginObject();
+		    String response = "Server "+reader.nextName()+": "+reader.nextString();
+		    reader.endObject();
+		    return response;
+	      } 
+	    catch (IOException ioe) { 
+	    	throw new IOException("Error communication to server ");
+		}
+	    finally {
+	    	stopFlux();
+	    }
+	}
+
+	public String deleteAll() throws IOException {
+		//connections
+     	getFlux();
+		try {
+	     	//Creation request Json
+		    writer.setIndent("	");
+		    writer.beginObject();
+		    writer.name("request").value("deleteAll-room");
+		    writer.endObject();
+		    writer.flush();
+		    System.out.println("send request to server for delete all rooms ");
+		    //response
+		    reader.beginObject();
+		    String response = "Server "+reader.nextName()+": "+reader.nextString();
+		    reader.endObject();
+		    return response;
+	      } 
+	    catch (IOException ioe) { 
+	    	throw new IOException("Error communication to server ");
+		}
+	    finally {
+	    	stopFlux();
+	    }
+	}
+
+	public String UpdateObjectToServer(Room room) throws IOException {
+		//connections
+     	getFlux();
+		try {
+	     	//Creation request Json
+		    writer.setIndent("	");
+		    writer.beginObject();
+		    writer.name("request").value("update-room");
+		    writer.name("id").value(gson.toJson(room));
+		    writer.endObject();
+		    writer.flush();
+		    System.out.println("send request to server for update room ");
+		    //response
+		    reader.beginObject();
+		    String response = "Server "+reader.nextName()+": "+reader.nextString();
+		    reader.endObject();
+		    return response;
+	      } 
+	    catch (IOException ioe) { 
+	    	throw new IOException("Error communication to server ");
+		}
+	    finally {
+	    	stopFlux();
+	    }
+	}
+
+	public String SearchAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

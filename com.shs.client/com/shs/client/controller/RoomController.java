@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
 import com.shs.client.model.ServerHandler;
 import com.shs.client.view.SHSView;
@@ -33,12 +34,12 @@ public class RoomController implements ActionListener{
 				String[] form = new String[2];
 				form[0] = view.getJtfCreate(0).getText();
 				form[1] = view.getJtfCreate(1).getText();
+				
 				try {
-					insert(form);
-					view.getpApp().getSupRoomView().setCreateTitle("Inserted new secured room with success");
+					JOptionPane.showMessageDialog(null, "Inserted new secured room with success", "Inserted", JOptionPane.INFORMATION_MESSAGE);
 					
 				} catch (Exception e1) {
-					view.getpApp().getSupRoomView().setCreateTitle(e1.getMessage());
+					JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				}
 				
 			}
@@ -52,12 +53,19 @@ public class RoomController implements ActionListener{
 				form[0] = view.getJtfRudSearch(0).getText();
 				form[1] = view.getJtfRudSearch(1).getText();
 				form[2] = view.getJtfRudSearch(2).getText();
+				
+				
+				String choix = e.getActionCommand();
 				try {
+					if(choix.equals("RESEARCH"))
+						search(form);
+					else
+						searchAll();
 					search(form);
-					view.getpApp().getSupRoomView().getRudView().getSearchView().getFormView().setTitle("Search room with success");
+					JOptionPane.showMessageDialog(null, "Searched room with success", "Searched", JOptionPane.INFORMATION_MESSAGE);
 					
 				} catch (Exception e1) {
-					view.getpApp().getSupRoomView().getRudView().getSearchView().getFormView().setTitle(e1.getMessage());
+					JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				}
 				
 			}
@@ -74,10 +82,10 @@ public class RoomController implements ActionListener{
 				form[2] = view.getJtfRudUpdate(2).getText();
 				try {
 					update(form);
-					view.getpApp().getSupRoomView().getRudView().getUpdateView().getFormView().setTitle("Updated room with success");
+					JOptionPane.showMessageDialog(null, "Updated room with success", "Updated", JOptionPane.INFORMATION_MESSAGE);
 					
 				} catch (Exception e1) {
-					view.getpApp().getSupRoomView().getRudView().getUpdateView().getFormView().setTitle(e1.getMessage());
+					JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				}
 				
 			}
@@ -88,23 +96,27 @@ public class RoomController implements ActionListener{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int id = 0;
-				if(e.getSource() instanceof JButton) {
-					id = view.getpApp().getSupRoomView().getRudView().getReadView().getIdTupleByButton(e.getSource());
-				}
-				
+				String[] form = new String[3];
+					String id = view.getJtfRudDelete(0).getText();
+					
+					String choix = e.getActionCommand();
+					
 				try {
-					System.out.println(id);
-					delete(id);
-					view.getpApp().getSupRoomView().getRudView().getReadView().getTitle().setText("Deleted room with success");
-					List<Room> rooms = new ArrayList<>();
-					rooms.add(new Room(4,"Kitchen", 3));
-					rooms.add(new Room(2,"Kitchen", 5));
-					view.getpApp().getSupRoomView().getRudView().getReadView().setView(rooms);
+					if(choix.equals("DELETE"))
+						delete(id);
+					else
+						deleteAll();
+					
+					view.getpApp().getSupRoomView().getRudView().getDeleteView().getFormView().getTitle().setText("Deleted room with success");
+					
+					JOptionPane.showMessageDialog(null, "Deleted room with success", "Deleted", JOptionPane.INFORMATION_MESSAGE);
 					
 				} catch (Exception e1) {
-					view.getpApp().getSupRoomView().getRudView().getReadView().getTitle().setText(e1.getMessage());
+					JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				}
+				
+				
+				
 				
 			}
 
@@ -142,13 +154,29 @@ public class RoomController implements ActionListener{
 			
 		}
 		
-	 public void delete(int id) {
-			// TODO Auto-generated method stub
+	 protected void searchAll() {
+		 System.out.println(servH.SearchAll());
 			
 		}
 
+	protected void deleteAll() throws IOException {
+			System.out.println(servH.deleteAll());
+			
+		}
+
+	public void delete(String id) throws Exception {
+		if(id.isEmpty())
+			throw new Exception("Empty");
+	 	if(!isInteger(id))
+			throw new Exception("ID number must be a number");
+			
+	 	Room room = new Room();
+	 	room.setId(Integer.valueOf(id));
+	 	System.out.println(servH.delete(room));
+		}
+
 	public void update(String[] form) throws Exception {
-		 	if(form[0].isEmpty() && form[1].isEmpty() && form[2].isEmpty())
+		 	if(form[0].isEmpty() || form[1].isEmpty() || form[2].isEmpty())
 				throw new Exception("Empty");
 		 	if(!isInteger(form[0]))
 				throw new Exception("ID number must be a number");
@@ -163,7 +191,7 @@ public class RoomController implements ActionListener{
 			room.setFloor(Integer.parseInt(form[2]));
 			//System.out.println(room);
 			//send to server
-			//System.out.println(servH.insertObjectToServer(room));
+			System.out.println(servH.UpdateObjectToServer(room));
 			
 		}
 
