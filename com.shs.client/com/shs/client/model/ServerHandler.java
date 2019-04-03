@@ -31,18 +31,21 @@ public class ServerHandler {
 		gson = new Gson();
 	}
 	
-	public String insertObjectToServer(Object room)throws IOException  {
+	public String insertObjectToServer(Object object)throws IOException  {
 		//connections
      	getFlux();
 		try {
-	     	//Creation request Json
+			String request=null;
+			if(object.getClass() == Room.class)
+				request = "insert-Room";
+			//Creation request Json
 		    writer.setIndent("	");
 		    writer.beginObject();
-		    writer.name("request").value("insert-room");
-		    writer.name("room").value(gson.toJson(room));
+		    writer.name("request").value(request);
+		    writer.name("object").value(gson.toJson(object));
 		    writer.endObject();
 		    writer.flush();
-		    System.out.println("send room to server for insert");
+		    System.out.println("request:"+request+"\n object"+gson.toJson(object));
 		    //response
 		    reader.beginObject();
 		    String response = "Server "+reader.nextName()+": "+reader.nextString();

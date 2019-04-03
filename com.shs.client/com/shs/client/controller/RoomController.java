@@ -31,11 +31,13 @@ public class RoomController implements ActionListener{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String[] form = new String[2];
+				String[] form = new String[3];
 				form[0] = view.getJtfCreate(0).getText();
 				form[1] = view.getJtfCreate(1).getText();
+				form[2] = view.getJtfCreate(2).getText();
 				
 				try {
+					insert(form);
 					JOptionPane.showMessageDialog(null, "Inserted new secured room with success", "Inserted", JOptionPane.INFORMATION_MESSAGE);
 					
 				} catch (Exception e1) {
@@ -49,10 +51,11 @@ public class RoomController implements ActionListener{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String[] form = new String[3];
+				String[] form = new String[4];
 				form[0] = view.getJtfRudSearch(0).getText();
 				form[1] = view.getJtfRudSearch(1).getText();
 				form[2] = view.getJtfRudSearch(2).getText();
+				form[3] = view.getJtfRudSearch(3).getText();
 				
 				
 				String choix = e.getActionCommand();
@@ -76,10 +79,11 @@ public class RoomController implements ActionListener{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String[] form = new String[3];
+				String[] form = new String[4];
 				form[0] = view.getJtfRudUpdate(0).getText();
 				form[1] = view.getJtfRudUpdate(1).getText();
 				form[2] = view.getJtfRudUpdate(2).getText();
+				form[3] = view.getJtfRudUpdate(3).getText();
 				try {
 					update(form);
 					JOptionPane.showMessageDialog(null, "Updated room with success", "Updated", JOptionPane.INFORMATION_MESSAGE);
@@ -96,9 +100,7 @@ public class RoomController implements ActionListener{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String[] form = new String[3];
 					String id = view.getJtfRudDelete(0).getText();
-					
 					String choix = e.getActionCommand();
 					
 				try {
@@ -124,7 +126,7 @@ public class RoomController implements ActionListener{
 		
 		
 		private void search(String[] form) throws Exception {
-			if(form[0].isEmpty() && form[1].isEmpty() && form[2].isEmpty())
+			if(form[0].isEmpty() && form[1].isEmpty() && form[2].isEmpty()&&form[3].isEmpty())
 				throw new Exception("Empty");
 			if(!form[0].isEmpty()) {
 				if(!isInteger(form[0]))
@@ -139,6 +141,10 @@ public class RoomController implements ActionListener{
 				if(!isInteger(form[2]))
 					throw new Exception("Floor number must be a number");
 			}
+			if(!form[3].isEmpty()) {
+				if(!isInteger(form[3]))
+					throw new Exception("Room number must be a number");
+			}
 			
 			
 			
@@ -149,6 +155,8 @@ public class RoomController implements ActionListener{
 				room.setType_room(form[1]);
 			if(!form[2].isEmpty())
 				room.setFloor(Integer.valueOf(form[2]));
+			if(!form[3].isEmpty())
+				room.setRoom_number(Integer.valueOf(form[3]));
 			
 			//System.out.println(servH.searchObjectToServer(room));
 			
@@ -176,7 +184,7 @@ public class RoomController implements ActionListener{
 		}
 
 	public void update(String[] form) throws Exception {
-		 	if(form[0].isEmpty() || form[1].isEmpty() || form[2].isEmpty())
+		 	if(form[0].isEmpty() || form[1].isEmpty() || form[2].isEmpty()|| form[3].isEmpty())
 				throw new Exception("Empty");
 		 	if(!isInteger(form[0]))
 				throw new Exception("ID number must be a number");
@@ -184,11 +192,14 @@ public class RoomController implements ActionListener{
 				throw new Exception("Room type can't start by a number");
 			if(!isInteger(form[2]))
 				throw new Exception("Floor number must be a number");
+			if(!isInteger(form[3]))
+				throw new Exception("Room number must be a number");
 			
 			Room room = new Room();
 			room.setId(Integer.parseInt(form[0]));
 			room.setType_room(form[1]);
 			room.setFloor(Integer.parseInt(form[2]));
+			room.setRoom_number(Integer.parseInt(form[3]));
 			//System.out.println(room);
 			//send to server
 			System.out.println(servH.UpdateObjectToServer(room));
@@ -196,16 +207,19 @@ public class RoomController implements ActionListener{
 		}
 
 	public void insert(String[] form) throws Exception {
-			if(form[0].isEmpty() || form[1].isEmpty())
+			if(form[0].isEmpty() || form[1].isEmpty()|| form[2].isEmpty())
 				throw new Exception("Empty");
 			if (isInteger(Character.toString(form[0].charAt(0))))
 				throw new Exception("Room type can't start by a number");
 			if(!isInteger(form[1]))
 				throw new Exception("Floor number must be a number");
+			if(!isInteger(form[2]))
+				throw new Exception("Room number must be a number");
 			
 			Room room = new Room();
 			room.setType_room(form[0]);
 			room.setFloor(Integer.parseInt(form[1]));
+			room.setRoom_number(Integer.parseInt(form[2]));
 			//System.out.println(room);
 			//send to server
 			System.out.println(servH.insertObjectToServer(room));

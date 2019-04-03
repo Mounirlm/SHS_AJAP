@@ -11,14 +11,17 @@ import com.shs.commons.model.Room;
 import com.shs.server.connection.pool.DataSource;
 
 public class RoomManager {
+	private static Connection conn;
+	public RoomManager(Connection con) {
+		this.conn=con;
+	}
 
 	public static ArrayList<Room> getRooms() throws SQLException{
-		Connection conn = DataSource.getConnection();
 		Statement Stmt = conn.createStatement();
         ResultSet RS = Stmt.executeQuery("SELECT * FROM room");
         ArrayList<Room> roomList = new ArrayList<Room>();
         while(RS.next())
-        	roomList.add(new Room(RS.getInt("id"),RS.getString("type_room"),RS.getInt("floor")));
+        	roomList.add(new Room(RS.getInt("id"),RS.getString("type_room"),RS.getInt("floor"), RS.getInt("room_number")));
         // Closing
 	    RS.close();
 	    Stmt.close();
@@ -27,11 +30,10 @@ public class RoomManager {
 	}
 	
 	public static Room getRoom(int id) throws SQLException{
-		Connection conn = DataSource.getConnection();
 		Statement Stmt = conn.createStatement();
         ResultSet RS = Stmt.executeQuery("SELECT * FROM room WHERE id="+id);
         RS.next();
-        Room room = new Room(RS.getInt("id"),RS.getString("type_room"),RS.getInt("floor"));
+        Room room = new Room(RS.getInt("id"),RS.getString("type_room"),RS.getInt("floor"),RS.getInt("room_number"));
         // Closing
 	    RS.close();
 	    Stmt.close();
@@ -40,23 +42,24 @@ public class RoomManager {
 	}
 	
 	public static boolean create(Room room) throws SQLException{
-		Connection conn = DataSource.getConnection();
-		PreparedStatement pStmt = conn.prepareStatement("INSERT INTO room ('type_room','floor') VALUES (?,?)");
+		PreparedStatement pStmt = conn.prepareStatement("INSERT INTO room (type_room,floor, room_number) VALUES (?,?,?)");
 		pStmt.setString(1, room.getType_room());
 		pStmt.setInt(2, room.getFloor());
+		pStmt.setInt(3, room.getRoom_number());
 		int n = pStmt.executeUpdate();
 		// Closing
 		pStmt.close();
         DataSource.releaseConnection(conn);
 		return n==1;
 	}
+
 	
 	public static boolean update(Room room) throws SQLException {
-		Connection conn = DataSource.getConnection();
-		PreparedStatement pStmt = conn.prepareStatement("UPDATE FROM room SET type_room=?, floor=? WHERE id=?");
+		PreparedStatement pStmt = conn.prepareStatement("UPDATE FROM room SET type_room=?, floor=?, room_number=? WHERE id=?");
 		pStmt.setString(1, room.getType_room());
 		pStmt.setInt(2, room.getFloor());
-		pStmt.setInt(3, room.getId());
+		pStmt.setInt(3, room.getRoom_number());
+		pStmt.setInt(4, room.getId());
 		int n = pStmt.executeUpdate();
 		// Closing
 		pStmt.close();
@@ -65,7 +68,6 @@ public class RoomManager {
 	}
 	
 	public static boolean delete(Room room) throws SQLException{
-		Connection conn = DataSource.getConnection();
 		Statement Stmt = conn.createStatement();
 		int n = Stmt.executeUpdate("DELETE FROM room WHERE id=" + room.getId());
 		//Closing
