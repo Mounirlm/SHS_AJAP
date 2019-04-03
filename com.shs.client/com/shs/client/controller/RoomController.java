@@ -21,6 +21,7 @@ public class RoomController implements ActionListener{
 		 view.addJBInsertListner(jbInsert);
 		 view.addJBSearchListner(jbSearch);
 		 view.addJBUpdateListner(jbUpdate);
+		 view.addJBDeleteListner(jbDelete);
 		 servH  = new ServerHandler();
 	 }
 	 
@@ -82,6 +83,27 @@ public class RoomController implements ActionListener{
 
 		};
 		
+		ActionListener jbDelete = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int id = 0;
+				if(e.getSource() instanceof JButton) {
+					id = view.getpApp().getSupRoomView().getRudView().getReadView().getIdTupleByButton(e.getSource());
+				}
+				
+				try {
+					System.out.println(id);
+					delete(id);
+					view.getpApp().getSupRoomView().getRudView().getReadView().getTitle().setText("Deleted room with success");
+					
+				} catch (Exception e1) {
+					view.getpApp().getSupRoomView().getRudView().getReadView().getTitle().setText(e1.getMessage());
+				}
+				
+			}
+
+		};
 		
 		
 		private void search(String[] form) throws Exception {
@@ -115,7 +137,12 @@ public class RoomController implements ActionListener{
 			
 		}
 		
-	 public void update(String[] form) throws Exception {
+	 public void delete(int id) {
+			// TODO Auto-generated method stub
+			
+		}
+
+	public void update(String[] form) throws Exception {
 		 	if(form[0].isEmpty() && form[1].isEmpty() && form[2].isEmpty())
 				throw new Exception("Empty");
 		 	if(!isInteger(form[0]))

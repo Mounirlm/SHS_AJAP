@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -55,7 +56,7 @@ public class RudRoomView extends JPanel {
 			ArrayList<String> buttons = new ArrayList<>();
 			buttons.add("SEARCH");
 			
-			formView = new FormView("Search Secured Room", cols, buttons, new ArrayList<String>(), "h", true);
+			formView = new FormView("Search Secured Room", cols, buttons, new ArrayList<String>(), "h", true,2);
 			this.add(formView, BorderLayout.CENTER);
 			
 		}
@@ -79,7 +80,7 @@ public class RudRoomView extends JPanel {
 			
 			ArrayList<String> labels = new ArrayList<>();
 			
-			formView = new FormView("Update Secured Room", cols, buttons,labels, "h",true);
+			formView = new FormView("Update Secured Room", cols, buttons,labels, "h",true,3);
 			this.add(formView, BorderLayout.CENTER);
 		}
 
@@ -90,19 +91,20 @@ public class RudRoomView extends JPanel {
 	
 	public class ReadView extends JPanel{
 		private List<ElementRead> elems;
-		
+		private LBTitle titleRead;
 		public ReadView() {
 			super();
 			this.setLayout(new BorderLayout());
 			//title			
-			this.add(new LBTitle("Read Secured Room"), BorderLayout.NORTH);
+			titleRead =new LBTitle("Read Secured Room");
+			this.add(titleRead, BorderLayout.NORTH);
 			
 			//Elements
 			JPanel pElem = new JPanel(new GridLayout(50, 1));
 			elems = new ArrayList<>();
 			
 			for (int i = 0; i < 50; i++) {
-				elems.add(new ElementRead(1, "BedRoom", 3, false));
+				elems.add(new ElementRead(1, "BedRoom", 3, false,i));
 				pElem.add(elems.get(i));
 			}
 			JScrollPane scrollElem = new JScrollPane(pElem,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -115,7 +117,7 @@ public class RudRoomView extends JPanel {
 			private FormView formView;
 			private Map<String, String> cols;
 			
-			public ElementRead(int id, String type, int floor,boolean title) {
+			public ElementRead(int id, String type, int floor,boolean title, int indice) {
 				super();
 				this.setLayout(new BorderLayout());
 				cols = new LinkedHashMap<>();
@@ -127,7 +129,7 @@ public class RudRoomView extends JPanel {
 				ArrayList<String> labels = new ArrayList<>();
 				labels.add("ID");labels.add("TYPE");labels.add("FLOOR");labels.add("ROOM NUMBER");
 				
-				formView = new FormView("Read Secured Room", cols, buttons,labels, "h",title);
+				formView = new FormView("Read Secured Room", cols, buttons,labels, "h",title,indice);
 				this.add(formView, BorderLayout.CENTER);
 			}
 			
@@ -139,7 +141,7 @@ public class RudRoomView extends JPanel {
 			}
 		}
 		
-		public void AddlistnerUpadateReadView(ActionListener act) {
+		public void AddJBDeleteListnerReadView(ActionListener act) {
 			for (int i = 0; i < elems.size(); i++) {
 				elems.get(i).getFormView().addJBListner(act);
 			}
@@ -147,6 +149,23 @@ public class RudRoomView extends JPanel {
 
 		public List<ElementRead> getElems() {
 			return elems;
+		}
+
+		public LBTitle getTitle() {
+			return titleRead;
+		}
+
+		public int getIdTupleByButton(Object source) {
+			int id=0;
+			for (int i = 0; i < elems.size(); i++) {
+				List<JButton> buttons= elems.get(i).getFormView().getButtons();
+				for  (JButton b : buttons) {
+					if(b==source) {
+						id=elems.get(i).getFormView().getIDtuple();
+					}
+				}
+			}
+			return id;
 		}
 		
 	}

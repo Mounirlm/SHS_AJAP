@@ -33,8 +33,9 @@ public class FormView extends JPanel {
 	private JPanel pForm;
 	private List<String> butLB;
 	private JPanel pValidate;
+	private int idTuple;
 	
-	public FormView(String titleView,Map<String, String> tuples, List<String> but, List<String> labels, String alignement, boolean title) {
+	public FormView(String titleView,Map<String, String> tuples, List<String> but, List<String> labels, String alignement, boolean title,int  indice) {
 		super();
 		this.setLayout(new BorderLayout());
 		pArgs = tuples;
@@ -43,6 +44,8 @@ public class FormView extends JPanel {
 		buttons = new ArrayList<>();
 		labs=labels;
 		butLB=but;
+		if(isInteger(pArgs.get("ID"))) {idTuple = Integer.valueOf(pArgs.get("ID"));}
+		
 		
 		if(title) {
 			//title
@@ -57,13 +60,13 @@ public class FormView extends JPanel {
 		else 
 			pForm = new JPanel(new GridLayout(tuples.size()+but.size(),1));
 		
-		createCols();
+		createCols(indice);
 		
 	}
 
 
 
-	private void createCols() {
+	private void createCols(int indice) {
 
 		for (Map.Entry<String, String> entry : pArgs.entrySet()) {
 			
@@ -108,7 +111,7 @@ public class FormView extends JPanel {
 			validateButton.setForeground(cdApp.getBgApp());
 			validateButton.setHorizontalAlignment(JLabel.CENTER);
 			validateButton.setFont(new Font("Arial", Font.BOLD, sizeButton));
-			pValidate.add(butLB.get(i),validateButton);
+			pValidate.add(""+indice,validateButton);
 			pForm.add(pValidate);
 		}
 		this.add(pForm, BorderLayout.CENTER);
@@ -119,8 +122,8 @@ public class FormView extends JPanel {
 
 
 	public FormView(String title, Map<String, String> cols, ArrayList<String> buttons2, ArrayList<String> labels2,
-			String alignement2, boolean b, int i, int j, int k) {
-		this(title,cols, buttons2,labels2, alignement2, b);
+			String alignement2, boolean b, int indice,int i, int j, int k) {
+		this(title,cols, buttons2,labels2, alignement2, b,indice);
 		setSizeArgs(i, j, k);
 	}
 
@@ -180,6 +183,26 @@ public class FormView extends JPanel {
 		}
 		
 	}
-	
+
+
+
+	public int getIDtuple() {
+		// TODO Auto-generated method stub
+		return idTuple;
+	}
+	private boolean isInteger(String s) {
+		try {
+			Integer.parseInt(s);
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+
+
+
+	public List<JButton> getButtons() {
+		return buttons;
+	}
 	
 }

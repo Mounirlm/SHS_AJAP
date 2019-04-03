@@ -112,5 +112,10 @@ public class SHSView {
 		pApp.getSupRoomView().getRudView().getUpdateView().getFormView().addJBListner(jbUpdate);	
 	}
 
+	public void addJBDeleteListner(ActionListener act) {
+		pApp.getSupRoomView().getRudView().getReadView().AddJBDeleteListnerReadView(act);	
+		
+	}
+
 	
 }
