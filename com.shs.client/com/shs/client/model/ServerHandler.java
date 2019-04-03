@@ -195,9 +195,33 @@ public class ServerHandler {
 	    }
 	}
 
-	public String SearchAll() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Room> SearchAll() throws IOException {
+		List<Room> rooms = new ArrayList<>();
+		//connections
+     	getFlux();
+		try {
+	     	//Creation request Json
+		    writer.setIndent("	");
+		    writer.beginObject();
+		    writer.name("request").value("searchAll-Room");
+		    writer.endObject();
+		    writer.flush();
+		    System.out.println("send request to server for search all rooms ");
+		    //response
+		    reader.beginArray();
+		     while (reader.hasNext()) {
+		      // rooms.add(reader.nextDouble());
+		     }
+		     reader.endArray();
+		    reader.endObject();
+		    return rooms;
+	      } 
+	    catch (IOException ioe) { 
+	    	throw new IOException("Error communication to server ");
+		}
+	    finally {
+	    	stopFlux();
+	    }
 	}
 	
 }

@@ -19,12 +19,14 @@ public class RoomController implements ActionListener{
 	 
 	 public RoomController(SHSView v) throws IOException {
 		 this.view = v;
+		 servH  = new ServerHandler();
 		 view.addRoomMenuListner(this);
 		 view.addJBInsertListner(jbInsert);
 		 view.addJBSearchListner(jbSearch);
 		 view.addJBUpdateListner(jbUpdate);
 		 view.addJBDeleteListner(jbDelete);
-		 servH  = new ServerHandler();
+		 //view.getpApp().getSupRoomView().getRudView().getReadView().setView(servH.SearchAll());
+		 
 	 }
 	 
 	 ActionListener jbInsert = new ActionListener() {
@@ -162,7 +164,7 @@ public class RoomController implements ActionListener{
 			
 		}
 		
-	 protected void searchAll() {
+	 protected void searchAll() throws IOException {
 		 System.out.println(servH.SearchAll());
 			
 		}
