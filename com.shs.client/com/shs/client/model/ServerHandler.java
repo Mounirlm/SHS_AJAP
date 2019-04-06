@@ -209,7 +209,7 @@ public class ServerHandler {
 		    if(name.equals("object")) {
 		    	String objectJson=reader.nextString();
 		    	if(type=="Room")
-		    		objectFound = new Gson().fromJson(objectJson, Room.class);
+		    		objectFound = new Gson().fromJson(objectJson, Room.class);System.out.println(objectFound);
 		    	
 		    }else
 		    	System.out.println(reader.nextString());
@@ -224,43 +224,37 @@ public class ServerHandler {
 	    }
 		
 	}
-	
-	public List<Object> readList(JsonReader reader, String type) throws IOException {
-		List<Object> list = new ArrayList<>();
-	
-		reader.beginObject();
-	     reader.beginArray();
-	     while (reader.hasNext()) {
-	    	String objectJson = reader.nextString();
-	    	if(type=="Room") {
-	    		list.add(new Gson().fromJson(objectJson, Room.class));
-			}
-	     }
-	     reader.endArray();
-	     reader.endObject();
-	     return list;
-	}	
+		
 
-	public List<Room> SearchAll(String type) throws IOException {
-		List<Room> rooms = new ArrayList<>();
+	public List<Object> SearchAll(String type) throws IOException {
+		List<Object> list = new ArrayList<>();
 		//connections
      	getFlux();
 		try {
+			String request=null;
+			request="selectAll-"+type;
+			
 	     	//Creation request Json
 		    writer.setIndent("	");
 		    writer.beginObject();
-		    writer.name("request").value("searchAll-Room");
+		    writer.name("request").value(request);
 		    writer.endObject();
 		    writer.flush();
-		    System.out.println("send request to server for search all rooms ");
+		    System.out.println("request:"+request);
 		    //response
-		    reader.beginArray();
-		     while (reader.hasNext()) {
-		      // rooms.add(reader.nextDouble());
-		     }
-		     reader.endArray();
+		    reader.beginObject();
+		    while (reader.hasNext()) {
+			    String name= reader.nextName();
+			    if(name.equals("null")) {
+			    	System.out.println(reader.nextString());
+			    }else {
+				   String objectJson=reader.nextString();
+				   if(type.equals("Room"))
+				   		list.add(new Gson().fromJson(objectJson, Room.class));
+				 }
+		    }
 		    reader.endObject();
-		    return rooms;
+		    return list;
 	      } 
 	    catch (IOException ioe) { 
 	    	throw new IOException("Error communication to server ");

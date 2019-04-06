@@ -1,20 +1,18 @@
 package com.shs.server.app;
 
-import com.shs.commons.model.Room;
-import com.shs.server.model.RoomManager;
-
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.SQLException;
-
-import javax.swing.JButton;
+import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import com.shs.commons.model.Room;
+import com.shs.server.model.RoomManager;
 
 
 public class RequestHandler implements Runnable {
@@ -150,9 +148,28 @@ public class RequestHandler implements Runnable {
 			        	error="Error delete all "+e;
 			        }
 				}
-				
 				break;	
-				
+			case "selectAll":
+				if(request[1].equals("Room")) {
+					try{
+						List<Room> rooms;
+						rooms= RoomManager.getRooms();
+						writer.beginObject();
+						if(!rooms.isEmpty()) {
+							response=true;
+							Gson gson = new Gson();
+							for (Room room : rooms) {
+								writer.name(""+room.getId()).value(gson.toJson(room));
+							}
+						}else {
+							writer.name("null").value("null");	
+						}
+						writer.endObject();
+					}catch(SQLException e) {
+			        	error="Error delete all "+e;
+			        }
+				}
+				break;
 			default:
 				break;
 			}
@@ -163,7 +180,7 @@ public class RequestHandler implements Runnable {
 			message=req+"-failed: "+error;
 		
 		//Creation response Json
-		if(!request[0].equals("select")) {
+		if(!request[0].equals("select") && !request[0].equals("selectAll")) {
 			writer.beginObject();
 			writer.name("response").value(message);
 			writer.endObject();	

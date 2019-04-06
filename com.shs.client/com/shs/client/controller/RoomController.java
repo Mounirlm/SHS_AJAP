@@ -25,7 +25,8 @@ public class RoomController implements ActionListener{
 		 view.addJBSearchListner(jbSearch);
 		 view.addJBUpdateListner(jbUpdate);
 		 view.addJBDeleteListner(jbDelete);
-		 //view.getpApp().getSupRoomView().getRudView().getReadView().setView(servH.SearchAll());
+		
+		 setDisplayView();//get all rooms in display view
 		 
 	 }
 	 
@@ -72,12 +73,13 @@ public class RoomController implements ActionListener{
 				try {
 					if(choix.equals("RESEARCH")) {
 						room=(Room) search(form);
-						rooms.add(room);
+						if(room!=null)
+							rooms.add(room);
 					}
 					else
-						rooms=searchAll("Room");
+						rooms=(List<Room>)searchAll("Room");
 					
-					if(rooms.isEmpty() || room==null) {
+					if(rooms.isEmpty() && room==null) {
 						message= "Sorry no room(s) have been found";
 						JOptionPane.showMessageDialog(null, message, "Research Error", JOptionPane.ERROR_MESSAGE);
 					}
@@ -197,7 +199,7 @@ public class RoomController implements ActionListener{
 		}
 		
 	 protected List<Room> searchAll(String type) throws IOException {
-		 return servH.SearchAll(type);
+		 return (List<Room>) (Object) servH.SearchAll(type);
 			
 		}
 
@@ -287,7 +289,13 @@ public class RoomController implements ActionListener{
 			
 		}
 		
-		
+		public void setDisplayView() throws IOException {
+			try {
+			view.getpApp().getSupRoomView().getRudView().getReadView().setView((List<Room>)searchAll("Room"));
+			}catch(IOException ex) {
+				JOptionPane.showMessageDialog(null, ex.getMessage(), "Communication Error", JOptionPane.ERROR_MESSAGE);
+			}
+		}
 		
 
 	}

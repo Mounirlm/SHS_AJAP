@@ -126,13 +126,8 @@ public class RudRoomView extends JPanel {
 			this.add(titleRead, BorderLayout.NORTH);
 			
 			//Elements
-			pElem = new JPanel(new GridLayout(50, 1));
+			pElem = new JPanel();
 			elems = new ArrayList<>();
-			
-			for (int i = 0; i < 50; i++) {
-				elems.add(new ElementRead(1, "BedRoom", 3,2, false));
-				pElem.add(elems.get(i));
-			}
 			scrollElem = new JScrollPane(pElem,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 			
 			this.add(scrollElem, BorderLayout.CENTER);
@@ -145,6 +140,7 @@ public class RudRoomView extends JPanel {
 			scrollElem.remove(pElem);
 			this.remove(1);
 			this.validate();
+			pElem.setLayout(new GridLayout(1000, 1));
 			for (int i = 0; i < rooms.size(); i++) {
 				elems.add(new ElementRead(rooms.get(i).getId(), rooms.get(i).getType_room(), rooms.get(i).getFloor(),rooms.get(i).getRoom_number(), false));
 				pElem.add(elems.get(i));
