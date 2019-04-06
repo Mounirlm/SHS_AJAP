@@ -180,10 +180,10 @@ public class ServerHandler {
 	    }
 	}
 	
-	public Object searchObjectToServer(Object object) throws IOException {
+	public List<Object> searchObjectToServer(Object object) throws IOException {
 		//connections
      	getFlux();
-		Object objectFound = null;
+		List<Object> list=new ArrayList<>(); 
 		try {
 			//Type class
 			String request=null, type=null;
@@ -204,17 +204,31 @@ public class ServerHandler {
 		    System.out.println("request:"+request+"\n"+gson.toJson(object));
 		    //response
 		    String name=null;
+		    
 		    reader.beginObject();
-		    name = reader.nextName();
-		    if(name.equals("object")) {
-		    	String objectJson=reader.nextString();
-		    	if(type=="Room")
-		    		objectFound = new Gson().fromJson(objectJson, Room.class);System.out.println(objectFound);
-		    	
-		    }else
-		    	System.out.println(reader.nextString());
-		    reader.endObject();System.out.println(objectFound);
-		    return objectFound;
+		    while(reader.hasNext()) {
+		    	 name = reader.nextName();
+			    if(name.equals("object")) {
+			    	String objectJson=reader.nextString();
+			    	if(type=="Room") {
+			    		Room room=new Gson().fromJson(objectJson, Room.class);
+			    		list.add(room);System.out.println(list);
+			    	}
+			    	
+			    }
+			    else if(name.equals("null")) {
+			    	System.out.println(reader.nextString());
+			    }
+			    else {
+			    	if(type=="Room") {
+			    		String objectJson = reader.nextString();System.out.println(objectJson);
+			    		list.add(new Gson().fromJson(objectJson, Room.class));
+			    	}
+			    }
+		    }
+		    reader.endObject();
+		 
+		    return list;
 	      } 
 	    catch (IOException ioe) { 
 	    	throw new IOException("Error communication to server ");

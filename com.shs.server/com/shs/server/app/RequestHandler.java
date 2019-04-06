@@ -6,6 +6,7 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -134,13 +135,44 @@ public class RequestHandler implements Runnable {
 				if(request[1].equals("Room")) {
 					try{
 						Room room= (Room) object;
-						Room sendRoom= RoomManager.getRoom(room.getId());
+						Room sendRoom=null;
+						String reqDB=null;
+						List<Room> rooms=new ArrayList<>();
+						if(room.getId()!=null) {
+							sendRoom= RoomManager.getRoom(room.getId());
+						}else {
+							if(room.getType_room()!=null) {
+								reqDB="type_room = '"+room.getType_room()+"'";
+								if(room.getFloor()!=null)
+									reqDB+="and floor = '"+room.getFloor()+"'";
+								if(room.getRoom_number()!=null)
+									reqDB+="and room_number = '"+room.getRoom_number()+"'";
+							}
+							else if(room.getFloor()!=null) {
+								reqDB="floor = '"+room.getFloor()+"'";
+								if(room.getRoom_number()!=null)
+									reqDB+="and room_number = '"+room.getRoom_number()+"'";
+							}
+							else if(room.getRoom_number()!=null) {
+									reqDB="room_number = '"+room.getRoom_number()+"'";
+							}
+							reqDB+=";";
+							rooms=RoomManager.getRoomsBy(reqDB);
+						}
 						writer.beginObject();
 						if(sendRoom!=null) {
 							response=true;
 							Gson gson = new Gson();
 							writer.name("object").value(gson.toJson(sendRoom));System.out.println(sendRoom);
-						}else {
+						}
+						else if(!rooms.isEmpty()) {
+							response=true;
+							Gson gson = new Gson();
+							for (Room r : rooms) {System.out.println(r);
+								writer.name(""+r.getId()).value(gson.toJson(r));
+							}
+						}
+						else {
 							writer.name("null").value("null");	
 						}
 						writer.endObject();

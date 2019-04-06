@@ -15,6 +15,19 @@ public class RoomManager {
 	public RoomManager(Connection con) {
 		this.conn=con;
 	}
+	
+	public static ArrayList<Room> getRoomsBy(String req) throws SQLException{
+		Statement Stmt = conn.createStatement();
+        ResultSet RS = Stmt.executeQuery("SELECT * FROM room WHERE "+req);
+        ArrayList<Room> roomList = new ArrayList<Room>();
+        while(RS.next())
+        	roomList.add(new Room(RS.getInt("id"),RS.getString("type_room"),RS.getInt("floor"), RS.getInt("room_number")));
+        // Closing
+	    RS.close();
+	    Stmt.close();
+	    DataSource.releaseConnection(conn);
+	    return roomList;
+	}
 
 	public static ArrayList<Room> getRooms() throws SQLException{
 		Statement Stmt = conn.createStatement();

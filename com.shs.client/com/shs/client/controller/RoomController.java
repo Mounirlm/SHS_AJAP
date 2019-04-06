@@ -69,17 +69,15 @@ public class RoomController implements ActionListener{
 				String choix = e.getActionCommand();
 				String message =null;
 				List<Room> rooms=new ArrayList<>();
-				Room room=null;
 				try {
 					if(choix.equals("RESEARCH")) {
-						room=(Room) search(form);
-						if(room!=null)
-							rooms.add(room);
+						rooms=(List<Room>)search(form);
 					}
-					else
+					else {
 						rooms=(List<Room>)searchAll("Room");
+					}
 					
-					if(rooms.isEmpty() && room==null) {
+					if(rooms.isEmpty()) {
 						message= "Sorry no room(s) have been found";
 						JOptionPane.showMessageDialog(null, message, "Research Error", JOptionPane.ERROR_MESSAGE);
 					}
@@ -161,7 +159,7 @@ public class RoomController implements ActionListener{
 		};
 		
 		
-		private Object search(String[] form) throws Exception {
+		private List<Room> search(String[] form) throws Exception {
 			if(form[0].isEmpty() && form[1].isEmpty() && form[2].isEmpty()&&form[3].isEmpty())
 				throw new Exception("Empty");
 			if(!form[0].isEmpty()) {
@@ -194,7 +192,7 @@ public class RoomController implements ActionListener{
 			if(!form[3].isEmpty())
 				room.setRoom_number(Integer.valueOf(form[3]));
 			
-			return servH.searchObjectToServer(room);
+			return (List<Room>) (Object) servH.searchObjectToServer(room);
 			
 		}
 		

@@ -52,7 +52,7 @@ public class RudRoomView extends JPanel {
 			super();
 			this.setLayout(new BorderLayout());
 			Map<String, String> cols = new LinkedHashMap<>();
-			cols.put("ID","");cols.put("TYPE","");cols.put("FLOOR","");cols.put("ROOM NUMBER","");
+			cols.put("RESEARCH ONLY BY ID","");cols.put("TYPE","");cols.put("FLOOR","");cols.put("ROOM NUMBER","");
 			
 			ArrayList<String> buttons = new ArrayList<>();
 			buttons.add("RESEARCH");buttons.add("RESEARCH ALL");
