@@ -1,6 +1,6 @@
 package com.shs.commons.model;
 
-public class Room {
+public class Room implements Comparable<Room>{
 	private Integer id;
 	private String type_room;
 	private Integer floor;
@@ -50,6 +50,16 @@ public class Room {
 	public String toString() {
 		return "Room [id=" + id + ", type_room=" + type_room + ", floor=" + floor + ", room_number=" + room_number
 				+ "]";
+	}
+
+	@Override
+	public int compareTo(Room o) {
+		if(this.getId()<o.getId())
+			return -1;
+		else if(this.getId()>o.getId())
+		return 1;
+		else
+		return 0;
 	}
 	
 }

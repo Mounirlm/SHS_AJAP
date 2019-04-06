@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -135,6 +136,7 @@ public class RudRoomView extends JPanel {
 		}
 		
 		public void setView(List<Room> rooms) {
+			Collections.sort(rooms);
 			elems.clear();
 			pElem.removeAll();
 			scrollElem.remove(pElem);
