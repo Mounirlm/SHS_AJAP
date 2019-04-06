@@ -43,12 +43,6 @@ public class RequestHandler implements Runnable {
 		//Communication Json
 		try {
 			System.out.println("Thread:"+num+" "+readMessage(reader));
-			//Creation request Json
-		    writer.beginObject();
-		    writer.name("response").value("Room inserted");
-		    writer.endObject();
-		    writer.flush();
-		    System.out.println("Thread:"+num+" send response :Room inserted");
 		} catch (IOException e) {
 	    	System.out.println("Error communication to client "+e);
 		} catch (SQLException e) {
@@ -71,7 +65,7 @@ public class RequestHandler implements Runnable {
 	     while (reader.hasNext()) {
 	       String name = reader.nextName();
 	       if (name.equals("request")) {
-	    	   request = reader.nextString();System.out.println(request);
+	    	   request = reader.nextString();
 	    	   String[] res=request.split("-");
 	    	   className=res[1];
 	       }
@@ -88,17 +82,42 @@ public class RequestHandler implements Runnable {
 	    return request+":"+object;
 	}
 	
-	private void requestManager(String request, Object object) throws SQLException {
-			switch (request) {
+	private void requestManager(String request, Object object) throws SQLException, IOException {
+		RoomManager roomManager= new RoomManager(connDB);	
+		boolean response = false;
+		String message=null, error=null;
+		switch (request) {
 			case "insert-Room":
-				RoomManager roomManager= new RoomManager(connDB);
-				RoomManager.create((Room) object);
+				try{
+					response=RoomManager.create((Room) object);
+					}
+		        catch(SQLException e) {
+		        	error="Error insertion "+e;
+		        }
+				
 				break;
-
+			case "update-Room":
+				try{
+					response=RoomManager.update((Room) object);
+					}
+		        catch(SQLException e) {
+		        	error="Error updating "+e;
+		        }
+				break;
 			default:
 				break;
 			}
-		
+			
+		if(response)
+			message=request+"-succusful";
+		else
+			message=request+"-failed: "+error;
+		//Creation response Json
+		writer.beginObject();
+		writer.name("response").value(message);
+		writer.endObject();
+		writer.flush();
+		System.out.println("Thread:"+num+" send response :Room inserted");
 	}
 
 	public void stopConnection() throws IOException {

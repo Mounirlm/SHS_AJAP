@@ -39,11 +39,16 @@ public class RoomController implements ActionListener{
 				form[2] = view.getJtfCreate(2).getText();
 				
 				try {
-					insert(form);
-					JOptionPane.showMessageDialog(null, "Inserted new secured room with success", "Inserted", JOptionPane.INFORMATION_MESSAGE);
+					String message =null;
+					message=insert(form);
+					String[] m = message.split("-");
+					if(m[2].equals("succusful"))
+						JOptionPane.showMessageDialog(null, message, "Inserted", JOptionPane.INFORMATION_MESSAGE);
+					else
+						JOptionPane.showMessageDialog(null, message, "Insertion Error", JOptionPane.ERROR_MESSAGE);
 					
 				} catch (Exception e1) {
-					JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, e1.getMessage(), "Communication Error ", JOptionPane.ERROR_MESSAGE);
 				}
 				
 			}
@@ -87,11 +92,16 @@ public class RoomController implements ActionListener{
 				form[2] = view.getJtfRudUpdate(2).getText();
 				form[3] = view.getJtfRudUpdate(3).getText();
 				try {
-					update(form);
-					JOptionPane.showMessageDialog(null, "Updated room with success", "Updated", JOptionPane.INFORMATION_MESSAGE);
+					String message =null;
+					message=update(form);
+					String[] m = message.split("-");
+					if(m[2].equals("succusful"))
+						JOptionPane.showMessageDialog(null, message, "Updated", JOptionPane.INFORMATION_MESSAGE);
+					else
+						JOptionPane.showMessageDialog(null, message, "Update Error", JOptionPane.ERROR_MESSAGE);
 					
 				} catch (Exception e1) {
-					JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, e1.getMessage(), "Communication Error", JOptionPane.ERROR_MESSAGE);
 				}
 				
 			}
@@ -185,7 +195,7 @@ public class RoomController implements ActionListener{
 	 	System.out.println(servH.delete(room));
 		}
 
-	public void update(String[] form) throws Exception {
+	public String update(String[] form) throws Exception {
 		 	if(form[0].isEmpty() || form[1].isEmpty() || form[2].isEmpty()|| form[3].isEmpty())
 				throw new Exception("Empty");
 		 	if(!isInteger(form[0]))
@@ -204,11 +214,11 @@ public class RoomController implements ActionListener{
 			room.setRoom_number(Integer.parseInt(form[3]));
 			//System.out.println(room);
 			//send to server
-			System.out.println(servH.UpdateObjectToServer(room));
+			return servH.updateObjectToServer(room);
 			
 		}
 
-	public void insert(String[] form) throws Exception {
+	public String insert(String[] form) throws Exception {
 			if(form[0].isEmpty() || form[1].isEmpty()|| form[2].isEmpty())
 				throw new Exception("Empty");
 			if (isInteger(Character.toString(form[0].charAt(0))))
@@ -222,9 +232,8 @@ public class RoomController implements ActionListener{
 			room.setType_room(form[0]);
 			room.setFloor(Integer.parseInt(form[1]));
 			room.setRoom_number(Integer.parseInt(form[2]));
-			//System.out.println(room);
-			//send to server
-			System.out.println(servH.insertObjectToServer(room));
+			
+			return servH.insertObjectToServer(room);
 		}
 
 		private boolean isInteger(String s) {

@@ -35,10 +35,7 @@ public class Room {
 		this.floor = floor;
 	}
 	
-	@Override
-	public String toString() {
-		return "Room [id=" + id + ", type_room=" + type_room + ", floor=" + floor + "]";
-	}
+	
 
 	public Integer getRoom_number() {
 		return room_number;
@@ -46,6 +43,12 @@ public class Room {
 
 	public void setRoom_number(Integer room_number) {
 		this.room_number = room_number;
+	}
+
+	@Override
+	public String toString() {
+		return "Room [id=" + id + ", type_room=" + type_room + ", floor=" + floor + ", room_number=" + room_number
+				+ "]";
 	}
 	
 }

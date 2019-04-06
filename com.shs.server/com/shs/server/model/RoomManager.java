@@ -55,7 +55,7 @@ public class RoomManager {
 
 	
 	public static boolean update(Room room) throws SQLException {
-		PreparedStatement pStmt = conn.prepareStatement("UPDATE FROM room SET type_room=?, floor=?, room_number=? WHERE id=?");
+		PreparedStatement pStmt = conn.prepareStatement("UPDATE room SET type_room=?, floor=?, room_number=? WHERE id=?");
 		pStmt.setString(1, room.getType_room());
 		pStmt.setInt(2, room.getFloor());
 		pStmt.setInt(3, room.getRoom_number());

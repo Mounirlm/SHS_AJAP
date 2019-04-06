@@ -31,13 +31,36 @@ public class ServerHandler {
 		gson = new Gson();
 	}
 	
+	public void getFlux() throws IOException { 
+		try {
+			this.server = new Socket(adress,port);		
+			reader = new JsonReader(new InputStreamReader(server.getInputStream(), "UTF-8"));
+			writer = new JsonWriter(new OutputStreamWriter(server.getOutputStream(), "UTF-8"));
+		}catch(IOException e) {
+			throw new IOException("Error connection to server ");
+		}
+	}
+	
+	public void stopFlux() throws IOException {
+        try{
+        	reader.close();
+	        writer.close();
+	        server.close();}
+        catch(IOException e) {
+        	throw new IOException("Error closed flux "+e);
+        }
+    }
+	
 	public String insertObjectToServer(Object object)throws IOException  {
 		//connections
      	getFlux();
-		try {
-			String request=null;
+		try {//Type class
+			String request=null, type=null;
 			if(object.getClass() == Room.class)
-				request = "insert-Room";
+				type="Room";
+			request = "insert-"+type;
+			
+			
 			//Creation request Json
 		    writer.setIndent("	");
 		    writer.beginObject();
@@ -59,26 +82,41 @@ public class ServerHandler {
 	    	stopFlux();
 	    }
 	} 
-	public void getFlux() throws IOException { 
+	
+	
+	public String updateObjectToServer(Object object) throws IOException {
+		//connections
+     	getFlux();
 		try {
-			this.server = new Socket(adress,port);		
-			reader = new JsonReader(new InputStreamReader(server.getInputStream(), "UTF-8"));
-			writer = new JsonWriter(new OutputStreamWriter(server.getOutputStream(), "UTF-8"));
-		}catch(IOException e) {
-			throw new IOException("Error connection to server ");
+			//Type class
+			String request=null, type=null;
+			if(object.getClass() == Room.class)
+				type="Room";
+			request = "update-"+type;
+			
+			
+	     	//Creation request Json
+		    writer.setIndent("	");
+		    writer.beginObject();
+		    writer.name("request").value(request);
+		    writer.name("object").value(gson.toJson(object));
+		    writer.endObject();
+		    writer.flush();
+		    System.out.println("request:"+request+"\n object"+gson.toJson(object));
+		    //response
+		    reader.beginObject();reader.nextName();
+		    String response = reader.nextString();
+		    reader.endObject();System.out.println("Server response: "+response);
+		    return response;
+	      } 
+	    catch (IOException ioe) { 
+	    	throw new IOException("Error communication to server ");
 		}
+	    finally {
+	    	stopFlux();
+	    }
 	}
 	
-	public void stopFlux() throws IOException {
-        try{
-        	reader.close();
-	        writer.close();
-	        server.close();}
-        catch(IOException e) {
-        	throw new IOException("Error closed flux "+e);
-        }
-    }
-
 	public List<Room> searchObjectToServer(Room room) throws IOException {
 		//connections
      	getFlux();
@@ -169,31 +207,7 @@ public class ServerHandler {
 	    }
 	}
 
-	public String UpdateObjectToServer(Room room) throws IOException {
-		//connections
-     	getFlux();
-		try {
-	     	//Creation request Json
-		    writer.setIndent("	");
-		    writer.beginObject();
-		    writer.name("request").value("update-room");
-		    writer.name("id").value(gson.toJson(room));
-		    writer.endObject();
-		    writer.flush();
-		    System.out.println("send request to server for update room ");
-		    //response
-		    reader.beginObject();
-		    String response = "Server "+reader.nextName()+": "+reader.nextString();
-		    reader.endObject();
-		    return response;
-	      } 
-	    catch (IOException ioe) { 
-	    	throw new IOException("Error communication to server ");
-		}
-	    finally {
-	    	stopFlux();
-	    }
-	}
+	
 
 	public List<Room> SearchAll() throws IOException {
 		List<Room> rooms = new ArrayList<>();
