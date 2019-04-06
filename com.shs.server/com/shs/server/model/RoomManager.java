@@ -75,4 +75,13 @@ public class RoomManager {
         DataSource.releaseConnection(conn);
         return n==1;
 	}
+
+	public static boolean deleteAll() throws SQLException{
+		Statement Stmt = conn.createStatement();
+		int n = Stmt.executeUpdate("DELETE FROM room");System.out.println(n);
+		//Closing
+        Stmt.close();
+        DataSource.releaseConnection(conn);
+        return n>0;
+	}
 }

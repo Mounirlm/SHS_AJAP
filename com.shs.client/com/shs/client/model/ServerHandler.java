@@ -117,6 +117,69 @@ public class ServerHandler {
 	    }
 	}
 	
+	public String delete(Object object) throws IOException {
+		//connections
+     	getFlux();
+		try {
+			//Type class
+			String request=null, type=null;
+			if(object.getClass() == Room.class)
+				type="Room";
+			request = "delete-"+type;
+			
+	     	//Creation request Json
+		    writer.setIndent("	");
+		    writer.beginObject();
+		    writer.name("request").value(request);
+		    writer.name("object").value(gson.toJson(object));
+		    writer.endObject();
+		    writer.flush();
+		    System.out.println("request:"+request+"\n object"+gson.toJson(object));
+		    //response
+		    reader.beginObject();reader.nextName();
+		    String response = reader.nextString();
+		    reader.endObject();System.out.println("Server response: "+response);
+		    return response;
+	      } 
+	    catch (IOException ioe) { 
+	    	throw new IOException("Error communication to server ");
+		}
+	    finally {
+	    	stopFlux();
+	    }
+	}
+
+	public String deleteAll(String type) throws IOException {
+		//connections
+     	getFlux();
+		try {
+			//Type class
+			String request=null;
+			if(type.equals("Room"))
+			request = "deleteAll-"+type;
+			
+			
+	     	//Creation request Json
+		    writer.setIndent("	");
+		    writer.beginObject();
+		    writer.name("request").value(request);
+		    writer.endObject();
+		    writer.flush();
+		    System.out.println("request:"+request);
+		    //response
+		    reader.beginObject();reader.nextName();
+		    String response = reader.nextString();
+		    reader.endObject();System.out.println("Server response: "+response);
+		    return response;
+	      } 
+	    catch (IOException ioe) { 
+	    	throw new IOException("Error communication to server ");
+		}
+	    finally {
+	    	stopFlux();
+	    }
+	}
+	
 	public List<Room> searchObjectToServer(Room room) throws IOException {
 		//connections
      	getFlux();
@@ -154,60 +217,7 @@ public class ServerHandler {
 	     reader.endArray();
 	     reader.endObject();
 	     return rooms;
-	}
-
-	public String delete(Room room) throws IOException {
-		//connections
-     	getFlux();
-		try {
-	     	//Creation request Json
-		    writer.setIndent("	");
-		    writer.beginObject();
-		    writer.name("request").value("delete-room");
-		    writer.name("id").value(gson.toJson(room));
-		    writer.endObject();
-		    writer.flush();
-		    System.out.println("send room to server for delete");
-		    //response
-		    reader.beginObject();
-		    String response = "Server "+reader.nextName()+": "+reader.nextString();
-		    reader.endObject();
-		    return response;
-	      } 
-	    catch (IOException ioe) { 
-	    	throw new IOException("Error communication to server ");
-		}
-	    finally {
-	    	stopFlux();
-	    }
-	}
-
-	public String deleteAll() throws IOException {
-		//connections
-     	getFlux();
-		try {
-	     	//Creation request Json
-		    writer.setIndent("	");
-		    writer.beginObject();
-		    writer.name("request").value("deleteAll-room");
-		    writer.endObject();
-		    writer.flush();
-		    System.out.println("send request to server for delete all rooms ");
-		    //response
-		    reader.beginObject();
-		    String response = "Server "+reader.nextName()+": "+reader.nextString();
-		    reader.endObject();
-		    return response;
-	      } 
-	    catch (IOException ioe) { 
-	    	throw new IOException("Error communication to server ");
-		}
-	    finally {
-	    	stopFlux();
-	    }
-	}
-
-	
+	}	
 
 	public List<Room> SearchAll() throws IOException {
 		List<Room> rooms = new ArrayList<>();

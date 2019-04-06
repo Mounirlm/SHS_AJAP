@@ -78,46 +78,76 @@ public class RequestHandler implements Runnable {
 	       }
 	     }
 	    reader.endObject();
+	    //DB Traitement
 	    requestManager(request, object);
 	    return request+":"+object;
 	}
 	
-	private void requestManager(String request, Object object) throws SQLException, IOException {
+	private void requestManager(String req, Object object) throws SQLException, IOException {
 		RoomManager roomManager= new RoomManager(connDB);	
 		boolean response = false;
-		String message=null, error=null;
-		switch (request) {
-			case "insert-Room":
-				try{
-					response=RoomManager.create((Room) object);
-					}
-		        catch(SQLException e) {
-		        	error="Error insertion "+e;
-		        }
+		String message=null, error="no row(s)";
+		String[] request=null;
+		request=req.split("-");
+		switch (request[0]) {
+			case "insert":
+				System.out.println(request[1]);
+				if(request[1].equals("Room")) {
+					try{
+						response=RoomManager.create((Room) object);
+						}
+			        catch(SQLException e) {
+			        	error="Error insertion "+e;
+			        }
+				}
+				break;
+			case "update":
+				if(request[1].equals("Room")) {
+					try{
+						response=RoomManager.update((Room) object);
+						}
+			        catch(SQLException e) {
+			        	error="Error updating "+e;
+			        }
+				}
+				break;
+			case "delete":
+				if(request[1].equals("Room")) {
+					try{
+						response=RoomManager.delete((Room) object);
+						}
+			        catch(SQLException e) {
+			        	error="Error delete "+e;
+			        }
+				}
+				break;
+			case "deleteAll":
+				if(request[1].equals("Room")) {
+					try{
+						response=RoomManager.deleteAll();
+						}
+			        catch(SQLException e) {
+			        	error="Error delete all "+e;
+			        }
+				}
 				
-				break;
-			case "update-Room":
-				try{
-					response=RoomManager.update((Room) object);
-					}
-		        catch(SQLException e) {
-		        	error="Error updating "+e;
-		        }
-				break;
+				break;	
+				
 			default:
 				break;
 			}
 			
 		if(response)
-			message=request+"-succusful";
+			message=req+"-succusful";
 		else
-			message=request+"-failed: "+error;
+			message=req+"-failed: "+error;
+		
 		//Creation response Json
 		writer.beginObject();
 		writer.name("response").value(message);
 		writer.endObject();
 		writer.flush();
-		System.out.println("Thread:"+num+" send response :Room inserted");
+		System.out.println("Thread:"+num+" send response :"+message);
 	}
 
 	public void stopConnection() throws IOException {

@@ -114,19 +114,28 @@ public class RoomController implements ActionListener{
 			public void actionPerformed(ActionEvent e) {
 					String id = view.getJtfRudDelete(0).getText();
 					String choix = e.getActionCommand();
-					
+					String message =null;
 				try {
-					if(choix.equals("DELETE"))
-						delete(id);
-					else
-						deleteAll();
+					if(choix.equals("DELETE")) 
+						message=delete(id);	
+					else {
+						int rep = JOptionPane.showConfirmDialog(null, "Are you sure you want to purge Room table", "Puge Room table?", JOptionPane.OK_CANCEL_OPTION);
+						if(rep == JOptionPane.OK_OPTION){
+							message=deleteAll("Room");
+						}
+						
+					}
 					
-					view.getpApp().getSupRoomView().getRudView().getDeleteView().getFormView().getTitle().setText("Deleted room with success");
-					
-					JOptionPane.showMessageDialog(null, "Deleted room with success", "Deleted", JOptionPane.INFORMATION_MESSAGE);
+					if(message!=null) {
+						String[] m = message.split("-");
+						if(m[2].equals("succusful"))					
+							JOptionPane.showMessageDialog(null, message, "Deleted", JOptionPane.INFORMATION_MESSAGE);
+						else
+							JOptionPane.showMessageDialog(null, message, "Delete Error", JOptionPane.ERROR_MESSAGE);
+					}
 					
 				} catch (Exception e1) {
-					JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, e1.getMessage(), "Communication Error", JOptionPane.ERROR_MESSAGE);
 				}
 				
 				
@@ -179,12 +188,12 @@ public class RoomController implements ActionListener{
 			
 		}
 
-	protected void deleteAll() throws IOException {
-			System.out.println(servH.deleteAll());
+	protected String deleteAll(String type) throws IOException {
+			return servH.deleteAll(type);
 			
 		}
 
-	public void delete(String id) throws Exception {
+	public String delete(String id) throws Exception {
 		if(id.isEmpty())
 			throw new Exception("Empty");
 	 	if(!isInteger(id))
@@ -192,7 +201,7 @@ public class RoomController implements ActionListener{
 			
 	 	Room room = new Room();
 	 	room.setId(Integer.valueOf(id));
-	 	System.out.println(servH.delete(room));
+	 	return servH.delete(room);
 		}
 
 	public String update(String[] form) throws Exception {
