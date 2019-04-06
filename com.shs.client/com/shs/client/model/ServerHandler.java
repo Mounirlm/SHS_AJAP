@@ -183,7 +183,6 @@ public class ServerHandler {
 	public Object searchObjectToServer(Object object) throws IOException {
 		//connections
      	getFlux();
-     	List<Object> list = new ArrayList<>();
 		Object objectFound = null;
 		try {
 			//Type class
@@ -204,13 +203,17 @@ public class ServerHandler {
 		    writer.flush();
 		    System.out.println("request:"+request+"\n"+gson.toJson(object));
 		    //response
+		    String name=null;
 		    reader.beginObject();
-		    if(reader.nextName().equals("object")) {
-		    	String objectJson=null;
+		    name = reader.nextName();
+		    if(name.equals("object")) {
+		    	String objectJson=reader.nextString();
 		    	if(type=="Room")
 		    		objectFound = new Gson().fromJson(objectJson, Room.class);
+		    	
 		    }
-		    reader.endObject();
+		    reader.endObject();System.out.println(objectFound);
+		    return objectFound;
 	      } 
 	    catch (IOException ioe) { 
 	    	throw new IOException("Error communication to server ");
@@ -218,7 +221,7 @@ public class ServerHandler {
 	    finally {
 	    	stopFlux();
 	    }
-		return objectFound;
+		
 	}
 	
 	public List<Object> readList(JsonReader reader, String type) throws IOException {

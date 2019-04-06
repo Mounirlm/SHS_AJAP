@@ -11,6 +11,7 @@ public class Room {
 		this.id = id;
 		this.type_room = type_room;
 		this.floor = floor;
+		this.room_number=room_number;
 	}
 	
 	public Room() {

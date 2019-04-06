@@ -67,7 +67,7 @@ public class RoomController implements ActionListener{
 				
 				String choix = e.getActionCommand();
 				String message =null;
-				List<Room> rooms=null;
+				List<Room> rooms=new ArrayList<>();
 				Room room=null;
 				try {
 					if(choix.equals("RESEARCH")) {
@@ -192,7 +192,7 @@ public class RoomController implements ActionListener{
 			if(!form[3].isEmpty())
 				room.setRoom_number(Integer.valueOf(form[3]));
 			
-			return (Room) servH.searchObjectToServer(room);
+			return servH.searchObjectToServer(room);
 			
 		}
 		

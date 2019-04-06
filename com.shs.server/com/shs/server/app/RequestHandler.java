@@ -138,12 +138,16 @@ public class RequestHandler implements Runnable {
 						Room room= (Room) object;
 						Room sendRoom= RoomManager.getRoom(room.getId());
 						if(sendRoom!=null) {
+							response=true;
 							Gson gson = new Gson();
 							writer.beginObject();
-							writer.name("object").value(gson.toJson(sendRoom));
+							writer.name("object").value(gson.toJson(sendRoom));System.out.println(sendRoom);
 							writer.endObject();
-						}else
+						}else {
+							writer.beginObject();
 							writer.name("null").value("null");
+							writer.endObject();
+						}
 					}catch(SQLException e) {
 			        	error="Error delete all "+e;
 			        }
@@ -161,12 +165,12 @@ public class RequestHandler implements Runnable {
 			message=req+"-failed: "+error;
 		
 		//Creation response Json
-		if(request[1]!="select") {
+		if(request[1].equals("select")) {
 			writer.beginObject();
 			writer.name("response").value(message);
-			writer.endObject();
-			writer.flush();
+			writer.endObject();	
 		}
+		writer.flush();
 		System.out.println("Thread:"+num+" send response :"+message);
 	}
 
