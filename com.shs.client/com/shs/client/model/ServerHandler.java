@@ -211,7 +211,8 @@ public class ServerHandler {
 		    	if(type=="Room")
 		    		objectFound = new Gson().fromJson(objectJson, Room.class);
 		    	
-		    }
+		    }else
+		    	System.out.println(reader.nextString());
 		    reader.endObject();System.out.println(objectFound);
 		    return objectFound;
 	      } 

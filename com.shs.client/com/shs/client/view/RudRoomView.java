@@ -117,6 +117,7 @@ public class RudRoomView extends JPanel {
 		private List<ElementRead> elems;
 		private LBTitle titleRead;
 		private JPanel pElem;
+		private JScrollPane scrollElem;
 		public ReadView() {
 			super();
 			this.setLayout(new BorderLayout());
@@ -129,10 +130,10 @@ public class RudRoomView extends JPanel {
 			elems = new ArrayList<>();
 			
 			for (int i = 0; i < 50; i++) {
-				elems.add(new ElementRead(1, "BedRoom", 3, false));
+				elems.add(new ElementRead(1, "BedRoom", 3,2, false));
 				pElem.add(elems.get(i));
 			}
-			JScrollPane scrollElem = new JScrollPane(pElem,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+			scrollElem = new JScrollPane(pElem,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 			
 			this.add(scrollElem, BorderLayout.CENTER);
 			
@@ -141,22 +142,27 @@ public class RudRoomView extends JPanel {
 		public void setView(List<Room> rooms) {
 			elems.clear();
 			pElem.removeAll();
+			scrollElem.remove(pElem);
+			this.remove(1);
+			this.validate();
 			for (int i = 0; i < rooms.size(); i++) {
-				elems.add(new ElementRead(rooms.get(i).getId(), rooms.get(i).getType_room(), rooms.get(i).getFloor(), false));
+				elems.add(new ElementRead(rooms.get(i).getId(), rooms.get(i).getType_room(), rooms.get(i).getFloor(),rooms.get(i).getRoom_number(), false));
 				pElem.add(elems.get(i));
 			}
-			
+			scrollElem = new JScrollPane(pElem,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+			this.add(scrollElem);
+			this.revalidate();
 		}
 		
 		public class ElementRead extends JPanel{
 			private FormView formView;
 			private Map<String, String> cols;
 			
-			public ElementRead(int id, String type, int floor,boolean title) {
+			public ElementRead(int id, String type, int floor,int room_number,boolean title) {
 				super();
 				this.setLayout(new BorderLayout());
 				cols = new LinkedHashMap<>();
-				cols.put("ID",""+id);cols.put("TYPE",type);cols.put("FLOOR",""+floor);cols.put("ROOM NUMBER",""+1);
+				cols.put("ID",""+id);cols.put("TYPE",type);cols.put("FLOOR",""+floor);cols.put("ROOM NUMBER",""+room_number);
 				
 				ArrayList<String> buttons = new ArrayList<>();
 				
