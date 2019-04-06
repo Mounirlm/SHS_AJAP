@@ -32,8 +32,10 @@ public class RoomManager {
 	public static Room getRoom(int id) throws SQLException{
 		Statement Stmt = conn.createStatement();
         ResultSet RS = Stmt.executeQuery("SELECT * FROM room WHERE id="+id);
-        RS.next();
-        Room room = new Room(RS.getInt("id"),RS.getString("type_room"),RS.getInt("floor"),RS.getInt("room_number"));
+        Room room = null;
+        if(RS.next()) {
+        room=new Room(RS.getInt("id"),RS.getString("type_room"),RS.getInt("floor"),RS.getInt("room_number"));
+        }
         // Closing
 	    RS.close();
 	    Stmt.close();

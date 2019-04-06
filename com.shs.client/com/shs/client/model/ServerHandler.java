@@ -180,21 +180,36 @@ public class ServerHandler {
 	    }
 	}
 	
-	public List<Room> searchObjectToServer(Room room) throws IOException {
+	public Object searchObjectToServer(Object object) throws IOException {
 		//connections
      	getFlux();
+     	List<Object> list = new ArrayList<>();
+		Object objectFound = null;
 		try {
+			//Type class
+			String request=null, type=null;
+			
+			if(object.getClass() == Room.class) {
+				type="Room";
+ 
+			}
+			request="select-"+type;
+			
 	     	//Creation request Json
 		    writer.setIndent("	");
 		    writer.beginObject();
-		    writer.name("request").value("search-room");
-		    writer.name("room").value(gson.toJson(room));
+		    writer.name("request").value(request);
+		    writer.name("object").value(gson.toJson(object));
 		    writer.endObject();
 		    writer.flush();
-		    System.out.println("send room to server for research");
+		    System.out.println("request:"+request+"\n"+gson.toJson(object));
 		    //response
 		    reader.beginObject();
-		    String response = "Server "+reader.nextName()+": "+reader.nextString();
+		    if(reader.nextName().equals("object")) {
+		    	String objectJson=null;
+		    	if(type=="Room")
+		    		objectFound = new Gson().fromJson(objectJson, Room.class);
+		    }
 		    reader.endObject();
 	      } 
 	    catch (IOException ioe) { 
@@ -203,23 +218,26 @@ public class ServerHandler {
 	    finally {
 	    	stopFlux();
 	    }
-		return readRooms(reader);
+		return objectFound;
 	}
 	
-	public List<Room> readRooms(JsonReader reader) throws IOException {
-		List<Room> rooms = new ArrayList<Room>();
+	public List<Object> readList(JsonReader reader, String type) throws IOException {
+		List<Object> list = new ArrayList<>();
+	
 		reader.beginObject();
 	     reader.beginArray();
 	     while (reader.hasNext()) {
-	    	String roomJson = reader.nextString();
-	       rooms.add(new Gson().fromJson(roomJson, Room.class));
+	    	String objectJson = reader.nextString();
+	    	if(type=="Room") {
+	    		list.add(new Gson().fromJson(objectJson, Room.class));
+			}
 	     }
 	     reader.endArray();
 	     reader.endObject();
-	     return rooms;
+	     return list;
 	}	
 
-	public List<Room> SearchAll() throws IOException {
+	public List<Room> SearchAll(String type) throws IOException {
 		List<Room> rooms = new ArrayList<>();
 		//connections
      	getFlux();

@@ -66,16 +66,29 @@ public class RoomController implements ActionListener{
 				
 				
 				String choix = e.getActionCommand();
+				String message =null;
+				List<Room> rooms=null;
+				Room room=null;
 				try {
-					if(choix.equals("RESEARCH"))
-						search(form);
+					if(choix.equals("RESEARCH")) {
+						room=(Room) search(form);
+						rooms.add(room);
+					}
 					else
-						searchAll();
-					search(form);
-					JOptionPane.showMessageDialog(null, "Searched room with success", "Searched", JOptionPane.INFORMATION_MESSAGE);
+						rooms=searchAll("Room");
+					
+					if(rooms.isEmpty() || room==null) {
+						message= "Sorry no room(s) have been found";
+						JOptionPane.showMessageDialog(null, message, "Research Error", JOptionPane.ERROR_MESSAGE);
+					}
+					else {
+						message="room(s) found succesfully";
+						view.getpApp().getSupRoomView().getRudView().getReadView().setView(rooms);
+						JOptionPane.showMessageDialog(null, message, "Research succesful", JOptionPane.INFORMATION_MESSAGE);
+					}
 					
 				} catch (Exception e1) {
-					JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, e1.getMessage(), "Communication Error", JOptionPane.ERROR_MESSAGE);
 				}
 				
 			}
@@ -146,7 +159,7 @@ public class RoomController implements ActionListener{
 		};
 		
 		
-		private void search(String[] form) throws Exception {
+		private Object search(String[] form) throws Exception {
 			if(form[0].isEmpty() && form[1].isEmpty() && form[2].isEmpty()&&form[3].isEmpty())
 				throw new Exception("Empty");
 			if(!form[0].isEmpty()) {
@@ -179,12 +192,12 @@ public class RoomController implements ActionListener{
 			if(!form[3].isEmpty())
 				room.setRoom_number(Integer.valueOf(form[3]));
 			
-			//System.out.println(servH.searchObjectToServer(room));
+			return (Room) servH.searchObjectToServer(room);
 			
 		}
 		
-	 protected void searchAll() throws IOException {
-		 System.out.println(servH.SearchAll());
+	 protected List<Room> searchAll(String type) throws IOException {
+		 return servH.SearchAll(type);
 			
 		}
 
