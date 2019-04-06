@@ -52,7 +52,7 @@ public class RudRoomView extends JPanel {
 			super();
 			this.setLayout(new BorderLayout());
 			Map<String, String> cols = new LinkedHashMap<>();
-			cols.put("RESEARCH ONLY BY ID","");cols.put("TYPE","");cols.put("FLOOR","");cols.put("ROOM NUMBER","");
+			cols.put("RESEARCH ONLY BY ID","");cols.put("BY TYPE","");cols.put("BY FLOOR","");cols.put("BY ROOM NUMBER","");
 			
 			ArrayList<String> buttons = new ArrayList<>();
 			buttons.add("RESEARCH");buttons.add("RESEARCH ALL");
@@ -140,7 +140,7 @@ public class RudRoomView extends JPanel {
 			scrollElem.remove(pElem);
 			this.remove(1);
 			this.validate();
-			pElem.setLayout(new GridLayout(1000, 1));
+			pElem.setLayout(new GridLayout(500, 1));
 			for (int i = 0; i < rooms.size(); i++) {
 				elems.add(new ElementRead(rooms.get(i).getId(), rooms.get(i).getType_room(), rooms.get(i).getFloor(),rooms.get(i).getRoom_number(), false));
 				pElem.add(elems.get(i));

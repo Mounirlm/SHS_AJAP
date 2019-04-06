@@ -43,8 +43,10 @@ public class RoomController implements ActionListener{
 					String message =null;
 					message=insert(form);
 					String[] m = message.split("-");
-					if(m[2].equals("succusful"))
+					if(m[2].equals("succusful")) {
 						JOptionPane.showMessageDialog(null, message, "Inserted", JOptionPane.INFORMATION_MESSAGE);
+						setDisplayView();
+					}
 					else
 						JOptionPane.showMessageDialog(null, message, "Insertion Error", JOptionPane.ERROR_MESSAGE);
 					
@@ -108,8 +110,10 @@ public class RoomController implements ActionListener{
 					String message =null;
 					message=update(form);
 					String[] m = message.split("-");
-					if(m[2].equals("succusful"))
+					if(m[2].equals("succusful")) {
 						JOptionPane.showMessageDialog(null, message, "Updated", JOptionPane.INFORMATION_MESSAGE);
+						setDisplayView();
+					}
 					else
 						JOptionPane.showMessageDialog(null, message, "Update Error", JOptionPane.ERROR_MESSAGE);
 					
@@ -141,8 +145,10 @@ public class RoomController implements ActionListener{
 					
 					if(message!=null) {
 						String[] m = message.split("-");
-						if(m[2].equals("succusful"))					
+						if(m[2].equals("succusful")) {					
 							JOptionPane.showMessageDialog(null, message, "Deleted", JOptionPane.INFORMATION_MESSAGE);
+							setDisplayView();
+						}
 						else
 							JOptionPane.showMessageDialog(null, message, "Delete Error", JOptionPane.ERROR_MESSAGE);
 					}
@@ -186,7 +192,7 @@ public class RoomController implements ActionListener{
 			if(!form[0].isEmpty())
 				room.setId(Integer.valueOf(form[0]));
 			if(!form[1].isEmpty())
-				room.setType_room(form[1]);
+				room.setType_room(form[1].toLowerCase());
 			if(!form[2].isEmpty())
 				room.setFloor(Integer.valueOf(form[2]));
 			if(!form[3].isEmpty())
@@ -231,7 +237,7 @@ public class RoomController implements ActionListener{
 			
 			Room room = new Room();
 			room.setId(Integer.parseInt(form[0]));
-			room.setType_room(form[1]);
+			room.setType_room(form[1].toLowerCase());
 			room.setFloor(Integer.parseInt(form[2]));
 			room.setRoom_number(Integer.parseInt(form[3]));
 			//System.out.println(room);
@@ -251,7 +257,7 @@ public class RoomController implements ActionListener{
 				throw new Exception("Room number must be a number");
 			
 			Room room = new Room();
-			room.setType_room(form[0]);
+			room.setType_room(form[0].toLowerCase());
 			room.setFloor(Integer.parseInt(form[1]));
 			room.setRoom_number(Integer.parseInt(form[2]));
 			
