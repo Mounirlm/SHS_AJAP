@@ -12,11 +12,10 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.shs.commons.model.Room;
 import com.shs.commons.model.User;
 import com.shs.server.connection.pool.DBAccess;
 
-public class RoomServerHandler {
+public class UserServerHandler {
 	private Socket server;
 	private JsonReader reader;
 	private JsonWriter writer;
@@ -28,7 +27,7 @@ public class RoomServerHandler {
 	private int portServer = DBAccess.getPORT_SERVER();
 	private String adressServer = DBAccess.getSERVER();
 	
-	public RoomServerHandler() throws UnknownHostException, IOException {
+	public UserServerHandler() throws UnknownHostException, IOException {
 		gson = new Gson();
 	}
 	
@@ -52,20 +51,20 @@ public class RoomServerHandler {
         }
     }
 	
-	public String insertRoomToServer(Room room)throws IOException  {
+	public String insertUserToServer(User user)throws IOException  {
 		//connections
      	getFlux();
 		try {//Type class
-			String request = "insert-Room";
+			String request = "insert-User";
 			
 			//Creation request Json
 		    writer.setIndent("	");
 		    writer.beginObject();
-		    writer.name("request").value("insert-Room");
-		    writer.name("object").value(gson.toJson(room));
+		    writer.name("request").value("insert-User");
+		    writer.name("object").value(gson.toJson(user));
 		    writer.endObject();
 		    writer.flush();
-		    System.out.println("request:"+request+"\n object"+gson.toJson(room));
+		    System.out.println("request:"+request+"\n object"+gson.toJson(user));
 		    //response
 		    reader.beginObject();
 		    String response = "Server "+reader.nextName()+": "+reader.nextString();
@@ -81,22 +80,22 @@ public class RoomServerHandler {
 	} 
 	
 	
-	public String updateRoomToServer(Room room) throws IOException {
+	public String updateUserToServer(User user) throws IOException {
 		//connections
      	getFlux();
 		try {
 			//Type class
-			String request = "update-Room";
+			String request = "update-User";
 			
 			
 	     	//Creation request Json
 		    writer.setIndent("	");
 		    writer.beginObject();
 		    writer.name("request").value(request);
-		    writer.name("object").value(gson.toJson(room));
+		    writer.name("object").value(gson.toJson(user));
 		    writer.endObject();
 		    writer.flush();
-		    System.out.println("request:"+request+"\n object: "+gson.toJson(room));
+		    System.out.println("request:"+request+"\n object: "+gson.toJson(user));
 		    //response
 		    reader.beginObject();reader.nextName();
 		    String response = reader.nextString();
@@ -111,21 +110,21 @@ public class RoomServerHandler {
 	    }
 	}
 	
-	public String deleteRoom(Room room) throws IOException {
+	public String deleteUser(User user) throws IOException {
 		//connections
      	getFlux();
 		try {
 			//Type class
-			String request = "delete-Room";
+			String request = "delete-User";
 			
 	     	//Creation request Json
 		    writer.setIndent("	");
 		    writer.beginObject();
 		    writer.name("request").value(request);
-		    writer.name("object").value(gson.toJson(room));
+		    writer.name("object").value(gson.toJson(user));
 		    writer.endObject();
 		    writer.flush();
-		    System.out.println("request:"+request+"\n object: "+gson.toJson(room));
+		    System.out.println("request:"+request+"\n object: "+gson.toJson(user));
 		    //response
 		    reader.beginObject();reader.nextName();
 		    String response = reader.nextString();
@@ -140,12 +139,12 @@ public class RoomServerHandler {
 	    }
 	}
 
-	public String deleteAllRoom() throws IOException {
+	public String deleteAllUser() throws IOException {
 		//connections
      	getFlux();
 		try {
 			//Type class
-			String request = "deleteAll-Room";
+			String request = "deleteAll-User";
 			
 			
 	     	//Creation request Json
@@ -169,32 +168,32 @@ public class RoomServerHandler {
 	    }
 	}
 	
-	public List<Room> searchRoomToServer(Room room) throws IOException {
+	public List<User> searchUserToServer(User user) throws IOException {
 		//connections
      	getFlux();
-		List<Room> list=new ArrayList<>(); 
+		List<User> list=new ArrayList<>(); 
 		try {
 			//Type class
-			String request="select-Room";
+			String request="select-User";
 			
 	     	//Creation request Json
 		    writer.setIndent("	");
 		    writer.beginObject();
 		    writer.name("request").value(request);
-		    writer.name("object").value(gson.toJson(room));
+		    writer.name("object").value(gson.toJson(user));
 		    writer.endObject();
 		    writer.flush();
-		    System.out.println("request:"+request+"\n"+gson.toJson(room));
+		    System.out.println("request:"+request+"\n"+gson.toJson(user));
 		    //response
 		    String name=null;
 		    
 		    reader.beginObject();
 		    while(reader.hasNext()) {
 		    	 name = reader.nextName();
-			    if(name.equals("room")) {
+			    if(name.equals("user")) {
 			    	String objectJson=reader.nextString();
-			    	Room receivRoom=new Gson().fromJson(objectJson, Room.class);
-			    	list.add(receivRoom);System.out.println(list); 	
+			    	User receivUser=new Gson().fromJson(objectJson, User.class);
+			    	list.add(receivUser);System.out.println(list); 	
 			    }
 			    else if(name.equals("null")) {
 			    	System.out.println(reader.nextString());
@@ -214,12 +213,12 @@ public class RoomServerHandler {
 	}
 		
 
-	public List<Room> searchAllRoom() throws IOException {
-		List<Room> list = new ArrayList<>();
+	public List<User> searchAllUser() throws IOException {
+		List<User> list = new ArrayList<>();
 		//connections
      	getFlux();
 		try {
-			String request="selectAll-Room";
+			String request="selectAll-User";
 			
 	     	//Creation request Json
 		    writer.setIndent("	");
@@ -236,7 +235,7 @@ public class RoomServerHandler {
 			    	System.out.println(reader.nextString());
 			    }else {
 				   String objectJson=reader.nextString();
-				   	list.add(new Gson().fromJson(objectJson, Room.class));
+				   	list.add(new Gson().fromJson(objectJson, User.class));
 				 }
 		    }
 		    reader.endObject();

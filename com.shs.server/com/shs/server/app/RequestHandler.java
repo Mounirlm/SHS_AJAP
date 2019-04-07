@@ -15,7 +15,9 @@ import com.google.gson.stream.JsonWriter;
 import com.shs.commons.model.Room;
 import com.shs.commons.model.User;
 import com.shs.server.model.RoomManager;
+import com.shs.server.model.RoomRequestManager;
 import com.shs.server.model.UserManager;
+import com.shs.server.model.UserRequestManager;
 
 
 public class RequestHandler implements Runnable {
@@ -61,16 +63,18 @@ public class RequestHandler implements Runnable {
 		String request=null;
 		Object object=null;
 		String className=null;
+		String[] res=null;
+		String message=null;
 		
 		reader.beginObject();
 	     while (reader.hasNext()) {
 	       String name = reader.nextName();
 	       if (name.equals("request")) {
 	    	   request = reader.nextString();
-	    	   String[] res=request.split("-");
+	    	   res=request.split("-");
 	    	   className=res[1];
 	       }
-	       else if (name.equals("object")) {
+	       else if (name.equals("object")) {//TODO ADD CLASS FOR R3
 	    	   String objectJson = reader.nextString();
 	    	   if(className.equals("Room"))
 	    		   object = new Gson().fromJson(objectJson, Room.class);
@@ -80,223 +84,29 @@ public class RequestHandler implements Runnable {
 	         reader.skipValue();
 	       }
 	     }
-	    reader.endObject();System.out.println(object);
-	    //DB Traitement
-	    requestManager(request, object);
-	    return request+":"+object;
+	    reader.endObject();
+	    
+	    //DB Traitement TODO ADD CLASS FOR R3
+	    switch (className) {
+		case "Room":
+			Room room =(Room) object;
+			RoomRequestManager reqRoom = new RoomRequestManager(connDB, reader, writer, room, request);
+			message=reqRoom.requestManager();
+			break;
+			
+		case "User":
+			User user =(User) object;
+			UserRequestManager reqUser = new UserRequestManager(connDB, reader, writer, user, request);
+			message=reqUser.requestManager();
+			break;
+
+		default:
+			break;
+		}
+	    return message;
 	}
 	
-	private void requestManager(String req, Object object) throws SQLException, IOException {
-		RoomManager roomManager= new RoomManager(connDB);
-		UserManager userManager= new UserManager(connDB);
-		
-		
-		
-		boolean response = false;
-		String message=null, error="no row(s)";
-		String[] request=null;
-		request=req.split("-");
-		switch (request[0]) {
-			case "insert":
-				System.out.println(request[1]);
-				if(request[1].equals("Room")) {
-					try{
-						response=RoomManager.create((Room) object);
-						}
-			        catch(SQLException e) {
-			        	error="Error insertion "+e;
-			        }
-				}
-				break;
-			case "update":
-				if(request[1].equals("Room")) {
-					try{
-						response=RoomManager.update((Room) object);
-						}
-			        catch(SQLException e) {
-			        	error="Error updating "+e;
-			        }
-				}
-				break;
-			case "delete":
-				if(request[1].equals("Room")) {
-					try{
-						response=RoomManager.delete((Room) object);
-						}
-			        catch(SQLException e) {
-			        	error="Error delete "+e;
-			        }
-				}
-				break;
-			case "deleteAll":
-				if(request[1].equals("Room")) {
-					try{
-						response=RoomManager.deleteAll();
-						}
-			        catch(SQLException e) {
-			        	error="Error delete all "+e;
-			        }
-				}
-				
-				break;	
-			case "select":
-				if(request[1].equals("Room")) {
-					try{
-						Room room= (Room) object;
-						Room sendRoom=null;
-						String reqDB=null;
-						List<Room> rooms=new ArrayList<>();
-						if(room.getId()!=null) {
-							sendRoom= RoomManager.getRoom(room.getId());
-						}else {
-							if(room.getType_room()!=null) {
-								reqDB="type_room = '"+room.getType_room()+"'";
-								if(room.getFloor()!=null)
-									reqDB+="and floor = '"+room.getFloor()+"'";
-								if(room.getRoom_number()!=null)
-									reqDB+="and room_number = '"+room.getRoom_number()+"'";
-							}
-							else if(room.getFloor()!=null) {
-								reqDB="floor = '"+room.getFloor()+"'";
-								if(room.getRoom_number()!=null)
-									reqDB+="and room_number = '"+room.getRoom_number()+"'";
-							}
-							else if(room.getRoom_number()!=null) {
-									reqDB="room_number = '"+room.getRoom_number()+"'";
-							}
-							reqDB+=";";
-							rooms=RoomManager.getRoomsBy(reqDB);
-						}
-						writer.beginObject();
-						if(sendRoom!=null) {
-							response=true;
-							Gson gson = new Gson();
-							writer.name("object").value(gson.toJson(sendRoom));System.out.println(sendRoom);
-						}
-						else if(!rooms.isEmpty()) {
-							response=true;
-							Gson gson = new Gson();
-							for (Room r : rooms) {System.out.println(r);
-								writer.name("object").value(gson.toJson(r));
-							}
-						}
-						else {
-							writer.name("null").value("null");	
-						}
-						writer.endObject();
-					}catch(SQLException e) {
-			        	error="Error select "+e;
-			        }
-				}
-				if(request[1].equals("User")) {
-					try{
-						User user= (User) object;
-						User sendUser=null;
-						String reqDB=null;
-						List<User> users=new ArrayList<>();
-						if(user.getId()!=null) {
-							sendUser= UserManager.getUser(user.getId());
-						}else {
-							if(user.getFirst_name()!=null) {
-								reqDB="first_name = '"+user.getFirst_name()+"'";
-								if(user.getLast_name()!=null)
-									reqDB+="and last_name = '"+user.getLast_name()+"'";
-								if(user.getEmail()!=null)
-									reqDB+="and email = '"+user.getEmail()+"'";
-								if(user.getPassword()!=null)
-									reqDB+="and password = '"+user.getPassword()+"'";
-								if(user.getFunction()!=null)
-									reqDB+="and function = '"+user.getFunction()+"'";
-							}
-							else if(user.getLast_name()!=null) {
-									reqDB="last_name = '"+user.getLast_name()+"'";
-								if(user.getEmail()!=null)
-									reqDB+="and email = '"+user.getEmail()+"'";
-								if(user.getPassword()!=null)
-									reqDB+="and password = '"+user.getPassword()+"'";
-								if(user.getFunction()!=null)
-									reqDB+="and function = '"+user.getFunction()+"'";
-							}
-							else if(user.getEmail()!=null) {
-								reqDB="email = '"+user.getEmail()+"'";
-								if(user.getPassword()!=null)
-									reqDB+="and password = '"+user.getPassword()+"'";
-								if(user.getFunction()!=null)
-									reqDB+="and function = '"+user.getFunction()+"'";
-							}
-							else if(user.getPassword()!=null) {
-									reqDB="password = '"+user.getPassword()+"'";
-								if(user.getFunction()!=null)
-									reqDB+="and function = '"+user.getFunction()+"'";
-							}
-							else if(user.getFunction()!=null) {
-								reqDB="function = '"+user.getFunction()+"'";
-							}
-							reqDB+=";";
-							users=UserManager.getUserBy(reqDB);
-						}
-						writer.beginObject();
-						if(sendUser!=null) {
-							response=true;
-							Gson gson = new Gson();
-							writer.name("object").value(gson.toJson(sendUser));System.out.println(sendUser);
-						}
-						else if(!users.isEmpty()) {
-							response=true;
-							Gson gson = new Gson();
-							for (User u : users) {System.out.println(u);
-								writer.name("object").value(gson.toJson(u));
-							}
-						}
-						else {
-							writer.name("null").value("null");	
-						}
-						writer.endObject();
-					}catch(SQLException e) {
-			        	error="Error select "+e;
-			        }
-				}
-				break;	
-			case "selectAll":
-				if(request[1].equals("Room")) {
-					try{
-						List<Room> rooms;
-						rooms= RoomManager.getRooms();
-						writer.beginObject();
-						if(!rooms.isEmpty()) {
-							response=true;
-							Gson gson = new Gson();
-							for (Room room : rooms) {
-								writer.name(""+room.getId()).value(gson.toJson(room));
-							}
-						}else {
-							writer.name("null").value("null");	
-						}
-						writer.endObject();
-					}catch(SQLException e) {
-			        	error="Error delete all "+e;
-			        }
-				}
-				break;
-			default:
-				break;
-			}
-			
-		if(response)
-			message=req+"-succusful";
-		else
-			message=req+"-failed: "+error;
-		
-		//Creation response Json
-		if(!request[0].equals("select") && !request[0].equals("selectAll")) {
-			writer.beginObject();
-			writer.name("response").value(message);
-			writer.endObject();	
-		}
-		writer.flush();
-		System.out.println("Thread:"+num+" send response :"+message);
-	}
-
+	
 	public void stopConnection() throws IOException {
         reader.close();
         writer.close();

@@ -71,10 +71,10 @@ public class RoomController implements ActionListener{
 				List<Room> rooms=new ArrayList<>();
 				try {
 					if(choix.equals("RESEARCH")) {
-						rooms=(List<Room>)search(form);
+						rooms= search(form);
 					}
 					else {
-						rooms=(List<Room>)searchAll("Room");
+						rooms=searchAll();
 					}
 					
 					if(rooms.isEmpty()) {
@@ -136,7 +136,7 @@ public class RoomController implements ActionListener{
 					else {
 						int rep = JOptionPane.showConfirmDialog(null, "Are you sure you want to purge Room table", "Puge Room table?", JOptionPane.OK_CANCEL_OPTION);
 						if(rep == JOptionPane.OK_OPTION){
-							message=deleteAll("Room");
+							message=deleteAll();
 						}
 						
 					}
@@ -196,17 +196,17 @@ public class RoomController implements ActionListener{
 			if(!form[3].isEmpty())
 				room.setRoom_number(Integer.valueOf(form[3]));
 			
-			return (List<Room>) (Object) servH.searchObjectToServer(room);
+			return servH.searchRoomToServer(room);
 			
 		}
 		
-	 protected List<Room> searchAll(String type) throws IOException {
-		 return (List<Room>) (Object) servH.SearchAll(type);
+	 protected List<Room> searchAll() throws IOException {
+		 return servH.searchAllRoom();
 			
 		}
 
-	protected String deleteAll(String type) throws IOException {
-			return servH.deleteAll(type);
+	protected String deleteAll() throws IOException {
+			return servH.deleteAllRoom();
 			
 		}
 
@@ -218,7 +218,7 @@ public class RoomController implements ActionListener{
 			
 	 	Room room = new Room();
 	 	room.setId(Integer.valueOf(id));
-	 	return servH.delete(room);
+	 	return servH.deleteRoom(room);
 		}
 
 	public String update(String[] form) throws Exception {
@@ -240,7 +240,7 @@ public class RoomController implements ActionListener{
 			room.setRoom_number(Integer.parseInt(form[3]));
 			//System.out.println(room);
 			//send to server
-			return servH.updateObjectToServer(room);
+			return servH.updateRoomToServer(room);
 			
 		}
 
@@ -259,7 +259,7 @@ public class RoomController implements ActionListener{
 			room.setFloor(Integer.parseInt(form[1]));
 			room.setRoom_number(Integer.parseInt(form[2]));
 			
-			return servH.insertObjectToServer(room);
+			return servH.insertRoomToServer(room);
 		}
 
 		private boolean isInteger(String s) {
@@ -296,7 +296,7 @@ public class RoomController implements ActionListener{
 		
 		public void setDisplayView() throws IOException {
 			try {
-			view.getpApp().getSupRoomView().getRudView().getReadView().setView((List<Room>)searchAll("Room"));
+			view.getpApp().getSupRoomView().getRudView().getReadView().setView((searchAll()));
 			}catch(IOException ex) {
 				JOptionPane.showMessageDialog(null, ex.getMessage(), "Communication Error", JOptionPane.ERROR_MESSAGE);
 			}

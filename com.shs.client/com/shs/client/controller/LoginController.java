@@ -11,17 +11,17 @@ import java.util.regex.Pattern;
 
 import javax.swing.JButton;
 
-import com.shs.client.model.RoomServerHandler;
+import com.shs.client.model.UserServerHandler;
 import com.shs.client.view.SHSView;
 import com.shs.commons.model.User;
 
 
 public class LoginController implements ActionListener{
 	private SHSView view;
-	private RoomServerHandler servH;
+	private UserServerHandler servH;
 	public LoginController(SHSView v) throws UnknownHostException, IOException {
 		this.view = v;
-		this.servH = new RoomServerHandler();
+		this.servH = new UserServerHandler();
 		view.getConnectionPanel().getFormView().addJBListner(this);
 		
 	}
@@ -65,7 +65,7 @@ public class LoginController implements ActionListener{
 		User user = new User();
 		user.setEmail(form[0]);
 		user.setPassword(form[1]);
-		return (List<User>) (Object) servH.searchObjectToServer(user);
+		return servH.searchUserToServer(user);
 	}
 	private boolean isEmail(String email) {
 		if (Pattern.matches("^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)+$", email.toLowerCase()) == true) {

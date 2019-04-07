@@ -19,6 +19,21 @@ public class UserManager {
 		this.conn = c;
 	}
 	
+	public static boolean create(User user) throws SQLException{
+		PreparedStatement pStmt = conn.prepareStatement("INSERT INTO users (first_name,last_name,email, password,function) VALUES (?,?,?,?,?)");
+		pStmt.setString(1, user.getFirst_name());
+		pStmt.setString(2, user.getLast_name());
+		pStmt.setString(3, user.getEmail());
+		pStmt.setString(4, user.getPassword());
+		pStmt.setString(5, user.getFunction());
+		
+		int n = pStmt.executeUpdate();
+		// Closing
+        pStmt.close();
+        DataSource.releaseConnection(conn);
+        return n==1;
+	}
+	
 	public static ArrayList<User> getUsers() throws SQLException {	
 		Statement Stmt = conn.createStatement();
         ResultSet RS = Stmt.executeQuery("SELECT * FROM users");      
@@ -48,7 +63,7 @@ public class UserManager {
 		return user;
 	}
 	
-	public static List<User> getUserBy(String req) throws SQLException{
+	public static List<User> getUsersBy(String req) throws SQLException{
 		Statement Stmt = conn.createStatement();System.out.println(Stmt.isClosed());
         ResultSet rs = Stmt.executeQuery("SELECT * FROM users WHERE "+req);      
         ArrayList<User> userList = new ArrayList<User>();
@@ -69,9 +84,9 @@ public class UserManager {
 		pStmt.setString(1, user.getFirst_name());
 		pStmt.setString(2, user.getLast_name());
 		pStmt.setString(3, user.getEmail());
-		pStmt.setString(5, user.getPassword());
-		pStmt.setString(6, user.getFunction());
-		pStmt.setInt(7, user.getId());
+		pStmt.setString(4, user.getPassword());
+		pStmt.setString(5, user.getFunction());
+		pStmt.setInt(6, user.getId());
 		int n = pStmt.executeUpdate();
 		// Closing
         pStmt.close();
@@ -88,6 +103,13 @@ public class UserManager {
         return n==1;
 	}
 	
-	
+	public static boolean deleteAll() throws SQLException{
+		Statement Stmt = conn.createStatement();
+		int n = Stmt.executeUpdate("DELETE FROM users");
+		//Closing
+        Stmt.close();
+        DataSource.releaseConnection(conn);
+        return n>0;
+	}
 	
 }
