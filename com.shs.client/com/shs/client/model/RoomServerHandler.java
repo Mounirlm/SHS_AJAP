@@ -25,8 +25,8 @@ public class RoomServerHandler {
 	private int port = 6533;
 	private InetAddress adress =InetAddress.getLocalHost();
 	//WITH VM
-	private int portServer = DBAccess.getPORT_SERVER();
-	private String adressServer = DBAccess.getSERVER();
+	private int portServer = ServerAccess.getPORT_SERVER();
+	private String adressServer = ServerAccess.getSERVER();
 	
 	public RoomServerHandler() throws UnknownHostException, IOException {
 		gson = new Gson();

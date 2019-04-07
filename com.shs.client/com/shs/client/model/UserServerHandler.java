@@ -24,8 +24,8 @@ public class UserServerHandler {
 	private int port = 6533;
 	private InetAddress adress =InetAddress.getLocalHost();
 	//WITH VM
-	private int portServer = DBAccess.getPORT_SERVER();
-	private String adressServer = DBAccess.getSERVER();
+	private int portServer = ServerAccess.getPORT_SERVER();
+	private String adressServer = ServerAccess.getSERVER();
 	
 	public UserServerHandler() throws UnknownHostException, IOException {
 		gson = new Gson();
