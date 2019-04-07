@@ -93,9 +93,6 @@ public class SupRoomView extends JPanel{
 	}
 
 
-
-
-
 	public JTextField getJtf(int index) {
 		return pCreate.getJtf(index);
 	}
@@ -105,13 +102,6 @@ public class SupRoomView extends JPanel{
 	public void setCreateTitle(String text) {
 		pCreate.setTitle(text);
 	}
-
-
-
-	public void addJBInsertListner(ActionListener act) {
-		pCreate.addJBInsertListner(act);
-	}
-
 
 
 	public RudRoomView getRudView() {

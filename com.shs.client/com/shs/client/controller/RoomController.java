@@ -20,11 +20,11 @@ public class RoomController implements ActionListener{
 	 public RoomController(SHSView v) throws IOException {
 		 this.view = v;
 		 servH  = new RoomServerHandler();
-		 view.addRoomMenuListner(this);
-		 view.addJBInsertListner(jbInsert);
-		 view.addJBSearchListner(jbSearch);
-		 view.addJBUpdateListner(jbUpdate);
-		 view.addJBDeleteListner(jbDelete);
+		 view.getpApp().getSupRoomView().addRoomMenuListner(this);
+		 view.getpApp().getSupRoomView().getCreateView().addJBInsertListner(jbInsert);
+		 view.getpApp().getSupRoomView().getRudView().getSearchView().getFormView().addJBListner(jbSearch);
+		 view.getpApp().getSupRoomView().getRudView().getUpdateView().getFormView().addJBListner(jbUpdate);
+		 view.getpApp().getSupRoomView().getRudView().getDeleteView().getFormView().addJBListner(jbDelete);
 		 
 	 }
 	 
@@ -33,9 +33,9 @@ public class RoomController implements ActionListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String[] form = new String[3];
-				form[0] = view.getJtfCreate(0).getText();
-				form[1] = view.getJtfCreate(1).getText();
-				form[2] = view.getJtfCreate(2).getText();
+				form[0] = view.getpApp().getSupRoomView().getCreateView().getFormView().getJtf(0).getText();
+				form[1] = view.getpApp().getSupRoomView().getCreateView().getFormView().getJtf(1).getText();
+				form[2] = view.getpApp().getSupRoomView().getCreateView().getFormView().getJtf(2).getText();
 				
 				try {
 					String message =null;
@@ -60,10 +60,10 @@ public class RoomController implements ActionListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String[] form = new String[4];
-				form[0] = view.getJtfRudSearch(0).getText();
-				form[1] = view.getJtfRudSearch(1).getText();
-				form[2] = view.getJtfRudSearch(2).getText();
-				form[3] = view.getJtfRudSearch(3).getText();
+				form[0] = view.getpApp().getSupRoomView().getRudView().getSearchView().getFormView().getJtf(0).getText();
+				form[1] = view.getpApp().getSupRoomView().getRudView().getSearchView().getFormView().getJtf(1).getText();
+				form[2] = view.getpApp().getSupRoomView().getRudView().getSearchView().getFormView().getJtf(2).getText();
+				form[3] = view.getpApp().getSupRoomView().getRudView().getSearchView().getFormView().getJtf(3).getText();
 				
 				
 				String choix = e.getActionCommand();
@@ -100,10 +100,10 @@ public class RoomController implements ActionListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String[] form = new String[4];
-				form[0] = view.getJtfRudUpdate(0).getText();
-				form[1] = view.getJtfRudUpdate(1).getText();
-				form[2] = view.getJtfRudUpdate(2).getText();
-				form[3] = view.getJtfRudUpdate(3).getText();
+				form[0] = view.getpApp().getSupRoomView().getRudView().getUpdateView().getFormView().getJtf(0).getText();
+				form[1] = view.getpApp().getSupRoomView().getRudView().getUpdateView().getFormView().getJtf(1).getText();
+				form[2] = view.getpApp().getSupRoomView().getRudView().getUpdateView().getFormView().getJtf(2).getText();
+				form[3] = view.getpApp().getSupRoomView().getRudView().getUpdateView().getFormView().getJtf(3).getText();
 				try {
 					String message =null;
 					message=update(form);
@@ -127,7 +127,7 @@ public class RoomController implements ActionListener{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					String id = view.getJtfRudDelete(0).getText();
+					String id = view.getpApp().getSupRoomView().getRudView().getDeleteView().getFormView().getJtf(0).getText();
 					String choix = e.getActionCommand();
 					String message =null;
 				try {
@@ -277,13 +277,13 @@ public class RoomController implements ActionListener{
 				String choix = e.getActionCommand();
 				switch (choix) {
 				case "CREATE":
-					view.setCardRoom("create");
+					view.getpApp().getSupRoomView().setCard("create");
 					break;
 					
 				case "READ - UPDATE - DELETE":
 					try {
 						setDisplayView();//get all rooms in display view
-						view.setCardRoom("rud");
+						view.getpApp().getSupRoomView().setCard("rud");
 					} catch (IOException e1) {}
 					break;
 

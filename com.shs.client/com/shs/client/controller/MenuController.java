@@ -11,8 +11,9 @@ public class MenuController implements ActionListener{
 	SHSView view;
 	public MenuController(SHSView v) {
 		this.view = v;
-		view.addMenuListner(this);
-		view.addLogoListner(this);
+		view.getpMenu().addMenuListner(this);
+		view.getpMenu().addLogoListner(this);
+		
 	}
 
 	@Override
@@ -21,11 +22,11 @@ public class MenuController implements ActionListener{
 			String choix = e.getActionCommand();
 			switch (choix) {
 			case "index":
-				view.setCardAppView("indexView");
+				view.getpApp().setCard("indexView");
 				break;
 				
 			case "Supervised Rooms":
-				view.setCardAppView("supRoomView");
+				view.getpApp().setCard("supRoomView");
 				break;
 
 			default:

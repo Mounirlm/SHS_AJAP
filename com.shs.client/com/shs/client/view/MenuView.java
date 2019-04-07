@@ -96,7 +96,7 @@ public class MenuView extends JPanel {
 		}
 	}
 
-	public void addLogoListneract(ActionListener act) {
+	public void addLogoListner(ActionListener act) {
 		blogo.addActionListener(act);
 		
 	}

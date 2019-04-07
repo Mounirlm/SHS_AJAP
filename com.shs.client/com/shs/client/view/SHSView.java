@@ -60,48 +60,8 @@ public class SHSView {
 		frame.setVisible(true);
 	}
 	
-	public void addMenuListner(ActionListener act) {
-		pMenu.addMenuListner(act);
-	}
-
-	public void setCardAppView(String s) {
-		pApp.setCard(s);
-		
-	}
-
-	public void addLogoListner(ActionListener act) {
-		pMenu.addLogoListneract(act);
-		
-	}
-
-	public void addRoomMenuListner(ActionListener act) {
-		pApp.getSupRoomView().addRoomMenuListner(act);
-		
-	}
-
-
-	public void setCardRoom(String name) {
-		pApp.getSupRoomView().setCard(name);
-		
-	}
-
-	public JTextField getJtfCreate(int index) {
-		return pApp.getSupRoomView().getCreateView().getFormView().getJtf(index);
-	}
 	
-	public JTextField getJtfRudSearch(int index) {
-		return pApp.getSupRoomView().getRudView().getSearchView().getFormView().getJtf(index);
-	}
 	
-	public JTextField getJtfRudUpdate(int index) {
-		return pApp.getSupRoomView().getRudView().getUpdateView().getFormView().getJtf(index);
-	}
-
-
-	public void addJBInsertListner(ActionListener act) {
-		pApp.getSupRoomView().addJBInsertListner(act);
-	}
-
 	public MenuView getpMenu() {
 		return pMenu;
 	}
@@ -110,23 +70,6 @@ public class SHSView {
 		return pApp;
 	}
 
-	public void addJBSearchListner(ActionListener jbSearch) {
-		pApp.getSupRoomView().getRudView().getSearchView().getFormView().addJBListner(jbSearch);
-		
-	}
-
-	public void addJBUpdateListner(ActionListener jbUpdate) {
-		pApp.getSupRoomView().getRudView().getUpdateView().getFormView().addJBListner(jbUpdate);	
-	}
-
-	public void addJBDeleteListner(ActionListener act) {
-		pApp.getSupRoomView().getRudView().getDeleteView().getFormView().addJBListner(act);	
-		
-	}
-
-	public JTextField getJtfRudDelete(int i) {
-		return pApp.getSupRoomView().getRudView().getDeleteView().getFormView().getJtf(i);
-	}
 
 	public ConnectionView getConnectionPanel() {
 		return connectionPanel;
