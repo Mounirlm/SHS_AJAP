@@ -35,7 +35,7 @@ public class ConnectionView extends JPanel{
 		ArrayList<String> buttons = new ArrayList<>();
 		buttons.add("LOGIN");
 		
-		formView = new FormView("Connection", cols, buttons, new ArrayList<String>(), "v", true, 20,20,20);
+		formView = new FormView("Connection", cols, buttons, new ArrayList<String>(), "v", true,true, 20,20,20);
 		//formView.setBackground(cdApp.getBgApp());
 		//add in view
 		pCon.add(lImage, BorderLayout.NORTH);

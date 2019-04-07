@@ -30,7 +30,7 @@ public class LoginController implements ActionListener{
 		if(e.getSource() instanceof JButton ){
 			String[] form = new String[2];
 			form[0] = view.getConnectionPanel().getFormView().getJtf(0).getText();
-			form[1] = view.getConnectionPanel().getFormView().getJtf(1).getText();
+			form[1] = new String(view.getConnectionPanel().getFormView().getjPass().getPassword());
 			List<User> users = new ArrayList<>();
 			String message=null;
 			try {

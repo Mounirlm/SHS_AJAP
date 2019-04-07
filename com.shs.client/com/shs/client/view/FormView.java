@@ -16,6 +16,7 @@ import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
@@ -35,8 +36,10 @@ public class FormView extends JPanel {
 	private List<String> butLB;
 	private JPanel pValidate;
 	private int idTuple;
+	private JPasswordField jPass;
+	private boolean isPass;
 	
-	public FormView(String titleView,Map<String, String> tuples, List<String> but, List<String> labels, String alignement, boolean title) {
+	public FormView(String titleView,Map<String, String> tuples, List<String> but, List<String> labels, String alignement, boolean title, boolean isPassW) {
 		super();
 		this.setLayout(new BorderLayout());
 		pArgs = tuples;
@@ -45,6 +48,7 @@ public class FormView extends JPanel {
 		buttons = new ArrayList<>();
 		labs=labels;
 		butLB=but;
+		this.isPass=isPassW;
 		//if(isInteger(pArgs.get("ID"))) {idTuple = Integer.valueOf(pArgs.get("ID"));}
 		
 		
@@ -95,10 +99,17 @@ public class FormView extends JPanel {
 						pCol.add(lbVal, BorderLayout.CENTER);
 						lbVals.add(lbVal);
 					}else {
-						jtf = new JTextField(entry.getValue());
-						jtf.setFont(new Font("Arial", Font.BOLD, sizeVal));
-						jtfs.add(jtf);
-						pCol.add(jtf, BorderLayout.CENTER);
+						if(isPass && !jtfs.isEmpty()) {
+							jPass = new JPasswordField(entry.getValue());
+							jPass.setFont(new Font("Arial", Font.BOLD, sizeVal));
+							pCol.add(jPass, BorderLayout.CENTER);
+							isPass=false;
+						}else {							
+							jtf = new JTextField(entry.getValue());
+							jtf.setFont(new Font("Arial", Font.BOLD, sizeVal));
+							jtfs.add(jtf);
+							pCol.add(jtf, BorderLayout.CENTER);
+						}
 					
 				}
 				pForm.add(pCol);
@@ -123,14 +134,12 @@ public class FormView extends JPanel {
 
 
 	public FormView(String title, Map<String, String> cols, ArrayList<String> buttons2, ArrayList<String> labels2,
-			String alignement2, boolean b,int i, int j, int k) {
-		this(title,cols, buttons2,labels2, alignement2, b);
+			String alignement2, boolean b,boolean isPassW,int i, int j, int k) {
+		this(title,cols, buttons2,labels2, alignement2, b, isPassW);
 		setSizeArgs(i, j, k);
 	}
-
-
-
-
+	
+	
 
 	public JTextField getJtf(int index) {
 		return jtfs.get(index);
@@ -214,6 +223,13 @@ public class FormView extends JPanel {
 	public LBTitle getTitle() {
 		return lbTitle;
 	}
+
+
+
+	public JPasswordField getjPass() {
+		return jPass;
+	}
+	
 	
 	
 }

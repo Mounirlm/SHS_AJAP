@@ -58,7 +58,7 @@ public class RudRoomView extends JPanel {
 			ArrayList<String> buttons = new ArrayList<>();
 			buttons.add("RESEARCH");buttons.add("RESEARCH ALL");
 			
-			formView = new FormView("Research Secured Room", cols, buttons, new ArrayList<String>(), "h", true);
+			formView = new FormView("Research Secured Room", cols, buttons, new ArrayList<String>(), "h", true,false);
 			this.add(formView, BorderLayout.CENTER);
 			
 		}
@@ -82,7 +82,7 @@ public class RudRoomView extends JPanel {
 			
 			ArrayList<String> labels = new ArrayList<>();
 			
-			formView = new FormView("Update Secured Room", cols, buttons,labels, "h",true);
+			formView = new FormView("Update Secured Room", cols, buttons,labels, "h",true,false);
 			this.add(formView, BorderLayout.CENTER);
 		}
 
@@ -105,7 +105,7 @@ public class RudRoomView extends JPanel {
 			
 			ArrayList<String> labels = new ArrayList<>();
 			
-			formView = new FormView("Delete Secured Room", cols, buttons,labels, "h",true);
+			formView = new FormView("Delete Secured Room", cols, buttons,labels, "h",true,false);
 			this.add(formView, BorderLayout.CENTER);
 		}
 
@@ -167,7 +167,7 @@ public class RudRoomView extends JPanel {
 				ArrayList<String> labels = new ArrayList<>();
 				labels.add("ID");labels.add("TYPE");labels.add("FLOOR");labels.add("ROOM NUMBER");
 				
-				formView = new FormView("Read Secured Room", cols, buttons,labels, "h",title,15,18,20);
+				formView = new FormView("Read Secured Room", cols, buttons,labels, "h",title,false,15,18,20);
 				this.add(formView, BorderLayout.CENTER);
 			}
 			
