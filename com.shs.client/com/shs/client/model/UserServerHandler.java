@@ -20,12 +20,9 @@ public class UserServerHandler {
 	private JsonReader reader;
 	private JsonWriter writer;
 	private Gson gson;
-	//WITHOUT VM
-	private int port = 6533;
-	private InetAddress adress =InetAddress.getLocalHost();
 	//WITH VM
-	private int portServer = ServerAccess.getPORT_SERVER();
-	private String adressServer = ServerAccess.getSERVER();
+	private int port = ServerAccess.getPORT_SERVER();
+	private String adress =ServerAccess.getSERVER();
 	
 	public UserServerHandler() throws UnknownHostException, IOException {
 		gson = new Gson();

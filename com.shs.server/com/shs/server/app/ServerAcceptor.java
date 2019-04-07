@@ -12,7 +12,7 @@ import com.shs.server.connection.pool.DataSource;
 public class ServerAcceptor {
 	 public static void main (String[] args) throws SQLException, ClassNotFoundException {
 		 	ServerSocket server;
-		    int port = 6533;
+		    int port = DBAccess.getPORT_SERVER();
 		    DataSource dt = new DataSource();
 		    try {
 			      server = new ServerSocket(port) ;
@@ -31,7 +31,9 @@ public class ServerAcceptor {
 			    	  }
 			      } 
 		      }
-		    catch(IOException e) { }
+		    catch(IOException e) { 
+		    	System.out.println(e.getMessage());
+		    }
 	 }
 
 
