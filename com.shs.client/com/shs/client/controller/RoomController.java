@@ -25,8 +25,6 @@ public class RoomController implements ActionListener{
 		 view.addJBSearchListner(jbSearch);
 		 view.addJBUpdateListner(jbUpdate);
 		 view.addJBDeleteListner(jbDelete);
-		
-		 setDisplayView();//get all rooms in display view
 		 
 	 }
 	 
@@ -283,7 +281,10 @@ public class RoomController implements ActionListener{
 					break;
 					
 				case "READ - UPDATE - DELETE":
-					view.setCardRoom("rud");
+					try {
+						setDisplayView();//get all rooms in display view
+						view.setCardRoom("rud");
+					} catch (IOException e1) {}
 					break;
 
 				default:

@@ -1,6 +1,7 @@
 package com.shs.client.view;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.event.ActionListener;
 
 import javax.swing.AbstractButton;
@@ -16,10 +17,12 @@ public class SHSView {
  
 	public JFrame frame;
 	
-	//private int indexB=0;
 	private MenuView pMenu;
 	private AppView pApp;
 	private ColorsDimApp cdApp;
+	private JPanel appPanel;
+	private ConnectionView connectionPanel;
+	private CardLayout cd;
 	
 	public SHSView() {
 		cdApp = new ColorsDimApp();
@@ -31,20 +34,26 @@ public class SHSView {
 		frame.getContentPane().setBackground(cdApp.getBgApp());
 		
 		//main layout
-		BorderLayout layout = new BorderLayout();
-		frame.setLayout(layout);
+		cd = new CardLayout();
+		frame.setLayout(cd);
 		
+		//appPanel
+		appPanel=new JPanel(new BorderLayout());
 		//Panel Menu
 		pMenu = new MenuView();
-		
 		//Panel App
 		pApp= new AppView();
+		appPanel.add(pMenu, BorderLayout.WEST);
+		appPanel.add(pApp, BorderLayout.CENTER);
 		
+		
+		//connectionPanel
+		connectionPanel= new ConnectionView();
 		
 		//Window
-		frame.getContentPane().add(pMenu, BorderLayout.WEST);
-		frame.getContentPane().add(pApp, BorderLayout.CENTER);
-		
+		frame.getContentPane().add("appPanel", appPanel);
+		frame.getContentPane().add("connectionPanel", connectionPanel);
+		cd.show(frame.getContentPane(), "connectionPanel");
 		show();
 	}
 	
