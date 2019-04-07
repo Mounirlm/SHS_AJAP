@@ -13,7 +13,9 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.shs.commons.model.Room;
+import com.shs.commons.model.User;
 import com.shs.server.model.RoomManager;
+import com.shs.server.model.UserManager;
 
 
 public class RequestHandler implements Runnable {
@@ -72,18 +74,24 @@ public class RequestHandler implements Runnable {
 	    	   String objectJson = reader.nextString();
 	    	   if(className.equals("Room"))
 	    		   object = new Gson().fromJson(objectJson, Room.class);
+	    	   if(className.equals("User"))
+	    		   object = new Gson().fromJson(objectJson, User.class);
 	       }else {
 	         reader.skipValue();
 	       }
 	     }
-	    reader.endObject();
+	    reader.endObject();System.out.println(object);
 	    //DB Traitement
 	    requestManager(request, object);
 	    return request+":"+object;
 	}
 	
 	private void requestManager(String req, Object object) throws SQLException, IOException {
-		RoomManager roomManager= new RoomManager(connDB);	
+		RoomManager roomManager= new RoomManager(connDB);
+		UserManager userManager= new UserManager(connDB);
+		
+		
+		
 		boolean response = false;
 		String message=null, error="no row(s)";
 		String[] request=null;
@@ -169,7 +177,7 @@ public class RequestHandler implements Runnable {
 							response=true;
 							Gson gson = new Gson();
 							for (Room r : rooms) {System.out.println(r);
-								writer.name(""+r.getId()).value(gson.toJson(r));
+								writer.name("object").value(gson.toJson(r));
 							}
 						}
 						else {
@@ -177,7 +185,75 @@ public class RequestHandler implements Runnable {
 						}
 						writer.endObject();
 					}catch(SQLException e) {
-			        	error="Error delete all "+e;
+			        	error="Error select "+e;
+			        }
+				}
+				if(request[1].equals("User")) {
+					try{
+						User user= (User) object;
+						User sendUser=null;
+						String reqDB=null;
+						List<User> users=new ArrayList<>();
+						if(user.getId()!=null) {
+							sendUser= UserManager.getUser(user.getId());
+						}else {
+							if(user.getFirst_name()!=null) {
+								reqDB="first_name = '"+user.getFirst_name()+"'";
+								if(user.getLast_name()!=null)
+									reqDB+="and last_name = '"+user.getLast_name()+"'";
+								if(user.getEmail()!=null)
+									reqDB+="and email = '"+user.getEmail()+"'";
+								if(user.getPassword()!=null)
+									reqDB+="and password = '"+user.getPassword()+"'";
+								if(user.getFunction()!=null)
+									reqDB+="and function = '"+user.getFunction()+"'";
+							}
+							else if(user.getLast_name()!=null) {
+									reqDB="last_name = '"+user.getLast_name()+"'";
+								if(user.getEmail()!=null)
+									reqDB+="and email = '"+user.getEmail()+"'";
+								if(user.getPassword()!=null)
+									reqDB+="and password = '"+user.getPassword()+"'";
+								if(user.getFunction()!=null)
+									reqDB+="and function = '"+user.getFunction()+"'";
+							}
+							else if(user.getEmail()!=null) {
+								reqDB="email = '"+user.getEmail()+"'";
+								if(user.getPassword()!=null)
+									reqDB+="and password = '"+user.getPassword()+"'";
+								if(user.getFunction()!=null)
+									reqDB+="and function = '"+user.getFunction()+"'";
+							}
+							else if(user.getPassword()!=null) {
+									reqDB="password = '"+user.getPassword()+"'";
+								if(user.getFunction()!=null)
+									reqDB+="and function = '"+user.getFunction()+"'";
+							}
+							else if(user.getFunction()!=null) {
+								reqDB="function = '"+user.getFunction()+"'";
+							}
+							reqDB+=";";
+							users=UserManager.getUserBy(reqDB);
+						}
+						writer.beginObject();
+						if(sendUser!=null) {
+							response=true;
+							Gson gson = new Gson();
+							writer.name("object").value(gson.toJson(sendUser));System.out.println(sendUser);
+						}
+						else if(!users.isEmpty()) {
+							response=true;
+							Gson gson = new Gson();
+							for (User u : users) {System.out.println(u);
+								writer.name("object").value(gson.toJson(u));
+							}
+						}
+						else {
+							writer.name("null").value("null");	
+						}
+						writer.endObject();
+					}catch(SQLException e) {
+			        	error="Error select "+e;
 			        }
 				}
 				break;	

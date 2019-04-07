@@ -130,5 +130,20 @@ public class SHSView {
 		return pApp.getSupRoomView().getRudView().getDeleteView().getFormView().getJtf(i);
 	}
 
+	public ConnectionView getConnectionPanel() {
+		return connectionPanel;
+	}
+
+	public CardLayout getCd() {
+		return cd;
+	}
+
+	public JFrame getFrame() {
+		return frame;
+	}
+
+	
+
+
 	
 }

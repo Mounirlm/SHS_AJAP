@@ -1,8 +1,8 @@
 package com.shs.client.view;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -51,4 +51,11 @@ public class ConnectionView extends JPanel{
 		this.add(pCon);
 		
 	}
+	public FormView getFormView() {
+		return formView;
+	}
+	public JLabel getMessage() {
+		return message;
+	}
+	
 }

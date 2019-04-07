@@ -13,9 +13,10 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.shs.commons.model.Room;
+import com.shs.commons.model.User;
 import com.shs.server.connection.pool.DBAccess;
 
-public class ServerHandler {
+public class RoomServerHandler {
 	private Socket server;
 	private JsonReader reader;
 	private JsonWriter writer;
@@ -27,7 +28,7 @@ public class ServerHandler {
 	private int portServer = DBAccess.getPORT_SERVER();
 	private String adressServer = DBAccess.getSERVER();
 	
-	public ServerHandler() throws UnknownHostException, IOException {
+	public RoomServerHandler() throws UnknownHostException, IOException {
 		gson = new Gson();
 	}
 	
@@ -190,7 +191,9 @@ public class ServerHandler {
 			
 			if(object.getClass() == Room.class) {
 				type="Room";
- 
+			}
+			if(object.getClass() == User.class) {
+				type="User";
 			}
 			request="select-"+type;
 			
@@ -214,16 +217,14 @@ public class ServerHandler {
 			    		Room room=new Gson().fromJson(objectJson, Room.class);
 			    		list.add(room);System.out.println(list);
 			    	}
+			    	if(type=="User") {
+			    		User user=new Gson().fromJson(objectJson, User.class);System.out.println(user);
+			    		list.add(user);System.out.println(list);
+			    	}
 			    	
 			    }
 			    else if(name.equals("null")) {
 			    	System.out.println(reader.nextString());
-			    }
-			    else {
-			    	if(type=="Room") {
-			    		String objectJson = reader.nextString();System.out.println(objectJson);
-			    		list.add(new Gson().fromJson(objectJson, Room.class));
-			    	}
 			    }
 		    }
 		    reader.endObject();
@@ -277,5 +278,6 @@ public class ServerHandler {
 	    	stopFlux();
 	    }
 	}
+
 	
 }

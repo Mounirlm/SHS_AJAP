@@ -9,17 +9,17 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
-import com.shs.client.model.ServerHandler;
+import com.shs.client.model.RoomServerHandler;
 import com.shs.client.view.SHSView;
 import com.shs.commons.model.Room;
 
 public class RoomController implements ActionListener{
 	 private SHSView view;
-	 private ServerHandler servH;
+	 private RoomServerHandler servH;
 	 
 	 public RoomController(SHSView v) throws IOException {
 		 this.view = v;
-		 servH  = new ServerHandler();
+		 servH  = new RoomServerHandler();
 		 view.addRoomMenuListner(this);
 		 view.addJBInsertListner(jbInsert);
 		 view.addJBSearchListner(jbSearch);
