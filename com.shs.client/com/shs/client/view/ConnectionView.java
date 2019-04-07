@@ -16,7 +16,6 @@ import javax.swing.border.LineBorder;
 public class ConnectionView extends JPanel{
 	private FormView formView;
 	private JPanel pCon;
-	private ColorsDimApp cdApp= new ColorsDimApp();
 	private JLabel lImage;
 	private JLabel message;
 	public ConnectionView() {
@@ -24,7 +23,7 @@ public class ConnectionView extends JPanel{
 		this.setLayout(new GridBagLayout());
 	
 		pCon=new JPanel(new BorderLayout());
-		pCon.setBackground(cdApp.getBgApp());
+		pCon.setBackground(ColorsApp.getBgApp());
 		//Image
 		lImage = new JLabel(new ImageIcon("ressources\\shs-logo.png"));
 		
@@ -40,13 +39,13 @@ public class ConnectionView extends JPanel{
 		//add in view
 		pCon.add(lImage, BorderLayout.NORTH);
 		pCon.add(formView, BorderLayout.CENTER);
-		pCon.setPreferredSize(new Dimension(cdApp.getWIDTH()-1200, cdApp.getHEIGHT()-500));
-		pCon.setBorder(new LineBorder(cdApp.getBgTitle(), 2));
+		pCon.setPreferredSize(new Dimension(ColorsApp.getWIDTH()-1200, ColorsApp.getHEIGHT()-500));
+		pCon.setBorder(new LineBorder(ColorsApp.getBgTitle(), 2));
 		
 		//message
 		message=new JLabel("Enter your email and password");
 		message.setHorizontalAlignment(JLabel.CENTER);
-		message.setForeground(cdApp.getBgTitle());
+		message.setForeground(ColorsApp.getBgTitle());
 		pCon.add(message, BorderLayout.SOUTH);
 		this.add(pCon);
 		

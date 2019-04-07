@@ -17,7 +17,6 @@ import javax.swing.border.LineBorder;
 import com.shs.client.view.RudRoomView.SearchView;
 
 public class SupRoomView extends JPanel{
-	private ColorsDimApp cdApp;
 	private CardLayout cd;
 	private JButton jbCreate;
 	private JButton jbRUD;
@@ -27,7 +26,6 @@ public class SupRoomView extends JPanel{
 	
 	public SupRoomView() {
 		super();
-		cdApp = new ColorsDimApp();
 		this.setLayout(new BorderLayout());
 		JPanel pTop = new JPanel();
 		pCenter = new JPanel();
@@ -39,22 +37,22 @@ public class SupRoomView extends JPanel{
 		JLabel title = new JLabel("Suppervised Rooms");
 		title.setHorizontalAlignment(JLabel.CENTER);
 		title.setFont(new Font("Arial", Font.BOLD, 35));
-		title.setBorder(new LineBorder(cdApp.getBgThem()));
-		title.setForeground(cdApp.getBgThem());
+		title.setBorder(new LineBorder(ColorsApp.getBgThem()));
+		title.setForeground(ColorsApp.getBgThem());
 		title.setOpaque(true);
-		title.setBackground(cdApp.getBgApp());
+		title.setBackground(ColorsApp.getBgApp());
 		//pTopb
 		jbCreate = new JButton("CREATE");
-		jbCreate.setBackground(cdApp.getBgThem());
-		jbCreate.setForeground(cdApp.getBgApp());
+		jbCreate.setBackground(ColorsApp.getBgThem());
+		jbCreate.setForeground(ColorsApp.getBgApp());
 		jbCreate.setFont(new Font("Arial", Font.BOLD, 25));
-		jbCreate.setBorder(new LineBorder(cdApp.getBgTitle(),2));
+		jbCreate.setBorder(new LineBorder(ColorsApp.getBgTitle(),2));
 		
 		jbRUD = new JButton("READ - UPDATE - DELETE");
-		jbRUD.setBackground(cdApp.getBgThem());
-		jbRUD.setForeground(cdApp.getBgApp());
+		jbRUD.setBackground(ColorsApp.getBgThem());
+		jbRUD.setForeground(ColorsApp.getBgApp());
 		jbRUD.setFont(new Font("Arial", Font.BOLD, 25));
-		jbRUD.setBorder(new LineBorder(cdApp.getBgTitle(), 2));
+		jbRUD.setBorder(new LineBorder(ColorsApp.getBgTitle(), 2));
 		
 		pTopB.add(jbCreate);
 		pTopB.add(jbRUD);
@@ -62,7 +60,7 @@ public class SupRoomView extends JPanel{
 		pTop.add(pTopB, BorderLayout.SOUTH);
 		
 		//pCenter
-		pCenter.setBackground(cdApp.getBgApp());
+		pCenter.setBackground(ColorsApp.getBgApp());
 		cd = new CardLayout();
 		pCenter.setLayout(cd);
 		

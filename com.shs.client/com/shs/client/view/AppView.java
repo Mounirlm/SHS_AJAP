@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 public class AppView extends JPanel{
-	private ColorsDimApp cdApp;
 	private CardLayout cdViewApp;
 	private ArrayList<JPanel> appView;
 	private SupRoomView supRoomView;
@@ -15,8 +14,7 @@ public class AppView extends JPanel{
 	
 	public AppView() {
 		super();
-		cdApp = new ColorsDimApp();
-		this.setBackground(cdApp.getBgApp());
+		this.setBackground(ColorsApp.getBgApp());
 		
 		cdViewApp = new CardLayout();
 		this.setLayout(cdViewApp);

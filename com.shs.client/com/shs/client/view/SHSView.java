@@ -19,19 +19,17 @@ public class SHSView {
 	
 	private MenuView pMenu;
 	private AppView pApp;
-	private ColorsDimApp cdApp;
 	private JPanel appPanel;
 	private ConnectionView connectionPanel;
 	private CardLayout cd;
 	
 	public SHSView() {
-		cdApp = new ColorsDimApp();
 		
 		//window properties
 		frame = new JFrame("SHS AutonHome");
-		frame.setSize(cdApp.getWIDTH(),cdApp.getHEIGHT());
+		frame.setSize(ColorsApp.getWIDTH(),ColorsApp.getHEIGHT());
 		frame.setLocationRelativeTo(null);
-		frame.getContentPane().setBackground(cdApp.getBgApp());
+		frame.getContentPane().setBackground(ColorsApp.getBgApp());
 		
 		//main layout
 		cd = new CardLayout();

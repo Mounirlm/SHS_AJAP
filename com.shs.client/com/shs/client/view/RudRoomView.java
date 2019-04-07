@@ -17,7 +17,6 @@ import javax.swing.ScrollPaneConstants;
 import com.shs.commons.model.Room;
 
 public class RudRoomView extends JPanel {
-	private ColorsDimApp cdApp;
 	private JPanel pSearchUpd;
 	private SearchView searchView;
 	private UpdateView updateView;
@@ -26,7 +25,6 @@ public class RudRoomView extends JPanel {
 	
 	public RudRoomView() {
 		super();
-		cdApp = new ColorsDimApp();
 		this.setLayout(new BorderLayout());
 		
 		//Search and Update view

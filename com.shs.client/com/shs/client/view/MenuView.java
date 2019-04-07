@@ -17,11 +17,9 @@ public class MenuView extends JPanel {
 	private JButton blogo;
 	private ArrayList<JButton> menuItems;
 	private JPanel pTopMenu;
-	private ColorsDimApp cdApp;
 	
 	public MenuView() {
 		super();
-		cdApp = new ColorsDimApp();
 		//Panel Menu
 		this.setLayout(new BorderLayout());
 		
@@ -29,18 +27,18 @@ public class MenuView extends JPanel {
 		//Panel top menu
 		pTopMenu = new JPanel();
 		pTopMenu.setLayout(new BorderLayout());
-		pTopMenu.setBackground(cdApp.getBgTitle());
+		pTopMenu.setBackground(ColorsApp.getBgTitle());
 		//logo
 		blogo = new  JButton(new ImageIcon("ressources\\shs-logo.png"));
 		blogo.setActionCommand("index");
-		blogo.setBackground(cdApp.getBgApp());
+		blogo.setBackground(ColorsApp.getBgApp());
 		pTopMenu.add(blogo, BorderLayout.NORTH);
 		//title menu
 		JLabel lbmenu = new JLabel();
 		lbmenu.setText("MENU");
 		lbmenu.setHorizontalAlignment(JLabel.CENTER);
 		lbmenu.setFont(new Font("Arial", Font.BOLD, 25));
-		lbmenu.setForeground(cdApp.getBgApp());
+		lbmenu.setForeground(ColorsApp.getBgApp());
 		pTopMenu.add(lbmenu, BorderLayout.SOUTH);
 		
 		
@@ -58,10 +56,10 @@ public class MenuView extends JPanel {
 		//buttons colors
 		
 		for (int indexB = 0; indexB < menuItems.size(); indexB++) {
-			menuItems.get(indexB).setBackground(cdApp.getBgThem());
-			menuItems.get(indexB).setForeground(cdApp.getBgApp());
+			menuItems.get(indexB).setBackground(ColorsApp.getBgThem());
+			menuItems.get(indexB).setForeground(ColorsApp.getBgApp());
 			menuItems.get(indexB).setFont(new Font("Arial", Font.BOLD, 25));
-			menuItems.get(indexB).setBorder(new LineBorder(cdApp.getBgTitle()));
+			menuItems.get(indexB).setBorder(new LineBorder(ColorsApp.getBgTitle()));
 			
 		}
 		

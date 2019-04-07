@@ -19,7 +19,6 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
 public class CreateRoomView extends JPanel {
-	private ColorsDimApp cdApp = new ColorsDimApp();//TODO METTRE EN STATIC
 	private FormView formView;
 	private LBTitle lbTitle;
 	
@@ -36,7 +35,7 @@ public class CreateRoomView extends JPanel {
 		buttons.add("INSERT");
 		
 		formView = new FormView("New Secured Room", cols, buttons, new ArrayList<String>(), "v", false,false, 20,20,20);
-		formView.setPreferredSize(new Dimension(cdApp.getWIDTH()-900, cdApp.getHEIGHT()-300));
+		formView.setPreferredSize(new Dimension(ColorsApp.getWIDTH()-900, ColorsApp.getHEIGHT()-300));
 		this.add(formView, BorderLayout.CENTER);
 		
 	}

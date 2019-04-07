@@ -21,7 +21,6 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
 public class FormView extends JPanel {
-	private ColorsDimApp cdApp = new ColorsDimApp();//TODO METTRE EN STATIC
 	private JTextField jtf;
 	private JLabel lbVal;
 	private JButton validateButton;
@@ -77,8 +76,8 @@ public class FormView extends JPanel {
 			
 				JLabel lb =new JLabel(entry.getKey());
 				lb.setOpaque(true);
-				lb.setBackground(cdApp.getBgThem());
-				lb.setForeground(cdApp.getBgApp());
+				lb.setBackground(ColorsApp.getBgThem());
+				lb.setForeground(ColorsApp.getBgApp());
 				lb.setHorizontalAlignment(JLabel.CENTER);
 				lb.setFont(new Font("Arial", Font.BOLD, sizeLB));
 				lb.setBorder(new LineBorder(Color.BLACK, 1));
@@ -94,7 +93,7 @@ public class FormView extends JPanel {
 						lbVal = new JLabel(entry.getValue());
 						lbVal.setFont(new Font("Arial", Font.BOLD, sizeVal));
 						lbVal.setOpaque(true);
-						lbVal.setBackground(cdApp.getBgApp());
+						lbVal.setBackground(ColorsApp.getBgApp());
 						lbVal.setBorder(new LineBorder(Color.BLACK, 1));
 						pCol.add(lbVal, BorderLayout.CENTER);
 						lbVals.add(lbVal);
@@ -119,8 +118,8 @@ public class FormView extends JPanel {
 			pValidate = new JPanel();
 			validateButton = new JButton(butLB.get(i));
 			buttons.add(validateButton);
-			validateButton.setBackground(cdApp.getBgThem());
-			validateButton.setForeground(cdApp.getBgApp());
+			validateButton.setBackground(ColorsApp.getBgThem());
+			validateButton.setForeground(ColorsApp.getBgApp());
 			validateButton.setHorizontalAlignment(JLabel.CENTER);
 			validateButton.setFont(new Font("Arial", Font.BOLD, sizeButton));
 			pValidate.add(butLB.get(i),validateButton);
