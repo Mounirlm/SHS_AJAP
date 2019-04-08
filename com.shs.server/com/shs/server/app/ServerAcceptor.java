@@ -13,13 +13,15 @@ public class ServerAcceptor {
 	 public static void main (String[] args) throws SQLException, ClassNotFoundException, IOException {
 		 	ServerSocket server = null;
 		    int port = DBAccess.getPORT_SERVER();
-		    DataSource dt = new DataSource();
+		    
 		    try {
 			      server = new ServerSocket(port);
 			      System.out.println("Server  Ok");
 			   }catch(IOException e) { 
-				    	throw new IOException("Error server "+e);
+				   System.out.println("Error server "+e);
 			   }
+		    DataSource dt = new DataSource();
+		    if(server!=null) {
 			      while ( true ) {
 			    	  Connection connDB=null;
 			    	  try {
@@ -27,7 +29,6 @@ public class ServerAcceptor {
 			    	  System.out.println("Connection DB ok");
 			    	  }catch(SQLException e1) {
 			    		  System.out.println("Connection DB Refused "+e1);
-			    		  //System.exit(0);
 			    	  }
 			    	  if(connDB != null) {
 				        System.out.println("Waiting client") ;
@@ -43,6 +44,7 @@ public class ServerAcceptor {
 			    	  }
 			      } 
 		      }
+	 }
 		    
 	 }
 
