@@ -70,16 +70,31 @@ public class RoomManager {
 
 	
 	public static boolean update(Room room) throws SQLException {
-		PreparedStatement pStmt = conn.prepareStatement("UPDATE room SET type_room=?, floor=?, room_number=? WHERE id=?");
-		pStmt.setString(1, room.getType_room());
-		pStmt.setInt(2, room.getFloor());
-		pStmt.setInt(3, room.getRoom_number());
-		pStmt.setInt(4, room.getId());
-		int n = pStmt.executeUpdate();
+		Statement Stmt = conn.createStatement();
+		String reqDB="update room set ";
+		
+		if(room.getType_room()!=null) {
+			reqDB+="type_room = '"+room.getType_room()+"'";
+			if(room.getFloor()!=null)
+				reqDB+=", floor = '"+room.getFloor()+"'";
+			if(room.getRoom_number()!=null)
+				reqDB+=", room_number = '"+room.getRoom_number()+"'";
+		}
+		else if(room.getFloor()!=null) {
+			reqDB+="floor = '"+room.getFloor()+"'";
+			if(room.getRoom_number()!=null)
+				reqDB+=", room_number = '"+room.getRoom_number()+"'";
+		}
+		else if(room.getRoom_number()!=null) {
+				reqDB+="room_number = '"+room.getRoom_number()+"'";
+		}
+		reqDB+=" WHERE id="+room.getId()+";"; ;
+		
+		int n = Stmt.executeUpdate(reqDB);
 		// Closing
-		pStmt.close();
+		Stmt.close();
         DataSource.releaseConnection(conn);
-		return n==1;
+        return n==1;
 	}
 	
 	public static boolean delete(Room room) throws SQLException{

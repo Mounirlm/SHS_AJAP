@@ -115,7 +115,7 @@ public class RoomController implements ActionListener{
 					else
 						JOptionPane.showMessageDialog(null, message, "Update Error", JOptionPane.ERROR_MESSAGE);
 					
-				} catch (Exception e1) {
+				} catch (Exception e1) {System.out.println("erreur catch "+e1.getMessage());
 					JOptionPane.showMessageDialog(null, e1.getMessage(), "Communication Error", JOptionPane.ERROR_MESSAGE);
 				}
 				
@@ -222,23 +222,40 @@ public class RoomController implements ActionListener{
 		}
 
 	public String update(String[] form) throws Exception {
-		 	if(form[0].isEmpty() || form[1].isEmpty() || form[2].isEmpty()|| form[3].isEmpty())
-				throw new Exception("Empty");
-		 	if(!isInteger(form[0]))
-				throw new Exception("ID number must be a number");
+		if(form[0].isEmpty() && form[1].isEmpty() && form[2].isEmpty()&&form[3].isEmpty())
+			throw new Exception("Empty");
+		if(form[0].isEmpty()) {
+			throw new Exception("ID number must be specified");
+		}
+		if(!form[0].isEmpty()) {
+			if(!isInteger(form[0]))
+			throw new Exception("ID number must be a number");
+		}
+		if(!form[0].isEmpty() && form[1].isEmpty() && form[2].isEmpty()&&form[3].isEmpty())
+			throw new Exception("A value must be specified for update");
+		
+		if(!form[1].isEmpty()){
 			if (isInteger(Character.toString(form[1].charAt(0))))
-				throw new Exception("Room type can't start by a number");
+			throw new Exception("Room type can't start by a number");
+		}
+		if(!form[2].isEmpty()) {
 			if(!isInteger(form[2]))
 				throw new Exception("Floor number must be a number");
+		}
+		if(!form[3].isEmpty()) {
 			if(!isInteger(form[3]))
 				throw new Exception("Room number must be a number");
-			
-			Room room = new Room();
-			room.setId(Integer.parseInt(form[0]));
+		}
+					
+		Room room = new Room();
+		if(!form[0].isEmpty())
+			room.setId(Integer.valueOf(form[0]));
+		if(!form[1].isEmpty())
 			room.setType_room(form[1].toLowerCase());
-			room.setFloor(Integer.parseInt(form[2]));
-			room.setRoom_number(Integer.parseInt(form[3]));
-			//System.out.println(room);
+		if(!form[2].isEmpty())
+			room.setFloor(Integer.valueOf(form[2]));
+		if(!form[3].isEmpty())
+			room.setRoom_number(Integer.valueOf(form[3]));
 			//send to server
 			return servH.updateRoomToServer(room);
 			
