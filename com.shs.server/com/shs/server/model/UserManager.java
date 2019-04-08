@@ -65,16 +65,19 @@ public class UserManager {
 	
 	public static List<User> getUsersBy(String req) throws SQLException{
 		Statement Stmt = conn.createStatement();System.out.println(Stmt.isClosed());
-        ResultSet rs = Stmt.executeQuery("SELECT * FROM users WHERE "+req);      
-        ArrayList<User> userList = new ArrayList<User>();
-        while(rs.next()){         
-        	userList.add(new User(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("email"), rs.getString("password"), rs.getString("function")));           
-        }
+		ArrayList<User> userList = new ArrayList<User>();
+		ResultSet rs=null;
+        try{
+	        rs = Stmt.executeQuery("SELECT * FROM users WHERE "+req);      
+	        while(rs.next()){         
+	        	userList.add(new User(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("email"), rs.getString("password"), rs.getString("function")));           
+	        }
 		
-	    // Closing
-	    rs.close();
-	    Stmt.close();
-	    DataSource.releaseConnection(conn);
+		}finally{// Closing
+		    rs.close();
+		    Stmt.close();
+		    DataSource.releaseConnection(conn);
+	    }
 		
 		return userList;
 	}

@@ -23,10 +23,10 @@ public class ServerAcceptor {
 			      while ( true ) {
 			    	  Connection connDB=null;
 			    	  try {
-			    	  connDB =DataSource.getConnection();
+			    	  connDB=DataSource.getConnection();
 			    	  System.out.println("Connection DB ok");
 			    	  }catch(SQLException e1) {
-			    		  System.out.println("Connection DB Refused");
+			    		  System.out.println("Connection DB Refused "+e1);
 			    		  //System.exit(0);
 			    	  }
 			    	  if(connDB != null) {
