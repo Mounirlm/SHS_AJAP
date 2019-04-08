@@ -10,7 +10,7 @@ import com.shs.server.connection.pool.DBAccess;
 import com.shs.server.connection.pool.DataSource;
 
 public class ServerAcceptor {
-	 public static void main (String[] args) throws SQLException, ClassNotFoundException {
+	 public static void main (String[] args) throws SQLException, ClassNotFoundException, IOException {
 		 	ServerSocket server = null;
 		    int port = DBAccess.getPORT_SERVER();
 		    DataSource dt = new DataSource();
@@ -18,12 +18,12 @@ public class ServerAcceptor {
 			      server = new ServerSocket(port);
 			      System.out.println("Server  Ok");
 			   }catch(IOException e) { 
-				    	System.out.println("Error server");
+				    	throw new IOException("Error server "+e);
 			   }
 			      while ( true ) {
 			    	  Connection connDB=null;
 			    	  try {
-			    	  connDB =DataSource.getConnection();System.out.println(connDB);
+			    	  connDB =DataSource.getConnection();
 			    	  System.out.println("Connection DB ok");
 			    	  }catch(SQLException e1) {
 			    		  System.out.println("Connection DB Refused");

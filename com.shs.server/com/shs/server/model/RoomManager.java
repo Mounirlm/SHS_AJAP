@@ -18,41 +18,53 @@ public class RoomManager {
 	
 	public static ArrayList<Room> getRoomsBy(String req) throws SQLException{
 		Statement Stmt = conn.createStatement();
-        ResultSet RS = Stmt.executeQuery("SELECT * FROM room WHERE "+req);
-        ArrayList<Room> roomList = new ArrayList<Room>();
+		ArrayList<Room> roomList = new ArrayList<Room>();
+		ResultSet RS=null;
+		try {
+        RS = Stmt.executeQuery("SELECT * FROM room WHERE "+req);
         while(RS.next())
         	roomList.add(new Room(RS.getInt("id"),RS.getString("type_room"),RS.getInt("floor"), RS.getInt("room_number")));
+		}finally {
         // Closing
 	    RS.close();
 	    Stmt.close();
 	    DataSource.releaseConnection(conn);
+		}
 	    return roomList;
 	}
 
 	public static ArrayList<Room> getRooms() throws SQLException{
 		Statement Stmt = conn.createStatement();
-        ResultSet RS = Stmt.executeQuery("SELECT * FROM room");
         ArrayList<Room> roomList = new ArrayList<Room>();
+        ResultSet RS=null;
+        try {
+        RS = Stmt.executeQuery("SELECT * FROM room");
         while(RS.next())
         	roomList.add(new Room(RS.getInt("id"),RS.getString("type_room"),RS.getInt("floor"), RS.getInt("room_number")));
+        }finally {
         // Closing
 	    RS.close();
 	    Stmt.close();
 	    DataSource.releaseConnection(conn);
+        }
 	    return roomList;
 	}
 	
 	public static Room getRoom(int id) throws SQLException{
 		Statement Stmt = conn.createStatement();
-        ResultSet RS = Stmt.executeQuery("SELECT * FROM room WHERE id="+id);
-        Room room = null;
+		Room room = null;
+		ResultSet RS=null;
+		try {
+        RS = Stmt.executeQuery("SELECT * FROM room WHERE id="+id);
         if(RS.next()) {
         room=new Room(RS.getInt("id"),RS.getString("type_room"),RS.getInt("floor"),RS.getInt("room_number"));
         }
-        // Closing
-	    RS.close();
-	    Stmt.close();
-	    DataSource.releaseConnection(conn);
+		}finally {
+	        // Closing
+		    RS.close();
+		    Stmt.close();
+		    DataSource.releaseConnection(conn);
+		}
         return room;
 	}
 	
@@ -61,10 +73,14 @@ public class RoomManager {
 		pStmt.setString(1, room.getType_room());
 		pStmt.setInt(2, room.getFloor());
 		pStmt.setInt(3, room.getRoom_number());
-		int n = pStmt.executeUpdate();
+		int n=0;
+		try {
+			n = pStmt.executeUpdate();}
+		finally {
 		// Closing
 		pStmt.close();
         DataSource.releaseConnection(conn);
+		}
 		return n==1;
 	}
 
@@ -90,28 +106,40 @@ public class RoomManager {
 		}
 		reqDB+=" WHERE id="+room.getId()+";"; ;
 		
-		int n = Stmt.executeUpdate(reqDB);
+		int n=0;
+		try{
+			n = Stmt.executeUpdate(reqDB);
+		}finally {
 		// Closing
 		Stmt.close();
         DataSource.releaseConnection(conn);
-        return n==1;
+		}
+		return n==1;
 	}
 	
 	public static boolean delete(Room room) throws SQLException{
 		Statement Stmt = conn.createStatement();
-		int n = Stmt.executeUpdate("DELETE FROM room WHERE id=" + room.getId());
+		int n=0;
+		try{
+		n = Stmt.executeUpdate("DELETE FROM room WHERE id=" + room.getId());}
+		finally {
 		//Closing
         Stmt.close();
         DataSource.releaseConnection(conn);
+		}
         return n==1;
 	}
 
 	public static boolean deleteAll() throws SQLException{
 		Statement Stmt = conn.createStatement();
-		int n = Stmt.executeUpdate("DELETE FROM room");System.out.println(n);
-		//Closing
-        Stmt.close();
-        DataSource.releaseConnection(conn);
+		int n=0;
+		try{
+		n = Stmt.executeUpdate("DELETE FROM room");System.out.println(n);
+		}finally {
+			//Closing
+	        Stmt.close();
+	        DataSource.releaseConnection(conn);
+        }
         return n>0;
 	}
 }

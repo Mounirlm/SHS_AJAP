@@ -60,9 +60,8 @@ public class JDBCConnectionPool implements JDBCConnectionPoolInterface {
 				} catch (SQLException e) {
 					throw new SQLException("Can't create connection", e);
 				}
-	        } else {System.out.println(getSize()+" taille connection pool");
-	            throw new RuntimeException(
-	              "Maximum pool size reached, no available connections!");
+	        } else {
+	            System.out.println("Maximum pool size reached, no available connections!");
 	        }
 	    }
 	 
