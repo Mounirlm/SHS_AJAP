@@ -32,7 +32,7 @@ public class JDBCConnectionPool implements JDBCConnectionPoolInterface {
 			try {
 				this.connections.add(createConnection());
 			} catch (SQLException e) {
-				throw new SQLException("Can't create connection",e);
+				System.out.println("Can't create connection"+e);
 			}
         }
 	}
@@ -41,8 +41,9 @@ public class JDBCConnectionPool implements JDBCConnectionPoolInterface {
 			try {
 				return DriverManager.getConnection(DBAccess.getDB_URL(),DBAccess.getDB_USERNAME(), DBAccess.getDB_PASSWORD());
 			} catch (SQLException e) {
-				throw new SQLException("Can't create connection",e);
+				throw new SQLException("Can't create connection"+e);
 			}
+			
         
 	}
 		     
@@ -59,7 +60,7 @@ public class JDBCConnectionPool implements JDBCConnectionPoolInterface {
 				} catch (SQLException e) {
 					throw new SQLException("Can't create connection", e);
 				}
-	        } else {
+	        } else {System.out.println(getSize()+" taille connection pool");
 	            throw new RuntimeException(
 	              "Maximum pool size reached, no available connections!");
 	        }
