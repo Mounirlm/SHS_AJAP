@@ -1,71 +1,57 @@
 package com.shs.client.view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
+import java.awt.CardLayout;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
+import javax.swing.AbstractButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.shs.client.controller.MenuController;
 import com.shs.client.controller.RoomController;
 
 // La vue s'occupe de l'afffichage
 public class SHSView {
  
 	public JFrame frame;
+	
+	private MenuView pMenu;
+	private AppView pApp;
+	private JPanel appPanel;
+	private ConnectionView connectionPanel;
+	private CardLayout cd;
+	
 	public SHSView() {
-		frame = new JFrame("SHS");
-		BorderLayout layout = new BorderLayout();
-		frame.setLayout(layout);
-		frame.setResizable(false);
-		frame.setBounds(500, 200, 500, 400);
-		frame.setBackground(Color.black);
 		
-		//Panel Titre
-		JPanel pTitle = new JPanel(new FlowLayout());
-		pTitle.setBackground(Color.white);
-		JLabel title = new JLabel("New secured room");
-		pTitle.add(title);
-		frame.add(pTitle,BorderLayout.NORTH);
+		//window properties
+		frame = new JFrame("SHS AutonHome");
+		frame.setSize(ColorsApp.getWIDTH(),ColorsApp.getHEIGHT());
+		frame.setLocationRelativeTo(null);
+		frame.getContentPane().setBackground(ColorsApp.getBgApp());
 		
-		//Panel Formulaire
-		JPanel pForm = new JPanel(new GridLayout(4, 1));
-		JTextField jtfRoomType = new JTextField("Bedroom",20);
-		JTextField jtfFloor = new JTextField(20);
-		pForm.add(new JLabel("Type"));
-		pForm.add(jtfRoomType);
-		pForm.add(new JLabel("Floor"));
-		pForm.add(jtfFloor);
-		frame.add(pForm, BorderLayout.CENTER);
+		//main layout
+		cd = new CardLayout();
+		frame.setLayout(cd);
 		
-		//Panel Valider
-		JPanel pValidate = new JPanel();
-		JButton validateButton = new JButton("Confirm");
-		validateButton.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String[] form = new String[2];
-				form[0] = jtfRoomType.getText();
-				form[1] = jtfFloor.getText();
-				try {
-					RoomController.insert(form);
-					title.setText("New secured room");
-					
-				} catch (Exception e1) {
-					title.setText(e1.getMessage());
-				}
-				
-			}
-		});
-		pValidate.add("inserer",validateButton);
-		frame.add(pValidate, BorderLayout.SOUTH);
+		//appPanel
+		appPanel=new JPanel(new BorderLayout());
+		//Panel Menu
+		pMenu = new MenuView();
+		//Panel App
+		pApp= new AppView();
+		appPanel.add(pMenu, BorderLayout.WEST);
+		appPanel.add(pApp, BorderLayout.CENTER);
+		
+		
+		//connectionPanel
+		connectionPanel= new ConnectionView();
+		
+		//Window
+		frame.getContentPane().add("appPanel", appPanel);
+		frame.getContentPane().add("connectionPanel", connectionPanel);
+		cd.show(frame.getContentPane(), "connectionPanel");
 		show();
 	}
 	
@@ -74,5 +60,31 @@ public class SHSView {
 		frame.setVisible(true);
 	}
 	
- 
+	
+	
+	public MenuView getpMenu() {
+		return pMenu;
+	}
+
+	public AppView getpApp() {
+		return pApp;
+	}
+
+
+	public ConnectionView getConnectionPanel() {
+		return connectionPanel;
+	}
+
+	public CardLayout getCd() {
+		return cd;
+	}
+
+	public JFrame getFrame() {
+		return frame;
+	}
+
+	
+
+
+	
 }

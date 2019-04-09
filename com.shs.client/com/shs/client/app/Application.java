@@ -1,15 +1,23 @@
 package com.shs.client.app;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
+import com.shs.client.controller.LoginController;
+import com.shs.client.controller.MenuController;
 import com.shs.client.controller.RoomController;
 import com.shs.client.view.SHSView;
 
 public class Application {
-	RoomController shsController;
+	RoomController roomController;
+	MenuController menuController;
+	LoginController loginController;
 	
-	public Application() throws SQLException, ClassNotFoundException {
-		shsController = new RoomController(new SHSView());
+	public Application() throws SQLException, ClassNotFoundException, IOException {
+		SHSView appWindow = new SHSView();
+		roomController = new RoomController(appWindow);
+		menuController = new MenuController(appWindow);
+		//loginController= new LoginController(appWindow);
 		
 	}
 	

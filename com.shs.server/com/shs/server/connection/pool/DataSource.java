@@ -15,14 +15,14 @@ public class DataSource {
 	}
 	
 	//instanciation of the pool if it was'nt the case
-	public JDBCConnectionPool initPool() throws ClassNotFoundException, SQLException {
+	public JDBCConnectionPool initPool() throws SQLException, ClassNotFoundException {
 		if(pool==null)
 			pool = new JDBCConnectionPool();
 		
 		return pool;
 	}
 		
-	public static Connection getConnection() throws SQLException {
+	public static Connection getConnection() throws SQLException{
 		return pool.getConnection();
 	}
 	
