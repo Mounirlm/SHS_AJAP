@@ -11,9 +11,6 @@ public class AppView extends JPanel{
 	private ArrayList<JPanel> appView;
 	private SupRoomView supRoomView;
 	private IndexView indexView;
-	private MapView mapView;
-	private AnalyzeView analyzeView;
-	private EquipmentNeed equipmentNeed;
 	
 	public AppView() {
 		super();
@@ -22,30 +19,25 @@ public class AppView extends JPanel{
 		cdViewApp = new CardLayout();
 		this.setLayout(cdViewApp);
 		//new views
-		appView = new ArrayList<>(5);
+		appView = new ArrayList<>(7);
 		indexView = new IndexView();
-		mapView = new MapView();
-		analyzeView = new AnalyzeView();
-		equipmentNeed = new EquipmentNeed();
 		supRoomView = new SupRoomView();
 		
 		//add views in list views
 		appView.add(indexView);
-		appView.add(mapView);
-		appView.add(analyzeView);
-		appView.add(equipmentNeed);
 		appView.add(supRoomView);
-			
+		//add other vieew for R3
+		for (int i = 2; i < appView.size(); i++) {
+			appView.add(new JPanel());
+		}
 		
 		//fill cardLayout
 		this.add("indexView", appView.get(0));
-			
+		this.add("supRoomView", appView.get(1));
 		//add other vieew for R3
-		this.add("mapView", appView.get(1));
-		this.add("analyzeView", appView.get(2));
-		this.add("equipmentView", appView.get(3));
-		this.add("supRoomView", appView.get(4));
-		
+		for (int i = 2; i < appView.size(); i++) {
+			this.add("others", appView.get(i));
+		}
 		
 		cdViewApp.show(this, "indexView");			
 		

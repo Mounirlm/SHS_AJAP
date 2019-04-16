@@ -44,18 +44,14 @@ public class MenuView extends JPanel {
 		
 		//Panel Center menu
 		JPanel pCenterMenu = new JPanel();
-		pCenterMenu.setLayout(new GridLayout(4,1));
+		pCenterMenu.setLayout(new GridLayout(6,1));
 		//Items
-		menuItems = new ArrayList<JButton>(4);
-		
-		//Items for R3
-		
-		menuItems.add(new JButton("Map and Visualize Sensors"));
-		menuItems.add(new JButton("Analyze indicators"));
-		menuItems.add(new JButton("Needs Equipment"));	
+		menuItems = new ArrayList<JButton>(6);
 		menuItems.add(new JButton("Supervised Rooms"));
-		
-		
+		//Items for R3
+		for (int i = 1; i < 6; i++) {
+			menuItems.add(new JButton());
+		}
 
 		//buttons colors
 		
@@ -96,7 +92,7 @@ public class MenuView extends JPanel {
 
 	public void addMenuListner(ActionListener act) {
 		for (int i = 0; i < menuItems.size(); i++) {
-			menuItems.get(i).addActionListener(act);
+			menuItems.get(0).addActionListener(act);
 		}
 	}
 

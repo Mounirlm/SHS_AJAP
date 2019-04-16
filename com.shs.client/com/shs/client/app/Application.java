@@ -17,7 +17,7 @@ public class Application {
 		SHSView appWindow = new SHSView();
 		roomController = new RoomController(appWindow);
 		menuController = new MenuController(appWindow);
-		loginController= new LoginController(appWindow);
+		//loginController= new LoginController(appWindow);
 		
 	}
 	
