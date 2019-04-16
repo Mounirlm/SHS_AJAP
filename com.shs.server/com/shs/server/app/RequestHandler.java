@@ -12,10 +12,14 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import com.shs.commons.model.Alert;
 import com.shs.commons.model.Room;
+import com.shs.commons.model.Sensor;
 import com.shs.commons.model.User;
+import com.shs.server.model.AlertRequestManager;
 import com.shs.server.model.RoomManager;
 import com.shs.server.model.RoomRequestManager;
+import com.shs.server.model.SensorRequestManager;
 import com.shs.server.model.UserManager;
 import com.shs.server.model.UserRequestManager;
 
@@ -80,6 +84,10 @@ public class RequestHandler implements Runnable {
 	    		   object = new Gson().fromJson(objectJson, Room.class);
 	    	   if(className.equals("User"))
 	    		   object = new Gson().fromJson(objectJson, User.class);
+	    	   if(className.equals("Sensor"))
+	    		   object = new Gson().fromJson(objectJson, Sensor.class);
+	    	   if(className.equals("Alert"))
+	    		   object = new Gson().fromJson(objectJson, Alert.class);
 	       }else {
 	         reader.skipValue();
 	       }
@@ -99,6 +107,20 @@ public class RequestHandler implements Runnable {
 			UserRequestManager reqUser = new UserRequestManager(connDB, reader, writer, user, request);
 			message=reqUser.requestManager();
 			break;
+			
+		case "Sensor":
+			Sensor sensor =(Sensor) object;
+			SensorRequestManager reqSensor = new SensorRequestManager(connDB, reader, writer, sensor, request);
+			message=reqSensor.requestManager();
+			break;
+			
+		case "Alert":
+			Alert alert =(Alert) object;
+			AlertRequestManager reqAlert = new AlertRequestManager(connDB, reader, writer, alert, request);
+			message=reqAlert.requestManager();
+			break;
+			
+		
 
 		default:
 			break;
