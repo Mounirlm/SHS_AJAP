@@ -99,6 +99,8 @@ public class RequestHandler implements Runnable {
 			UserRequestManager reqUser = new UserRequestManager(connDB, reader, writer, user, request);
 			message=reqUser.requestManager();
 			break;
+			
+		
 
 		default:
 			break;

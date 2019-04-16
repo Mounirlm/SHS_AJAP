@@ -25,9 +25,23 @@ public class MenuController implements ActionListener{
 				view.getpApp().setCard("indexView");
 				break;
 				
+			case "Map and Visualize Sensors":
+				view.getpApp().setCard("mapView");
+				break;
+			
+			case "Analyze indicators":
+				view.getpApp().setCard("analyzeView");
+				break;
+				
+			case "Needs Equipment":
+				view.getpApp().setCard("equipmentView");
+				break;
+								
+			
 			case "Supervised Rooms":
 				view.getpApp().setCard("supRoomView");
 				break;
+			
 
 			default:
 				break;
