@@ -41,10 +41,18 @@ public class RoomManager {
         }finally {
         // Closing
         DataSource.releaseConnection(conn);
-	    RS.close();
-	    rstype_room.close();
-	    rswing_room.close();
-	    Stmt.close();
+        if(RS!=null)
+	        try{RS.close();}catch(Exception e){e.printStackTrace();} 
+		if(rstype_room!=null)
+        	try{rstype_room.close();}catch(Exception e){e.printStackTrace();} 
+        if(rswing_room!=null)
+        	try{rswing_room.close();}catch(Exception e){e.printStackTrace();}  
+        if(Stmt!=null)
+        	try{Stmt.close();}catch(Exception e){e.printStackTrace();} 
+        if(Stmt2!=null)
+        	try{Stmt2.close();}catch(Exception e){e.printStackTrace();} 
+        if(Stmt3!=null)
+        	try{Stmt3.close();}catch(Exception e){e.printStackTrace();}  
 	    
 		}
 	    return roomList;
@@ -75,10 +83,18 @@ public class RoomManager {
         finally {
         // Closing
         DataSource.releaseConnection(conn);
-	    RS.close();
-	    rstype_room.close();
-	    rswing_room.close();
-	    Stmt.close();
+        if(RS!=null)
+	        try{RS.close();}catch(Exception e){e.printStackTrace();} 
+		if(rstype_room!=null)
+        	try{rstype_room.close();}catch(Exception e){e.printStackTrace();} 
+        if(rswing_room!=null)
+        	try{rswing_room.close();}catch(Exception e){e.printStackTrace();}  
+        if(Stmt!=null)
+        	try{Stmt.close();}catch(Exception e){e.printStackTrace();} 
+        if(Stmt2!=null)
+        	try{Stmt2.close();}catch(Exception e){e.printStackTrace();} 
+        if(Stmt3!=null)
+        	try{Stmt3.close();}catch(Exception e){e.printStackTrace();}  
         }
 	    return roomList;
 	}
@@ -93,9 +109,10 @@ public class RoomManager {
 		ResultSet rswing_room=null;
 		try {
         RS = Stmt.executeQuery("SELECT * FROM room WHERE id="+id);
-        rstype_room=Stmt2.executeQuery("SELECT * FROM type_room WHERE id="+RS.getInt("fk_type_room"));
-    	rswing_room=Stmt3.executeQuery("SELECT * FROM wing_room WHERE id="+RS.getInt("fk_wing_room"));
+        
         if(RS.next()) {
+        	rstype_room=Stmt2.executeQuery("SELECT * FROM type_room WHERE id="+RS.getInt("fk_type_room"));
+        	rswing_room=Stmt3.executeQuery("SELECT * FROM wing_room WHERE id="+RS.getInt("fk_wing_room"));
         	if ( rstype_room.next() && rswing_room.next()) {
 		        room=new Room(RS.getInt("id"),RS.getInt("floor"), RS.getInt("room_number"), RS.getInt("m2"),
 		    			new Type_Room(rstype_room.getInt("id"), rstype_room.getString("name")),
@@ -105,10 +122,18 @@ public class RoomManager {
 		}finally {
 	        // Closing
 			DataSource.releaseConnection(conn);
-		    RS.close();
-		    rstype_room.close();
-		    rswing_room.close();
-		    Stmt.close();
+			if(RS!=null)
+		        try{RS.close();}catch(Exception e){e.printStackTrace();} 
+			if(rstype_room!=null)
+	        	try{rstype_room.close();}catch(Exception e){e.printStackTrace();} 
+	        if(rswing_room!=null)
+	        	try{rswing_room.close();}catch(Exception e){e.printStackTrace();}  
+	        if(Stmt!=null)
+	        	try{Stmt.close();}catch(Exception e){e.printStackTrace();} 
+	        if(Stmt2!=null)
+	        	try{Stmt2.close();}catch(Exception e){e.printStackTrace();} 
+	        if(Stmt3!=null)
+	        	try{Stmt3.close();}catch(Exception e){e.printStackTrace();}     
 		    
 		}
         return room;
@@ -126,7 +151,10 @@ public class RoomManager {
 		finally {
 		// Closing
 		DataSource.releaseConnection(conn);
-		pStmt.close();
+		
+		if(pStmt!=null)
+        	try{pStmt.close();}catch(Exception e){e.printStackTrace();} 
+        
         
 		}
 		return n==1;
@@ -180,7 +208,10 @@ public class RoomManager {
 		}finally {
 		// Closing
 		DataSource.releaseConnection(conn);
-		Stmt.close();
+	
+		if(Stmt!=null)
+        	try{Stmt.close();}catch(Exception e){e.printStackTrace();} 
+        
 		}
 		return n==1;
 	}
@@ -193,7 +224,8 @@ public class RoomManager {
 		finally {
 		//Closing
 		DataSource.releaseConnection(conn);
-        Stmt.close();
+		if(Stmt!=null)
+        	try{Stmt.close();}catch(Exception e){e.printStackTrace();} 
 		}
         return n==1;
 	}
@@ -206,7 +238,8 @@ public class RoomManager {
 		}finally {
 			//Closing
 			DataSource.releaseConnection(conn);
-	        Stmt.close();
+			if(Stmt!=null)
+	        	try{Stmt.close();}catch(Exception e){e.printStackTrace();} ;
 	        
         }
         return n>0;
