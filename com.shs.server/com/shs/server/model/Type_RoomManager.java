@@ -33,9 +33,10 @@ public class Type_RoomManager {
         }
         finally {
         // Closing
+        DataSource.releaseConnection(conn);
 	    RS.close();
 	    Stmt.close();
-	    DataSource.releaseConnection(conn);
+	   
         }
 	    return type_roomList;
 	}

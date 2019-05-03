@@ -172,8 +172,8 @@ public class RudRoomView extends JPanel {
 				cols.put("ID",""+room.getId());cols.put("FLOOR",""+room.getFloor());
 				cols.put("M²",""+room.getM2());
 				cols.put("ROOM NUMBER",""+room.getRoom_number());
-				cols.put("TYPE",""+room.getType_room().getId());
-				cols.put("WING",""+room.getWing_room().getId());
+				cols.put("TYPE",""+room.getType_room().getName());
+				cols.put("WING",""+room.getWing_room().getName());
 				ArrayList<String> buttons = new ArrayList<>();
 				ArrayList<String> labels = new ArrayList<>();
 				ArrayList<Type_Room> list1 = new ArrayList<>();

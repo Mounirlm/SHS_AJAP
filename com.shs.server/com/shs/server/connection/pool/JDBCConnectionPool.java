@@ -48,7 +48,7 @@ public class JDBCConnectionPool implements JDBCConnectionPoolInterface {
 	}
 		     
 	public int getSize() {
-		return connections.size() + usedConnections.size();
+		return usedConnections.size();
 	}
 
 	@Override

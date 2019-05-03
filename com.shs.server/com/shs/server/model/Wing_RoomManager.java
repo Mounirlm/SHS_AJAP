@@ -32,9 +32,10 @@ private static Connection conn;
         }
         finally {
         // Closing
+        DataSource.releaseConnection(conn);
 	    RS.close();
 	    Stmt.close();
-	    DataSource.releaseConnection(conn);
+	    
         }
 	    return wing_roomList;
 	}
