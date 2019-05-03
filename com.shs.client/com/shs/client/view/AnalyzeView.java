@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -14,6 +15,10 @@ public class AnalyzeView extends JPanel {
 	
 	private JPanel pCenter;
 	private JPanel pTopB;
+	private JButton FloorTopBarButton;
+	private JButton WingTopBarButton;
+	private JButton TotalTopBarButton;
+	private CardLayout centerCardLayout;
 
 	public AnalyzeView() {
 		super();
@@ -34,16 +39,16 @@ public class AnalyzeView extends JPanel {
 		//pTopb
 		pTopB = new JPanel();
 		pTopB.setLayout(new GridLayout(1, 3));
-		addTopBarButton("Floor");
-		addTopBarButton("Wing");
-		addTopBarButton("Total");
+		FloorTopBarButton = addTopBarButton("Floor");
+		WingTopBarButton = addTopBarButton("Wing");
+		TotalTopBarButton =addTopBarButton("Total");
 		pTop.add(title, BorderLayout.NORTH);
 		pTop.add(pTopB, BorderLayout.SOUTH);
 		
 		//pCenter
 		pCenter.setBackground(ColorsApp.getBgApp());
-		CardLayout cd = new CardLayout();
-		pCenter.setLayout(cd);
+		centerCardLayout = new CardLayout();
+		pCenter.setLayout(centerCardLayout);
 		
 		AnalyzeFloorView pFloor = new AnalyzeFloorView();
 		pCenter.add("floor", pFloor);
@@ -57,14 +62,30 @@ public class AnalyzeView extends JPanel {
 		
 	}
 
-	private void addTopBarButton(String buttonTitle) {
-		JButton jbAlerts = new JButton(buttonTitle);
-		jbAlerts.setBackground(ColorsApp.getBgThem());
-		jbAlerts.setForeground(ColorsApp.getBgApp());
-		jbAlerts.setFont(new Font("Arial", Font.BOLD, 25));
-		jbAlerts.setBorder(new LineBorder(ColorsApp.getBgTitle(),2));
+	private JButton addTopBarButton(String buttonTitle) {
+		JButton button = new JButton(buttonTitle);
+		button.setBackground(ColorsApp.getBgThem());
+		button.setForeground(ColorsApp.getBgApp());
+		button.setFont(new Font("Arial", Font.BOLD, 25));
+		button.setBorder(new LineBorder(ColorsApp.getBgTitle(),2));
+		pTopB.add(button);
+		
+		return button;
+	}
 
-		pTopB.add(jbAlerts);
+	public void addTopBarButtonListener(ActionListener action) {
+		FloorTopBarButton.addActionListener(action);
+		WingTopBarButton.addActionListener(action);
+		TotalTopBarButton.addActionListener(action);
+	}
+	
+	public void setCard(String name) {
+		centerCardLayout.show(pCenter, name);
+		
+	}
+	
+	public CardLayout getCenterCardLayout() {
+		return centerCardLayout;
 	}
 	
 }
