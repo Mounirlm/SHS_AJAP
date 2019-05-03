@@ -69,11 +69,6 @@ public class Room implements Comparable<Room>{
 	}
 
 	
-	@Override
-	public String toString() {
-		return "Room [id=" + id + ", type_room=" + type_room + ", floor=" + floor + ", room_number=" + room_number
-				+ "]";
-	}
 
 	@Override
 	public int compareTo(Room o) {
@@ -83,6 +78,12 @@ public class Room implements Comparable<Room>{
 		return 1;
 		else
 		return 0;
+	}
+
+	@Override
+	public String toString() {
+		return "Room [id=" + id + ", floor=" + floor + ", room_number=" + room_number + ", m2=" + m2 + ", type_room="
+				+ type_room + ", wing_room=" + wing_room + "]";
 	}
 
 	

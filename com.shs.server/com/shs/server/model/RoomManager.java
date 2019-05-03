@@ -26,7 +26,8 @@ public class RoomManager {
 		ResultSet RS=null;
 		ResultSet rstype_room=null;
 		ResultSet rswing_room=null;
-		try {
+		
+		try {System.out.println(req);
         RS = Stmt.executeQuery("SELECT * FROM room WHERE "+req);
         while(RS.next()) {
         	rstype_room=Stmt3.executeQuery("SELECT * FROM type_room WHERE id="+RS.getInt("fk_type_room"));
@@ -140,20 +141,25 @@ public class RoomManager {
 	}
 	
 	public static boolean create(Room room) throws SQLException{
-		PreparedStatement pStmt = conn.prepareStatement("insert into room (floor, room_number, m2, fk_type_room, fk_wing_room) values (?,?,?,?,?)");
-		pStmt.setInt(1, room.getFloor());
-		pStmt.setInt(2, room.getRoom_number());
-		pStmt.setInt(3, room.getType_room().getId());
-		pStmt.setInt(3, room.getWing_room().getId());
-		int n=0;
+		Statement Stmt = conn.createStatement();
+		String req, room_number;int n=0;
+		if(room.getRoom_number()!=null)
+			room_number = ""+room.getRoom_number();
+		else
+			room_number = "null";
+		
+		//requete sql	
+		 req= "insert into room (floor, room_number, m2, fk_type_room, fk_wing_room) values ("+room.getFloor()+","+room_number+","
+		 +room.getM2()+","+room.getType_room().getId()+","+room.getWing_room().getId()+");";	
+		
 		try {
-			n = pStmt.executeUpdate();}
+			n = Stmt.executeUpdate(req);}
 		finally {
 		// Closing
 		DataSource.releaseConnection(conn);
 		
-		if(pStmt!=null)
-        	try{pStmt.close();}catch(Exception e){e.printStackTrace();} 
+		if(Stmt!=null)
+        	try{Stmt.close();}catch(Exception e){e.printStackTrace();} 
         
         
 		}

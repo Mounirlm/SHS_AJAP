@@ -265,15 +265,15 @@ public class RoomController implements ActionListener{
 		}
 		
 		if(!form[1].isEmpty()) {
-			if(!isInteger(form[2]))
+			if(!isInteger(form[1]))
 				throw new Exception("Floor number must be a number");
 		}
 		if(!form[2].isEmpty()) {
-			if(!isInteger(form[3]))
+			if(!isInteger(form[2]))
 				throw new Exception("Room number must be a number");
 		}
 		if(!form[3].isEmpty()){
-			if(!isInteger(form[4]))
+			if(!isInteger(form[3]))
 			throw new Exception("M² must be a number");
 		}
 		
@@ -298,23 +298,29 @@ public class RoomController implements ActionListener{
 		}
 
 	public String insert(String[] form, Type_Room type_room, Wing_Room wing_room) throws Exception {
-			if(form[0].isEmpty() || form[1].isEmpty()|| form[2].isEmpty())
-				throw new Exception("Empty");
+		Integer room_number = null;
+		if(!form[0].isEmpty() && form[1].isEmpty() && form[2].isEmpty()&&form[3].isEmpty()
+				&&(form[4].equals("null")) &&(form[5].equals("null")))
+			throw new Exception("A value must be specified for update");
 			if(!isInteger(form[0]))
 				throw new Exception("Floor number must be a number");
-			if(!isInteger(form[1]))
-				throw new Exception("Room number must be a number");
-			if (isInteger(form[3]))
+			if(!form[1].isEmpty()){
+				if(!isInteger(form[1]))
+					throw new Exception("Room number must be a number");
+				else
+					room_number = Integer.parseInt(form[1]);
+			}
+			if (!isInteger(form[2]))
 				throw new Exception("M² msut be a number");
-			if (form[4].equals("null"))
+			if (form[3].equals("null"))
 				throw new Exception("A type have to be selected");
-			if (form[5].equals("null"))
+			if (form[4].equals("null"))
 				throw new Exception("A wing have to be selected");
 			
 			
 			Room room = new Room();
 			room.setFloor(Integer.parseInt(form[0]));
-			room.setRoom_number(Integer.parseInt(form[1]));
+			room.setRoom_number(room_number);
 			room.setM2(Integer.parseInt(form[2]));
 			room.setType_room(type_room);
 			room.setWing_room(wing_room);
