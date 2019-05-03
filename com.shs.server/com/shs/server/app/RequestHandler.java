@@ -15,13 +15,16 @@ import com.google.gson.stream.JsonWriter;
 import com.shs.commons.model.Alert;
 import com.shs.commons.model.Room;
 import com.shs.commons.model.Sensor;
+import com.shs.commons.model.Type_Room;
 import com.shs.commons.model.User;
 import com.shs.server.model.AlertRequestManager;
 import com.shs.server.model.RoomManager;
 import com.shs.server.model.RoomRequestManager;
 import com.shs.server.model.SensorRequestManager;
+import com.shs.server.model.Type_RoomRequestManager;
 import com.shs.server.model.UserManager;
 import com.shs.server.model.UserRequestManager;
+import com.shs.server.model.Wing_RoomRequestManager;
 
 
 public class RequestHandler implements Runnable {
@@ -88,6 +91,7 @@ public class RequestHandler implements Runnable {
 	    		   object = new Gson().fromJson(objectJson, Sensor.class);
 	    	   if(className.equals("Alert"))
 	    		   object = new Gson().fromJson(objectJson, Alert.class);
+	    	   
 	       }else {
 	         reader.skipValue();
 	       }
@@ -120,7 +124,15 @@ public class RequestHandler implements Runnable {
 			message=reqAlert.requestManager();
 			break;
 			
-		
+		case "Type_Room":
+			Type_RoomRequestManager reqType_Room = new Type_RoomRequestManager(connDB, reader, writer, request);
+			message=reqType_Room.requestManager();
+			break;
+			
+		case "Wing_Room":
+			Wing_RoomRequestManager reqWing_Room = new Wing_RoomRequestManager(connDB, reader, writer, request);
+			message=reqWing_Room.requestManager();
+			break;
 
 		default:
 			break;

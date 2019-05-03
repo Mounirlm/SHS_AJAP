@@ -13,6 +13,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
+import com.shs.commons.model.Type_Room;
+import com.shs.commons.model.Wing_Room;
+
 public class ConnectionView extends JPanel{
 	private FormView formView;
 	private JPanel pCon;
@@ -34,7 +37,10 @@ public class ConnectionView extends JPanel{
 		ArrayList<String> buttons = new ArrayList<>();
 		buttons.add("LOGIN");
 		
-		formView = new FormView("Connection", cols, buttons, new ArrayList<String>(), "v", true,true, 20,20,20);
+		ArrayList<Type_Room> list1 = new ArrayList<>();
+		ArrayList<Wing_Room> list2 = new ArrayList<>();
+		
+		formView = new FormView("Connection", cols, buttons, new ArrayList<String>(),list1, list2, "v", true,true, 20,20,20);
 		//formView.setBackground(cdApp.getBgApp());
 		//add in view
 		pCon.add(lImage, BorderLayout.NORTH);
