@@ -81,8 +81,8 @@ public class RoomController implements ActionListener{
 				form[1] = view.getpApp().getSupRoomView().getRudView().getSearchView().getFormView().getJtf(1).getText();
 				form[2] = view.getpApp().getSupRoomView().getRudView().getSearchView().getFormView().getJtf(2).getText();
 				form[3] = view.getpApp().getSupRoomView().getRudView().getSearchView().getFormView().getJtf(3).getText();
-				Type_Room type = (Type_Room) view.getpApp().getSupRoomView().getCreateView().getFormView().getCombo_type().getSelectedItem();
-				Wing_Room wing = (Wing_Room) view.getpApp().getSupRoomView().getCreateView().getFormView().getCombo_wing().getSelectedItem();
+				Type_Room type = (Type_Room) view.getpApp().getSupRoomView().getRudView().getSearchView().getFormView().getCombo_type().getSelectedItem();
+				Wing_Room wing = (Wing_Room) view.getpApp().getSupRoomView().getRudView().getSearchView().getFormView().getCombo_wing().getSelectedItem();
 				form[4] = type.toString();
 				form[5] = wing.toString();
 				
@@ -125,8 +125,9 @@ public class RoomController implements ActionListener{
 				form[2] = view.getpApp().getSupRoomView().getRudView().getUpdateView().getFormView().getJtf(2).getText();
 				form[3] = view.getpApp().getSupRoomView().getRudView().getUpdateView().getFormView().getJtf(3).getText();
 				
-				Type_Room type = (Type_Room) view.getpApp().getSupRoomView().getCreateView().getFormView().getCombo_type().getSelectedItem();
-				Wing_Room wing = (Wing_Room) view.getpApp().getSupRoomView().getCreateView().getFormView().getCombo_wing().getSelectedItem();
+				Type_Room type = (Type_Room) view.getpApp().getSupRoomView().getRudView().getUpdateView().getFormView().getCombo_type().getSelectedItem();
+				Wing_Room wing = (Wing_Room) view.getpApp().getSupRoomView().getRudView().getUpdateView().getFormView().getCombo_wing().getSelectedItem();
+								
 				form[4] = type.toString();
 				form[5] = wing.toString();
 				
@@ -190,8 +191,9 @@ public class RoomController implements ActionListener{
 		
 		
 		private List<Room> search(String[] form, Type_Room type_room, Wing_Room wing_room) throws Exception {
-			if(!form[0].isEmpty() && form[1].isEmpty() && form[2].isEmpty()&&form[3].isEmpty()
-					&&(form[4].equals("null")) &&(form[5].equals("null")))
+			if(form[0].isEmpty() && form[1].isEmpty() && form[2].isEmpty()&&form[3].isEmpty()&&(form[4].equals("null")) &&(form[5].equals("null")))
+				throw new Exception("A value must be specified for research");
+			
 			if(!form[0].isEmpty()) {
 				if(!isInteger(form[0]))
 				throw new Exception("ID number must be a number");
@@ -221,10 +223,9 @@ public class RoomController implements ActionListener{
 				room.setRoom_number(Integer.valueOf(form[2]));
 			if(!form[3].isEmpty())
 				room.setM2(Integer.valueOf(form[3]));
-			if (!form[4].equals("null"))
-				room.setType_room(type_room);
-			if (!form[5].equals("null"))
-				room.setWing_room(wing_room);
+				
+			room.setType_room(type_room);
+			room.setWing_room(wing_room);
 			
 			return servH.searchRoomToServer(room);
 			
@@ -252,8 +253,7 @@ public class RoomController implements ActionListener{
 		}
 
 	public String update(String[] form, Type_Room type_room, Wing_Room wing_room) throws Exception {
-		if(!form[0].isEmpty() && form[1].isEmpty() && form[2].isEmpty()&&form[3].isEmpty()
-				&&(form[4].equals("null")) &&(form[5].equals("null")))
+		if(!form[0].isEmpty() && form[1].isEmpty() && form[2].isEmpty()&&form[3].isEmpty()&&(form[4].equals("null")) &&(form[5].equals("null")))
 			throw new Exception("A value must be specified for update");
 		
 		if(form[0].isEmpty()) {
@@ -287,10 +287,9 @@ public class RoomController implements ActionListener{
 			room.setRoom_number(Integer.valueOf(form[2]));
 		if(!form[3].isEmpty())
 			room.setM2(Integer.valueOf(form[3]));
-		if (!form[4].equals("null"))
-			room.setType_room(type_room);
-		if (!form[5].equals("null"))
-			room.setWing_room(wing_room);
+			
+		room.setType_room(type_room);
+		room.setWing_room(wing_room);
 		
 			//send to server
 			return servH.updateRoomToServer(room);

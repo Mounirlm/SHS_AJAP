@@ -137,6 +137,7 @@ public class RudRoomView extends JPanel {
 			
 			//Elements
 			pElem = new JPanel();
+			pElem.setLayout(new GridLayout(500, 1));
 			elems = new ArrayList<>();
 			scrollElem = new JScrollPane(pElem,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 			
@@ -144,17 +145,22 @@ public class RudRoomView extends JPanel {
 			
 		}
 		
-		public void setView(List<Room> rooms) {
+		public void setView(List<Room> rooms) {System.out.println("ok"+rooms);
 			Collections.sort(rooms);
 			elems.clear();
 			pElem.removeAll();
 			scrollElem.remove(pElem);
-			this.remove(1);
-			this.validate();
-			pElem.setLayout(new GridLayout(500, 1));
-			for (int i = 0; i < rooms.size(); i++) {
-				elems.add(new ElementRead(rooms.get(i),false));
-				pElem.add(elems.get(i));
+			this.remove(scrollElem);
+			
+			if(rooms.size()>1) {
+				for (int i = 0; i < rooms.size(); i++) {
+					elems.add(new ElementRead(rooms.get(i),false));
+					pElem.add(elems.get(i));
+				}
+			}
+			else {
+				elems.add(new ElementRead(rooms.get(0),false));
+				pElem.add(elems.get(0));
 			}
 			scrollElem = new JScrollPane(pElem,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 			this.add(scrollElem);
@@ -164,14 +170,18 @@ public class RudRoomView extends JPanel {
 		public class ElementRead extends JPanel{
 			private FormView formView;
 			private Map<String, String> cols;
-			
+			String room_num;
 			public ElementRead(Room room, boolean title) {
 				super();
 				this.setLayout(new BorderLayout());
 				cols = new LinkedHashMap<>();
 				cols.put("ID",""+room.getId());cols.put("FLOOR",""+room.getFloor());
 				cols.put("M²",""+room.getM2());
-				cols.put("ROOM NUMBER",""+room.getRoom_number());
+				if(room.getRoom_number()==0)
+					room_num="null";
+				else
+					room_num=""+room.getRoom_number();
+				cols.put("ROOM NUMBER",""+room_num);
 				cols.put("TYPE",""+room.getType_room().getName());
 				cols.put("WING",""+room.getWing_room().getName());
 				ArrayList<String> buttons = new ArrayList<>();

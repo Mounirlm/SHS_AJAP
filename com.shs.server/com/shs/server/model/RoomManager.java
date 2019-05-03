@@ -30,7 +30,7 @@ public class RoomManager {
 		try {System.out.println(req);
         RS = Stmt.executeQuery("SELECT * FROM room WHERE "+req);
         while(RS.next()) {
-        	rstype_room=Stmt3.executeQuery("SELECT * FROM type_room WHERE id="+RS.getInt("fk_type_room"));
+        	rstype_room=Stmt2.executeQuery("SELECT * FROM type_room WHERE id="+RS.getInt("fk_type_room"));
         	rswing_room=Stmt3.executeQuery("SELECT * FROM wing_room WHERE id="+RS.getInt("fk_wing_room"));
         	if ( rstype_room.next() && rswing_room.next()) {
         	roomList.add(new Room(RS.getInt("id"),RS.getInt("floor"), RS.getInt("room_number"), RS.getInt("m2"),
@@ -172,39 +172,39 @@ public class RoomManager {
 		String reqDB="update room set ";
 		
 		if(room.getFloor()!=null) {
-			reqDB+="floor = '"+room.getFloor()+"'";
+			reqDB+="floor = "+room.getFloor();
 			if(room.getRoom_number()!=null)
-				reqDB+=", room_number = '"+room.getRoom_number()+"'";
+				reqDB+=", room_number = "+room.getRoom_number();
 			if(room.getM2()!=null)
-				reqDB+=", m2 = '"+room.getM2()+"'";
-			if(room.getType_room()!=null)
-				reqDB+=", fk_type_room = '"+room.getType_room().getId()+"'";
-			if(room.getWing_room()!=null)
-				reqDB+=", fk_wing_room = '"+room.getWing_room().getId()+"'";
+				reqDB+=", m2 = "+room.getM2();
+			if(!room.getType_room().getName().equals("null"))
+				reqDB+=", fk_type_room = "+room.getType_room().getId();
+			if(!room.getWing_room().getName().equals("null"))
+				reqDB+=", fk_wing_room = "+room.getWing_room().getId();
 		}
 		else if(room.getRoom_number()!=null) {
-			reqDB+=", room_number = '"+room.getRoom_number()+"'";
+			reqDB+="room_number = "+room.getRoom_number();
 			if(room.getM2()!=null)
-				reqDB+=", m2 = '"+room.getM2()+"'";
-			if(room.getType_room()!=null)
-				reqDB+=", fk_type_room = '"+room.getType_room().getId()+"'";
-			if(room.getWing_room()!=null)
-				reqDB+=", fk_wing_room = '"+room.getWing_room().getId()+"'";
+				reqDB+=", m2 = "+room.getM2();
+			if(!room.getType_room().getName().equals("null"))
+				reqDB+=", fk_type_room = "+room.getType_room().getId();
+			if(!room.getWing_room().getName().equals("null"))
+				reqDB+=", fk_wing_room = "+room.getWing_room().getId();
 		}
 		else if(room.getM2()!=null) {
-			reqDB+=", m2 = '"+room.getM2()+"'";
-			if(room.getType_room()!=null)
-				reqDB+=", fk_type_room = '"+room.getType_room().getId()+"'";
-			if(room.getWing_room()!=null)
-				reqDB+=", fk_wing_room = '"+room.getWing_room().getId()+"'";
+			reqDB+="m2 = "+room.getM2();
+			if(!room.getType_room().getName().equals("null"))
+				reqDB+=", fk_type_room = "+room.getType_room().getId();
+			if(!room.getWing_room().getName().equals("null"))
+				reqDB+=", fk_wing_room = "+room.getWing_room().getId();
 		}
-		else if(room.getType_room()!=null) {
-				reqDB+=", fk_type_room = '"+room.getType_room().getId()+"'";
-			if(room.getWing_room()!=null)
-				reqDB+=", fk_wing_room = '"+room.getWing_room().getId()+"'";
+		else if(!room.getType_room().getName().equals("null")) {
+				reqDB+="fk_type_room = "+room.getType_room().getId();
+			if(!room.getWing_room().getName().equals("null"))
+				reqDB+=", fk_wing_room = "+room.getWing_room().getId();
 		}
-		else if(room.getWing_room()!=null) {
-			reqDB+=", fk_wing_room = '"+room.getWing_room().getId()+"'";
+		else if(!room.getWing_room().getName().equals("null")) {
+			reqDB+="fk_wing_room = "+room.getWing_room().getId();
 		}
 		reqDB+=" WHERE id="+room.getId()+";";
 		
