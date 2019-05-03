@@ -63,4 +63,10 @@ public class AppView extends JPanel{
 	}
 
 
+	public AnalyzeView getAnalyzeView() {
+		return analyzeView;
+	}
+
+
+
 }
