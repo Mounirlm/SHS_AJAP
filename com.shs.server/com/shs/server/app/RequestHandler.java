@@ -6,6 +6,7 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +58,8 @@ public class RequestHandler implements Runnable {
 	    	System.out.println("Error communication to client "+e);
 		} catch (SQLException e) {
 			System.out.println("Error DB "+e);
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
         finally{
 			try {
@@ -66,7 +69,7 @@ public class RequestHandler implements Runnable {
 		
 	}
 	
-	public String readMessage(JsonReader reader) throws IOException, SQLException {
+	public String readMessage(JsonReader reader) throws IOException, SQLException, ParseException {
 		String request=null;
 		Object object=null;
 		String className=null;

@@ -137,7 +137,7 @@ public class RudRoomView extends JPanel {
 			
 			//Elements
 			pElem = new JPanel();
-			pElem.setLayout(new GridLayout(300, 1));
+			pElem.setLayout(new GridLayout(200, 1));
 			elems = new ArrayList<>();
 			scrollElem = new JScrollPane(pElem,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 			
