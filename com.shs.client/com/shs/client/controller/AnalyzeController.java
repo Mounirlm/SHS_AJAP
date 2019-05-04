@@ -31,29 +31,31 @@ public class AnalyzeController{
 		SensorServH = new SensorServHandler();
 		
 		analyzeView = view.getpApp().getAnalyzeView();
-		analyzeView.addTopBarButtonListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(e.getSource() instanceof JButton ){
-					String choice = e.getActionCommand();
-					switch (choice) {
-					case "Floor":
-						analyzeView.setCard("floor");
-						break;
-						
-					case "Wing":
-						analyzeView.setCard("wing");
-						break;
-					case "Total":
-						analyzeView.setCard("total");
-					default:
-						break;
-					}
-				}
-				
-			}
-		});
+		
+		analyzeView.addTopBarButtonListener(actionTopBarButton);
 	}
+	
+	ActionListener actionTopBarButton = new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(e.getSource() instanceof JButton ){
+				String choice = e.getActionCommand();
+				switch (choice) {
+				case "Floor":
+					analyzeView.setCard("floor");
+					break;
+					
+				case "Wing":
+					analyzeView.setCard("wing");
+					break;
+				case "Total":
+					analyzeView.setCard("total");
+				default:
+					break;
+				}
+			}
+			
+		}
+	};
 
 }
