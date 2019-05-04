@@ -22,17 +22,9 @@ public class RoomController implements ActionListener{
 	 public RoomController(SHSView v) throws IOException {
 		 this.view = v;
 		 this.servH  = new RoomServerHandler();
-		 //get types and wings from database
-		 List<Wing_Room> wing = servH.selectAllWingRoom();
-		 List<Type_Room> types = servH.selectAllTypeRoom();
-		 
-		 
-		 //generate combobox (list) in create, resaerch and update view
-		 view.getpApp().getSupRoomView().getCreateView().createCols(types, wing);
-		 view.getpApp().getSupRoomView().getRudView().getSearchView().createCols(types, wing);
-		 view.getpApp().getSupRoomView().getRudView().getUpdateView().createCols(types, wing);
-		 		 
-		 //add listners
+		 //generate combos view in create, reseauch and update views
+		 this.setTypesAndWingsRooms();
+		 //add listners to gui
 		 view.getpApp().getSupRoomView().addRoomMenuListner(this);
 		 view.getpApp().getSupRoomView().getCreateView().addJBInsertListner(jbInsert);
 		 view.getpApp().getSupRoomView().getRudView().getSearchView().getFormView().addJBListner(jbSearch);//lister for select and select all
@@ -297,29 +289,23 @@ public class RoomController implements ActionListener{
 		}
 
 	public String insert(String[] form, Type_Room type_room, Wing_Room wing_room) throws Exception {
-		Integer room_number = null;
-		if(!form[0].isEmpty() && form[1].isEmpty() && form[2].isEmpty()&&form[3].isEmpty()
-				&&(form[4].equals("null")) &&(form[5].equals("null")))
-			throw new Exception("A value must be specified for update");
-			if(!isInteger(form[0]))
-				throw new Exception("Floor number must be a number");
-			if(!form[1].isEmpty()){
-				if(!isInteger(form[1]))
-					throw new Exception("Room number must be a number");
-				else
-					room_number = Integer.parseInt(form[1]);
-			}
-			if (!isInteger(form[2]))
-				throw new Exception("M² msut be a number");
-			if (form[3].equals("null"))
-				throw new Exception("A type have to be selected");
-			if (form[4].equals("null"))
-				throw new Exception("A wing have to be selected");
+		if(form[0].isEmpty() && form[1].isEmpty() && form[2].isEmpty() &&(form[3].equals("null")) &&(form[4].equals("null")))
+			throw new Exception("A value must be specified for insert");
+		if(!isInteger(form[0]))
+			throw new Exception("Floor number must be a number");
+		if(!isInteger(form[1]))
+			throw new Exception("Room number must be a number");
+		if (!isInteger(form[2]))
+			throw new Exception("M² msut be a number");
+		if (form[3].equals("null"))
+			throw new Exception("A type have to be selected");
+		if (form[4].equals("null"))
+			throw new Exception("A wing have to be selected");
 			
-			
+			//Creation of the room to send to server 
 			Room room = new Room();
 			room.setFloor(Integer.parseInt(form[0]));
-			room.setRoom_number(room_number);
+			room.setRoom_number(Integer.parseInt(form[1]));
 			room.setM2(Integer.parseInt(form[2]));
 			room.setType_room(type_room);
 			room.setWing_room(wing_room);
@@ -359,7 +345,7 @@ public class RoomController implements ActionListener{
 			
 		}
 		
-		public void setDisplayView() throws IOException {
+		private void setDisplayView() throws IOException {
 			try {
 			view.getpApp().getSupRoomView().getRudView().getReadView().setView((searchAll()));
 			}catch(IOException ex) {
@@ -367,6 +353,23 @@ public class RoomController implements ActionListener{
 			}
 		}
 		
+		private void setTypesAndWingsRooms() throws IOException {
+			List<Wing_Room> wing = null;
+			List<Type_Room> types = null;
+			try {
+				servH = new RoomServerHandler();
+				//get types and wings from database
+				 wing  = servH.selectAllWingRoom();
+				 types = servH.selectAllTypeRoom();
+			} catch (IOException e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage(), "Error Communication to server ", JOptionPane.ERROR_MESSAGE);
+			}
+			
+			 //generate combobox (list) in create, resaerch and update views
+			 view.getpApp().getSupRoomView().getCreateView().createCols(types, wing);
+			 view.getpApp().getSupRoomView().getRudView().getSearchView().createCols(types, wing);
+			 view.getpApp().getSupRoomView().getRudView().getUpdateView().createCols(types, wing);
+		}
 
 	}
  

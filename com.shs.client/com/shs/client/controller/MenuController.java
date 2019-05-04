@@ -2,10 +2,16 @@ package com.shs.client.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
+import com.shs.client.model.RoomServerHandler;
 import com.shs.client.view.SHSView;
+import com.shs.commons.model.Type_Room;
+import com.shs.commons.model.Wing_Room;
 
 public class MenuController implements ActionListener{
 	SHSView view;
@@ -38,7 +44,7 @@ public class MenuController implements ActionListener{
 				break;
 								
 			
-			case "Supervised Rooms":
+			case "Supervised Rooms":			
 				view.getpApp().setCard("supRoomView");
 				break;
 			

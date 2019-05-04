@@ -58,7 +58,7 @@ public class RudRoomView extends JPanel {
 		
 		public void createCols(List<Type_Room> listT, List<Wing_Room> listW) {
 			Map<String, String> cols = new LinkedHashMap<>();
-			cols.put("RESEARCH ONLY BY ID","");cols.put("BY FLOOR","");cols.put("BY ROOM NUMBER","");cols.put("BY M²","");
+			cols.put("ONLY BY ID","");cols.put("BY FLOOR","");cols.put("BY ROOM NUMBER","");cols.put("BY M²","");
 			
 			ArrayList<String> buttons = new ArrayList<>();
 			buttons.add("RESEARCH");buttons.add("RESEARCH ALL");
@@ -137,7 +137,7 @@ public class RudRoomView extends JPanel {
 			
 			//Elements
 			pElem = new JPanel();
-			pElem.setLayout(new GridLayout(500, 1));
+			pElem.setLayout(new GridLayout(300, 1));
 			elems = new ArrayList<>();
 			scrollElem = new JScrollPane(pElem,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 			
@@ -177,11 +177,7 @@ public class RudRoomView extends JPanel {
 				cols = new LinkedHashMap<>();
 				cols.put("ID",""+room.getId());cols.put("FLOOR",""+room.getFloor());
 				cols.put("M²",""+room.getM2());
-				if(room.getRoom_number()==0)
-					room_num="null";
-				else
-					room_num=""+room.getRoom_number();
-				cols.put("ROOM NUMBER",""+room_num);
+				cols.put("ROOM NUMBER",""+room.getRoom_number());
 				cols.put("TYPE",""+room.getType_room().getName());
 				cols.put("WING",""+room.getWing_room().getName());
 				ArrayList<String> buttons = new ArrayList<>();
