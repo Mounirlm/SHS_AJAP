@@ -74,9 +74,10 @@ public class UserManager {
 	        }
 		
 		}finally{// Closing
+			DataSource.releaseConnection(conn);
 		    rs.close();
 		    Stmt.close();
-		    DataSource.releaseConnection(conn);
+		    
 	    }
 		
 		return userList;

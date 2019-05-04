@@ -71,26 +71,46 @@ public class RoomRequestManager {
 			case "select-Room":
 				try{
 					Room sendRoom=null;
-					String reqDB=null;
+					String reqDB="";
 					List<Room> rooms=new ArrayList<>();
 					if(room.getId()!=null) {
 						sendRoom= RoomManager.getRoom(room.getId());
 					}else {
-						if(room.getType_room()!=null) {
-							reqDB="type_room = '"+room.getType_room()+"'";
-							if(room.getFloor()!=null)
-								reqDB+="and floor = '"+room.getFloor()+"'";
+						if(room.getFloor()!=null) {
+							reqDB+="floor = "+room.getFloor();
 							if(room.getRoom_number()!=null)
-								reqDB+="and room_number = '"+room.getRoom_number()+"'";
-						}
-						else if(room.getFloor()!=null) {
-							reqDB="floor = '"+room.getFloor()+"'";
-							if(room.getRoom_number()!=null)
-								reqDB+="and room_number = '"+room.getRoom_number()+"'";
+								reqDB+="and room_number = "+room.getRoom_number();
+							if(room.getM2()!=null)
+								reqDB+="and m2 = "+room.getM2();
+							if(!room.getType_room().getName().equals("null"))
+								reqDB+="and fk_type_room = "+room.getType_room().getId();
+							if(!room.getWing_room().getName().equals("null"))
+								reqDB+="and fk_wing_room = "+room.getWing_room().getId();
 						}
 						else if(room.getRoom_number()!=null) {
-								reqDB="room_number = '"+room.getRoom_number()+"'";
+							reqDB+="room_number = "+room.getRoom_number();
+							if(room.getM2()!=null)
+								reqDB+="and m2 = "+room.getM2();
+							if(!room.getType_room().getName().equals("null"))
+								reqDB+="and fk_type_room = "+room.getType_room().getId();
+							if(!room.getWing_room().getName().equals("null"))
+								reqDB+="and fk_wing_room = "+room.getWing_room().getId();
 						}
+						else if(room.getM2()!=null) {
+							reqDB+="m2 = "+room.getM2();
+							if(!room.getType_room().getName().equals("null"))
+								reqDB+="and fk_type_room = "+room.getType_room().getId();
+							if(!room.getWing_room().getName().equals("null"))
+								reqDB+="and fk_wing_room = "+room.getWing_room().getId();
+						}
+						else if(!room.getType_room().getName().equals("null")) {
+								reqDB+="fk_type_room = "+room.getType_room().getId();
+							if(!room.getWing_room().getName().equals("null"))
+								reqDB+="and fk_wing_room = "+room.getWing_room().getId();
+						}
+						else if(!room.getWing_room().getName().equals("null")) {
+							reqDB+="fk_wing_room = "+room.getWing_room().getId();
+						}System.out.println(room.getWing_room());
 						reqDB+=";";
 						rooms=RoomManager.getRoomsBy(reqDB);
 					}

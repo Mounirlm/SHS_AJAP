@@ -3,6 +3,7 @@
 	<classpathentry kind="src" path="com.shs.client"/>
 	<classpathentry kind="src" path="com.shs.server"/>
 	<classpathentry kind="src" path="com.shs.commons"/>
+	<classpathentry kind="src" path="com.shs.mockserver"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>

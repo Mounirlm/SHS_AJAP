@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.shs.commons.model.Room;
+import com.shs.commons.model.Type_Room;
+import com.shs.commons.model.Wing_Room;
 import com.shs.server.connection.pool.DataSource;
 
 public class RoomManager {
@@ -18,68 +20,148 @@ public class RoomManager {
 	
 	public static ArrayList<Room> getRoomsBy(String req) throws SQLException{
 		Statement Stmt = conn.createStatement();
+		Statement Stmt2 = conn.createStatement();
+		Statement Stmt3 = conn.createStatement();
 		ArrayList<Room> roomList = new ArrayList<Room>();
 		ResultSet RS=null;
-		try {
+		ResultSet rstype_room=null;
+		ResultSet rswing_room=null;
+		
+		try {System.out.println(req);
         RS = Stmt.executeQuery("SELECT * FROM room WHERE "+req);
-        while(RS.next())
-        	roomList.add(new Room(RS.getInt("id"),RS.getString("type_room"),RS.getInt("floor"), RS.getInt("room_number")));
-		}finally {
+        while(RS.next()) {
+        	rstype_room=Stmt2.executeQuery("SELECT * FROM type_room WHERE id="+RS.getInt("fk_type_room"));
+        	rswing_room=Stmt3.executeQuery("SELECT * FROM wing_room WHERE id="+RS.getInt("fk_wing_room"));
+        	if ( rstype_room.next() && rswing_room.next()) {
+        	roomList.add(new Room(RS.getInt("id"),RS.getInt("floor"), RS.getInt("room_number"), RS.getInt("m2"),
+        			new Type_Room(rstype_room.getInt("id"), rstype_room.getString("name")),
+        			new Wing_Room(rswing_room.getInt("id"), rswing_room.getString("name"))));
+        	}
+        	
+        }
+        }finally {
         // Closing
-	    RS.close();
-	    Stmt.close();
-	    DataSource.releaseConnection(conn);
+        DataSource.releaseConnection(conn);
+        if(RS!=null)
+	        try{RS.close();}catch(Exception e){e.printStackTrace();} 
+		if(rstype_room!=null)
+        	try{rstype_room.close();}catch(Exception e){e.printStackTrace();} 
+        if(rswing_room!=null)
+        	try{rswing_room.close();}catch(Exception e){e.printStackTrace();}  
+        if(Stmt!=null)
+        	try{Stmt.close();}catch(Exception e){e.printStackTrace();} 
+        if(Stmt2!=null)
+        	try{Stmt2.close();}catch(Exception e){e.printStackTrace();} 
+        if(Stmt3!=null)
+        	try{Stmt3.close();}catch(Exception e){e.printStackTrace();}  
+	    
 		}
 	    return roomList;
 	}
 
 	public static ArrayList<Room> getRooms() throws SQLException{
 		Statement Stmt = conn.createStatement();
+		Statement Stmt2 = conn.createStatement();
+		Statement Stmt3 = conn.createStatement();
         ArrayList<Room> roomList = new ArrayList<Room>();
         ResultSet RS=null;
+        ResultSet rstype_room=null;
+		ResultSet rswing_room=null;
         try {
         RS = Stmt.executeQuery("SELECT * FROM room");
-        while(RS.next())
-        	roomList.add(new Room(RS.getInt("id"),RS.getString("type_room"),RS.getInt("floor"), RS.getInt("room_number")));
-        }finally {
+        
+        while(RS.next()) {
+        	rstype_room=Stmt2.executeQuery("SELECT * FROM type_room WHERE id="+RS.getInt("fk_type_room"));
+        	rswing_room=Stmt3.executeQuery("SELECT * FROM wing_room WHERE id="+RS.getInt("fk_wing_room"));
+        	
+        	if ( rstype_room.next() && rswing_room.next()) {
+        	roomList.add(new Room(RS.getInt("id"),RS.getInt("floor"), RS.getInt("room_number"), RS.getInt("m2"),
+        			new Type_Room(rstype_room.getInt("id"), rstype_room.getString("name")),
+        			new Wing_Room(rswing_room.getInt("id"), rswing_room.getString("name"))));
+        	}
+        }	
+        }
+        finally {
         // Closing
-	    RS.close();
-	    Stmt.close();
-	    DataSource.releaseConnection(conn);
+        DataSource.releaseConnection(conn);
+        if(RS!=null)
+	        try{RS.close();}catch(Exception e){e.printStackTrace();} 
+		if(rstype_room!=null)
+        	try{rstype_room.close();}catch(Exception e){e.printStackTrace();} 
+        if(rswing_room!=null)
+        	try{rswing_room.close();}catch(Exception e){e.printStackTrace();}  
+        if(Stmt!=null)
+        	try{Stmt.close();}catch(Exception e){e.printStackTrace();} 
+        if(Stmt2!=null)
+        	try{Stmt2.close();}catch(Exception e){e.printStackTrace();} 
+        if(Stmt3!=null)
+        	try{Stmt3.close();}catch(Exception e){e.printStackTrace();}  
         }
 	    return roomList;
 	}
 	
 	public static Room getRoom(int id) throws SQLException{
 		Statement Stmt = conn.createStatement();
+		Statement Stmt2 = conn.createStatement();
+		Statement Stmt3 = conn.createStatement();
 		Room room = null;
 		ResultSet RS=null;
+		ResultSet rstype_room=null;
+		ResultSet rswing_room=null;
 		try {
         RS = Stmt.executeQuery("SELECT * FROM room WHERE id="+id);
+        
         if(RS.next()) {
-        room=new Room(RS.getInt("id"),RS.getString("type_room"),RS.getInt("floor"),RS.getInt("room_number"));
+        	rstype_room=Stmt2.executeQuery("SELECT * FROM type_room WHERE id="+RS.getInt("fk_type_room"));
+        	rswing_room=Stmt3.executeQuery("SELECT * FROM wing_room WHERE id="+RS.getInt("fk_wing_room"));
+        	if ( rstype_room.next() && rswing_room.next()) {
+		        room=new Room(RS.getInt("id"),RS.getInt("floor"), RS.getInt("room_number"), RS.getInt("m2"),
+		    			new Type_Room(rstype_room.getInt("id"), rstype_room.getString("name")),
+		    			new Wing_Room(rswing_room.getInt("id"), rswing_room.getString("name")));
+        	}
         }
 		}finally {
 	        // Closing
-		    RS.close();
-		    Stmt.close();
-		    DataSource.releaseConnection(conn);
+			DataSource.releaseConnection(conn);
+			if(RS!=null)
+		        try{RS.close();}catch(Exception e){e.printStackTrace();} 
+			if(rstype_room!=null)
+	        	try{rstype_room.close();}catch(Exception e){e.printStackTrace();} 
+	        if(rswing_room!=null)
+	        	try{rswing_room.close();}catch(Exception e){e.printStackTrace();}  
+	        if(Stmt!=null)
+	        	try{Stmt.close();}catch(Exception e){e.printStackTrace();} 
+	        if(Stmt2!=null)
+	        	try{Stmt2.close();}catch(Exception e){e.printStackTrace();} 
+	        if(Stmt3!=null)
+	        	try{Stmt3.close();}catch(Exception e){e.printStackTrace();}     
+		    
 		}
         return room;
 	}
 	
 	public static boolean create(Room room) throws SQLException{
-		PreparedStatement pStmt = conn.prepareStatement("INSERT INTO room (type_room,floor, room_number) VALUES (?,?,?)");
-		pStmt.setString(1, room.getType_room());
-		pStmt.setInt(2, room.getFloor());
-		pStmt.setInt(3, room.getRoom_number());
-		int n=0;
+		Statement Stmt = conn.createStatement();
+		String req, room_number;int n=0;
+		if(room.getRoom_number()!=null)
+			room_number = ""+room.getRoom_number();
+		else
+			room_number = "null";
+		
+		//requete sql	
+		 req= "insert into room (floor, room_number, m2, fk_type_room, fk_wing_room) values ("+room.getFloor()+","+room_number+","
+		 +room.getM2()+","+room.getType_room().getId()+","+room.getWing_room().getId()+");";	
+		
 		try {
-			n = pStmt.executeUpdate();}
+			n = Stmt.executeUpdate(req);}
 		finally {
 		// Closing
-		pStmt.close();
-        DataSource.releaseConnection(conn);
+		DataSource.releaseConnection(conn);
+		
+		if(Stmt!=null)
+        	try{Stmt.close();}catch(Exception e){e.printStackTrace();} 
+        
+        
 		}
 		return n==1;
 	}
@@ -89,34 +171,57 @@ public class RoomManager {
 		Statement Stmt = conn.createStatement();
 		String reqDB="update room set ";
 		
-		if(room.getType_room()!=null) {
-			reqDB+="type_room = '"+room.getType_room()+"'";
-			if(room.getFloor()!=null)
-				reqDB+=", floor = '"+room.getFloor()+"'";
+		if(room.getFloor()!=null) {
+			reqDB+="floor = "+room.getFloor();
 			if(room.getRoom_number()!=null)
-				reqDB+=", room_number = '"+room.getRoom_number()+"'";
-		}
-		else if(room.getFloor()!=null) {
-			reqDB+="floor = '"+room.getFloor()+"'";
-			if(room.getRoom_number()!=null)
-				reqDB+=", room_number = '"+room.getRoom_number()+"'";
+				reqDB+=", room_number = "+room.getRoom_number();
+			if(room.getM2()!=null)
+				reqDB+=", m2 = "+room.getM2();
+			if(!room.getType_room().getName().equals("null"))
+				reqDB+=", fk_type_room = "+room.getType_room().getId();
+			if(!room.getWing_room().getName().equals("null"))
+				reqDB+=", fk_wing_room = "+room.getWing_room().getId();
 		}
 		else if(room.getRoom_number()!=null) {
-				reqDB+="room_number = '"+room.getRoom_number()+"'";
+			reqDB+="room_number = "+room.getRoom_number();
+			if(room.getM2()!=null)
+				reqDB+=", m2 = "+room.getM2();
+			if(!room.getType_room().getName().equals("null"))
+				reqDB+=", fk_type_room = "+room.getType_room().getId();
+			if(!room.getWing_room().getName().equals("null"))
+				reqDB+=", fk_wing_room = "+room.getWing_room().getId();
 		}
-		reqDB+=" WHERE id="+room.getId()+";"; ;
+		else if(room.getM2()!=null) {
+			reqDB+="m2 = "+room.getM2();
+			if(!room.getType_room().getName().equals("null"))
+				reqDB+=", fk_type_room = "+room.getType_room().getId();
+			if(!room.getWing_room().getName().equals("null"))
+				reqDB+=", fk_wing_room = "+room.getWing_room().getId();
+		}
+		else if(!room.getType_room().getName().equals("null")) {
+				reqDB+="fk_type_room = "+room.getType_room().getId();
+			if(!room.getWing_room().getName().equals("null"))
+				reqDB+=", fk_wing_room = "+room.getWing_room().getId();
+		}
+		else if(!room.getWing_room().getName().equals("null")) {
+			reqDB+="fk_wing_room = "+room.getWing_room().getId();
+		}
+		reqDB+=" WHERE id="+room.getId()+";";
 		
 		int n=0;
 		try{
 			n = Stmt.executeUpdate(reqDB);
 		}finally {
 		// Closing
-		Stmt.close();
-        DataSource.releaseConnection(conn);
+		DataSource.releaseConnection(conn);
+	
+		if(Stmt!=null)
+        	try{Stmt.close();}catch(Exception e){e.printStackTrace();} 
+        
 		}
 		return n==1;
 	}
-	
+	//TODO ADD CASCADE CONSTRAINTS ON DELETE IN SCRIPT
 	public static boolean delete(Room room) throws SQLException{
 		Statement Stmt = conn.createStatement();
 		int n=0;
@@ -124,8 +229,9 @@ public class RoomManager {
 		n = Stmt.executeUpdate("DELETE FROM room WHERE id=" + room.getId());}
 		finally {
 		//Closing
-        Stmt.close();
-        DataSource.releaseConnection(conn);
+		DataSource.releaseConnection(conn);
+		if(Stmt!=null)
+        	try{Stmt.close();}catch(Exception e){e.printStackTrace();} 
 		}
         return n==1;
 	}
@@ -137,8 +243,10 @@ public class RoomManager {
 		n = Stmt.executeUpdate("DELETE FROM room");System.out.println(n);
 		}finally {
 			//Closing
-	        Stmt.close();
-	        DataSource.releaseConnection(conn);
+			DataSource.releaseConnection(conn);
+			if(Stmt!=null)
+	        	try{Stmt.close();}catch(Exception e){e.printStackTrace();} ;
+	        
         }
         return n>0;
 	}

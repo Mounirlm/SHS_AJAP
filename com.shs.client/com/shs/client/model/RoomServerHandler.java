@@ -13,7 +13,9 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.shs.commons.model.Room;
+import com.shs.commons.model.Type_Room;
 import com.shs.commons.model.User;
+import com.shs.commons.model.Wing_Room;
 import com.shs.server.connection.pool.DBAccess;
 
 public class RoomServerHandler {
@@ -246,6 +248,87 @@ public class RoomServerHandler {
 	    	stopFlux();
 	    }
 	}
-
 	
+
+	/*
+	 * @return all types of room
+	 */
+	public List<Type_Room> selectAllTypeRoom() throws IOException {
+		List<Type_Room> list = new ArrayList<>();
+		//connections
+     	getFlux();
+     	
+     	//communication to server
+		try {
+			String request="selectAll-Type_Room";
+			
+	     	//Creation request Json
+		    writer.setIndent("	");
+		    writer.beginObject();
+		    writer.name("request").value(request);
+		    writer.endObject();
+		    writer.flush();
+		    System.out.println("request:"+request);
+		    //response
+		    reader.beginObject();
+		    while (reader.hasNext()) {
+			    String name= reader.nextName();
+			    if(name.equals("null")) {
+			    	System.out.println(reader.nextString());
+			    }else {
+				   String objectJson=reader.nextString();
+				   	list.add(new Gson().fromJson(objectJson, Type_Room.class));
+				 }
+		    }
+		    reader.endObject();
+		    return list;
+	      } 
+	    catch (IOException ioe) { 
+	    	throw new IOException("Error communication to server ");
+		}
+	    finally {
+	    	stopFlux();
+	    }
+	}
+
+	/*
+	 * @return all wings of rooms
+	 */
+	public List<Wing_Room> selectAllWingRoom() throws IOException {
+		List<Wing_Room> list = new ArrayList<>();
+		//connections
+     	getFlux();
+     	
+     	//communication to server
+		try {
+			String request="selectAll-Wing_Room";
+			
+	     	//Creation request Json
+		    writer.setIndent("	");
+		    writer.beginObject();
+		    writer.name("request").value(request);
+		    writer.endObject();
+		    writer.flush();
+		    System.out.println("request:"+request);
+		    //response
+		    reader.beginObject();
+		    while (reader.hasNext()) {
+			    String name= reader.nextName();
+			    if(name.equals("null")) {
+			    	System.out.println(reader.nextString());
+			    }else {
+				   String objectJson=reader.nextString();
+				   	list.add(new Gson().fromJson(objectJson, Wing_Room.class));
+				 }
+		    }
+		    reader.endObject();
+		    return list;
+	      } 
+	    catch (IOException ioe) { 
+	    	throw new IOException("Error communication to server ");
+		}
+	    finally {
+	    	stopFlux();
+	    }
+	}
 }
