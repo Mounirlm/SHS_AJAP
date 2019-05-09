@@ -11,16 +11,18 @@ import com.shs.server.connection.pool.DataSource;
 
 public class ServerAcceptor {
 	 public static void main (String[] args) throws SQLException, ClassNotFoundException, IOException {
+		 //create a serverSocket	
 		 	ServerSocket server = null;
 		    int port = DBAccess.getPORT_SERVER();
+		    DataSource dt = new DataSource();
 		    
-		    try {
+		    try {//PORT OF SERVER
 			      server = new ServerSocket(port);
 			      System.out.println("Server  Ok");
 			   }catch(IOException e) { 
 				   System.out.println("Error server "+e);
 			   }
-		    DataSource dt = new DataSource();
+		    
 		    if(server!=null) {
 			      while ( true ) {
 			    	  Connection connDB=null;

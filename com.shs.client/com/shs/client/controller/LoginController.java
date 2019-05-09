@@ -11,17 +11,17 @@ import java.util.regex.Pattern;
 
 import javax.swing.JButton;
 
-import com.shs.client.model.UserServerHandler;
+import com.shs.client.model.UserClientHandler;
 import com.shs.client.view.SHSView;
 import com.shs.commons.model.User;
 
 
 public class LoginController implements ActionListener{
 	private SHSView view;
-	private UserServerHandler servH;
+	private UserClientHandler servH;
 	public LoginController(SHSView v) throws UnknownHostException, IOException {
 		this.view = v;
-		this.servH = new UserServerHandler();
+		this.servH = new UserClientHandler();
 		view.getConnectionPanel().getFormView().addJBListner(this);
 		
 	}

@@ -1,5 +1,6 @@
 package com.shs.commons.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Sensor {
@@ -14,13 +15,16 @@ public class Sensor {
 	private Float price;
 	private Room fk_room;
 	private Type_Sensor fk_type_sensor;
+	private Integer scope_sensor;
+	private String date_setup_formatted;
 	
 	public Sensor() {
 		// TODO Auto-generated constructor stub
 	}
 	
 	public Sensor(int id, String sensor_name, String ip_address, String mac_address, Date date_setup, Boolean status,
-			Boolean installed, Wing_Room fk_position, Float price, Room fk_room, Type_Sensor fk_type_sensor) {
+			Boolean installed, Wing_Room fk_position, Float price, Room fk_room, Type_Sensor fk_type_sensor,
+			Integer scope_sensor) {
 		super();
 		this.id = id;
 		this.sensor_name = sensor_name;
@@ -33,8 +37,9 @@ public class Sensor {
 		this.price = price;
 		this.fk_room = fk_room;
 		this.fk_type_sensor = fk_type_sensor;
+		this.scope_sensor = scope_sensor;
 	}
-	
+
 	
 	public int getId() {
 		return id;
@@ -102,15 +107,27 @@ public class Sensor {
 	public void setFk_type_sensor(Type_Sensor fk_type_sensor) {
 		this.fk_type_sensor = fk_type_sensor;
 	}
-	@Override
-	public String toString() {
-		return "Sensor [id=" + id + ", sensor_name=" + sensor_name + ", ip_address=" + ip_address + ", mac_address="
-				+ mac_address + ", date_setup=" + date_setup + ", status=" + status + ", installed=" + installed
-				+ ", fk_position=" + fk_position + ", price=" + price + ", fk_room=" + fk_room + ", fk_type_sensor="
-				+ fk_type_sensor + "]";
+
+	public Integer getScope_sensor() {
+		return scope_sensor;
 	}
 
-
-
+	public void setScope_sensor(Integer scope_sensor) {
+		this.scope_sensor = scope_sensor;
+	}
+	
+	public String getDate_setup_formatted() {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		return dateFormat.format(date_setup);
+	}
+	@Override
+	public String toString() {
+		
+		return "Sensor [id=" + id + ", sensor_name=" + sensor_name + ", ip_address=" + ip_address + ", mac_address="
+				+ mac_address + ", date_setup=" + getDate_setup_formatted() + ", status=" + status + ", installed=" + installed
+				+ ", fk_position=" + fk_position + ", price=" + price + ", fk_room=" + fk_room + ", fk_type_sensor="
+				+ fk_type_sensor + ", scope_sensor=" + scope_sensor + "]";
+	}
+	
 	
 }

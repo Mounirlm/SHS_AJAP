@@ -1,7 +1,6 @@
 package com.shs.server.model;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -35,7 +34,8 @@ public class RoomManager {
         	if ( rstype_room.next() && rswing_room.next()) {
         	roomList.add(new Room(RS.getInt("id"),RS.getInt("floor"), RS.getInt("room_number"), RS.getInt("m2"),
         			new Type_Room(rstype_room.getInt("id"), rstype_room.getString("name")),
-        			new Wing_Room(rswing_room.getInt("id"), rswing_room.getString("name"))));
+        			new Wing_Room(rswing_room.getInt("id"), rswing_room.getString("name")),
+        			RS.getInt("nb_doors"), RS.getInt("nb_windows")));
         	}
         	
         }
@@ -77,7 +77,8 @@ public class RoomManager {
         	if ( rstype_room.next() && rswing_room.next()) {
         	roomList.add(new Room(RS.getInt("id"),RS.getInt("floor"), RS.getInt("room_number"), RS.getInt("m2"),
         			new Type_Room(rstype_room.getInt("id"), rstype_room.getString("name")),
-        			new Wing_Room(rswing_room.getInt("id"), rswing_room.getString("name"))));
+        			new Wing_Room(rswing_room.getInt("id"), rswing_room.getString("name")),
+        			RS.getInt("nb_doors"), RS.getInt("nb_windows")));
         	}
         }	
         }
@@ -100,7 +101,7 @@ public class RoomManager {
 	    return roomList;
 	}
 	
-	public static Room getRoom(int id) throws SQLException{
+	public static Room getRoom(int id, boolean releaseConnection) throws SQLException{
 		Statement Stmt = conn.createStatement();
 		Statement Stmt2 = conn.createStatement();
 		Statement Stmt3 = conn.createStatement();
@@ -117,12 +118,14 @@ public class RoomManager {
         	if ( rstype_room.next() && rswing_room.next()) {
 		        room=new Room(RS.getInt("id"),RS.getInt("floor"), RS.getInt("room_number"), RS.getInt("m2"),
 		    			new Type_Room(rstype_room.getInt("id"), rstype_room.getString("name")),
-		    			new Wing_Room(rswing_room.getInt("id"), rswing_room.getString("name")));
+		    			new Wing_Room(rswing_room.getInt("id"), rswing_room.getString("name")),
+	        			RS.getInt("nb_doors"), RS.getInt("nb_windows"));
         	}
         }
 		}finally {
 	        // Closing
-			DataSource.releaseConnection(conn);
+			if(releaseConnection)
+				DataSource.releaseConnection(conn);
 			if(RS!=null)
 		        try{RS.close();}catch(Exception e){e.printStackTrace();} 
 			if(rstype_room!=null)
@@ -149,8 +152,8 @@ public class RoomManager {
 			room_number = "null";
 		
 		//requete sql	
-		 req= "insert into room (floor, room_number, m2, fk_type_room, fk_wing_room) values ("+room.getFloor()+","+room_number+","
-		 +room.getM2()+","+room.getType_room().getId()+","+room.getWing_room().getId()+");";	
+		 req= "insert into room (floor, room_number, m2, fk_type_room, fk_wing_room, nb_doors, nb_windows) values ("+room.getFloor()+","+room_number+","
+		 +room.getM2()+","+room.getType_room().getId()+","+room.getWing_room().getId()+","+room.getNb_doors()+","+room.getNb_windows()+");";	
 		
 		try {
 			n = Stmt.executeUpdate(req);}
@@ -181,6 +184,12 @@ public class RoomManager {
 				reqDB+=", fk_type_room = "+room.getType_room().getId();
 			if(!room.getWing_room().getName().equals("null"))
 				reqDB+=", fk_wing_room = "+room.getWing_room().getId();
+			if(!room.getWing_room().getName().equals("null"))
+				reqDB+=", fk_wing_room = "+room.getWing_room().getId();
+			if(room.getNb_doors()!= null)
+				reqDB+=", nb_doors = "+room.getNb_doors();
+			if(room.getNb_windows()!= null)
+				reqDB+=", nb_windows = "+room.getNb_windows();
 		}
 		else if(room.getRoom_number()!=null) {
 			reqDB+="room_number = "+room.getRoom_number();
@@ -190,6 +199,10 @@ public class RoomManager {
 				reqDB+=", fk_type_room = "+room.getType_room().getId();
 			if(!room.getWing_room().getName().equals("null"))
 				reqDB+=", fk_wing_room = "+room.getWing_room().getId();
+			if(room.getNb_doors()!= null)
+				reqDB+=", nb_doors = "+room.getNb_doors();
+			if(room.getNb_windows()!= null)
+				reqDB+=", nb_windows = "+room.getNb_windows();
 		}
 		else if(room.getM2()!=null) {
 			reqDB+="m2 = "+room.getM2();
@@ -197,14 +210,34 @@ public class RoomManager {
 				reqDB+=", fk_type_room = "+room.getType_room().getId();
 			if(!room.getWing_room().getName().equals("null"))
 				reqDB+=", fk_wing_room = "+room.getWing_room().getId();
+			if(room.getNb_doors()!= null)
+				reqDB+=", nb_doors = "+room.getNb_doors();
+			if(room.getNb_windows()!= null)
+				reqDB+=", nb_windows = "+room.getNb_windows();
 		}
 		else if(!room.getType_room().getName().equals("null")) {
 				reqDB+="fk_type_room = "+room.getType_room().getId();
 			if(!room.getWing_room().getName().equals("null"))
 				reqDB+=", fk_wing_room = "+room.getWing_room().getId();
+			if(room.getNb_doors()!= null)
+				reqDB+=", nb_doors = "+room.getNb_doors();
+			if(room.getNb_windows()!= null)
+				reqDB+=", nb_windows = "+room.getNb_windows();
 		}
 		else if(!room.getWing_room().getName().equals("null")) {
 			reqDB+="fk_wing_room = "+room.getWing_room().getId();
+			if(room.getNb_doors()!= null)
+				reqDB+=", nb_doors = "+room.getNb_doors();
+			if(room.getNb_windows()!= null)
+				reqDB+=", nb_windows = "+room.getNb_windows();
+		}
+		else if(room.getNb_doors()!= null) {
+				reqDB+="nb_doors = "+room.getNb_doors();
+			if(room.getNb_windows()!= null)
+				reqDB+=", nb_windows = "+room.getNb_windows();
+		}
+		else if(room.getNb_windows()!= null) {
+			reqDB+="nb_windows = "+room.getNb_windows();
 		}
 		reqDB+=" WHERE id="+room.getId()+";";
 		

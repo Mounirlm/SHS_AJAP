@@ -9,25 +9,25 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.shs.commons.model.Alert;
+import com.shs.commons.model.Historical;
 import com.shs.commons.model.User;
 
-public class AlertRequestManager {
+public class HistoricalRequestManager {
 	private Connection connDB;
 	private JsonReader reader;
 	private JsonWriter writer;
 	private String  request;
-	private Alert alert;
-	AlertManager alertManager;
+	private Historical historical;
+	HistoricalManager historicalManager;
 	
-	public AlertRequestManager(Connection connDB, JsonReader reader, JsonWriter writer, Alert alert, String request) {
+	public HistoricalRequestManager(Connection connDB, JsonReader reader, JsonWriter writer, Historical historical, String request) {
 		super();
 		this.connDB = connDB;
 		this.reader = reader;
 		this.writer = writer;
 		this.request = request;
-		this.alert = alert;
-		alertManager = new AlertManager(connDB);
+		this.historical = historical;
+		historicalManager = new HistoricalManager(connDB);
 	}
 	
 	
@@ -37,42 +37,42 @@ public class AlertRequestManager {
 		String message=null, error="no row(s)";
 		String[] res=request.split("-");
 		switch (request) {
-			case "insert-Alert":
+			case "insert-Historical":
 				try{
-					response=AlertManager.create(alert);
+					response=HistoricalManager.create(historical);
 				}
 			    catch(SQLException e) {
 			    	error="Error insertion "+e;
 			    }
 				break;
-			case "update-Alert":
+			case "update-Historical":
 				try{
-					response=AlertManager.update(alert);
+					response=HistoricalManager.update(historical);
 				}
 			    catch(SQLException e) {
 			    	error="Error updating "+e;
 			    }
 				break;
-			case "delete-Alert":
+			case "delete-Historical":
 				try{
-					response=AlertManager.delete(alert);
+					response=HistoricalManager.delete(historical);
 				}
 			    catch(SQLException e) {
 			    	error="Error delete "+e;
 			    }
 				break;
-			case "deleteAll-Alert":
+			case "deleteAll-Historical":
 				try{
-					response=AlertManager.deleteAll();
+					response=HistoricalManager.deleteAll();
 				}
 			    catch(SQLException e) {
 			    	error="Error delete all "+e;
 			    }				
 				break;	
-			case "select-Alert":
-					Alert sendAlert=null;
+			case "select-Historical":
+					Historical sendHist=null;
 					try{
-						sendAlert=AlertManager.getAlert(alert.getId());
+						sendHist=HistoricalManager.getHistorical(historical.getId());
 					}
 				    catch(SQLException e) {
 				    	error="Error delete "+e;
@@ -80,15 +80,15 @@ public class AlertRequestManager {
 						error+=" and Date Parse error "+e;
 					}
 					break;
-			case "selectAll-Alert":
+			case "selectAll-Historical":
 				try{
-					List<Alert> alerts = AlertManager.getAlerts();
+					List<Historical> historicals = HistoricalManager.getHistoricals();
 					writer.beginObject();
-					if(!alerts.isEmpty()) {
+					if(!historicals.isEmpty()) {
 						response=true;
 						Gson gson = new Gson();
-						for (Alert alert : alerts) {
-							writer.name("alert").value(gson.toJson(alert));
+						for (Historical historical : historicals) {
+							writer.name("historical").value(gson.toJson(historical));
 						}
 					}else {
 						writer.name("null").value("null");	

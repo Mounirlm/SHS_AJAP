@@ -73,9 +73,18 @@ public class SensorRequestManager {
 					Sensor sendSensor=null;
 					try{
 						sendSensor=SensorManager.getSensor(sensor.getId());
+						writer.beginObject();
+						if (sendSensor!=null) {
+							response=true;
+							writer.name("sensor").value(new Gson().toJson(sendSensor));
+						}
+						else {
+							writer.name("null").value("null");
+						}
+						writer.endObject();
 					}
 				    catch(SQLException e) {
-				    	error="Error delete "+e;
+				    	error="Error select "+e;
 				    } catch (ParseException e) {
 						error+=" and Date Parse error "+e;
 					}

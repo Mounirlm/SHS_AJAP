@@ -1,4 +1,4 @@
-package com.shs.client.model;
+package com.shs.commons.model;
 
 import java.io.FileInputStream;
 import java.io.IOException;

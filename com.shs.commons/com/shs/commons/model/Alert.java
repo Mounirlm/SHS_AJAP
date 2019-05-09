@@ -1,6 +1,7 @@
 package com.shs.commons.model;
 
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Alert {
@@ -36,12 +37,12 @@ public class Alert {
 	}
 
 
-	public Date getAlert() {
+	public Date getDate_alert() {
 		return date_alert;
 	}
 
 
-	public void setAlert(Date alert) {
+	public void setDate_alert(Date alert) {
 		this.date_alert = alert;
 	}
 
@@ -66,26 +67,35 @@ public class Alert {
 	}
 
 
-	public int getIdUser() {
+	public int getFk_user() {
 		return fk_user;
 	}
 
 
-	public void setIdUser(int idUser) {
+	public void setfk_user(int idUser) {
 		this.fk_user = idUser;
 	}
 
 
-	public int getIdSensor() {
+	public int getFk_sensor() {
 		return fk_sensor;
 	}
 
 
-	public void setIdSensor(int idSensor) {
+	public void setfk_sensor(int idSensor) {
 		this.fk_sensor = idSensor;
 	}
 	
-	
+	public String getDate_alert_formatted() {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		return dateFormat.format(date_alert);
+	}
+
+	@Override
+	public String toString() {
+		return "Alert [id=" + id + ", date_alert=" + getDate_alert_formatted() + ", hour_alert=" + hour_alert + ", description="
+				+ description + ", fk_user=" + fk_user + ", fk_sensor=" + fk_sensor + "]";
+	}
 	
 	
 }

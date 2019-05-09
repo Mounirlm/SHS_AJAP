@@ -39,19 +39,22 @@ public class SensorManager {
         RS = Stmt.executeQuery("SELECT * FROM sensor");
         
         while(RS.next()) {
-        	rswing_room=Stmt2.executeQuery("SELECT * FROM wing_room WHERE id="+RS.getInt("fk_wing_room"));
+        	rswing_room=Stmt2.executeQuery("SELECT * FROM wing_room WHERE id="+RS.getInt("fk_position"));
         	rstype_sensor=Stmt3.executeQuery("SELECT * FROM type_sensor WHERE id="+RS.getInt("fk_type_sensor"));
         	
         	
         	if ( rswing_room.next()  && rstype_sensor.next()) {
         		Room room = new Room();
-            	room.setId(RS.getInt("fk_room"));
-        	sensorsList.add(new Sensor(RS.getInt("id"),RS.getString("sensor_name"), RS.getString("ip_address"), RS.getString("mac_address"),
+        		RoomManager room_manager = new RoomManager(conn);
+        		room = RoomManager.getRoom(RS.getInt("fk_room"), false);
+
+        		sensorsList.add(new Sensor(RS.getInt("id"),RS.getString("sensor_name"), RS.getString("ip_address"), RS.getString("mac_address"),
         			dateFormat.parse(RS.getString("date_setup")), RS.getBoolean("status"), RS.getBoolean("installed"),
         			new Wing_Room(rswing_room.getInt("id"), rswing_room.getString("name")),
         			RS.getFloat("price"),
         			room,
-        			new Type_Sensor(rstype_sensor.getInt("id"), rstype_sensor.getString("name"))));
+        			new Type_Sensor(rstype_sensor.getInt("id"), rstype_sensor.getString("name")),
+        			RS.getInt("scope_sensor")));
         			
         	}
         }	
@@ -90,7 +93,7 @@ public class SensorManager {
         RS = Stmt.executeQuery("SELECT * FROM sensor WHERE id="+id);
         
         while(RS.next()) {
-        	rswing_room=Stmt2.executeQuery("SELECT * FROM wing_room WHERE id="+RS.getInt("fk_wing_room"));
+        	rswing_room=Stmt2.executeQuery("SELECT * FROM wing_room WHERE id="+RS.getInt("fk_position"));
         	rstype_sensor=Stmt3.executeQuery("SELECT * FROM type_sensor WHERE id="+RS.getInt("fk_type_sensor"));
         	
         	
@@ -102,7 +105,8 @@ public class SensorManager {
         			new Wing_Room(rswing_room.getInt("id"), rswing_room.getString("name")),
         			RS.getFloat("price"),
         			room,
-        			new Type_Sensor(rstype_sensor.getInt("id"), rstype_sensor.getString("name")));
+        			new Type_Sensor(rstype_sensor.getInt("id"), rstype_sensor.getString("name")),
+        			RS.getInt("scope_sensor"));
         			
         	}
         }	
@@ -127,8 +131,9 @@ public class SensorManager {
 	}
 	
 	public static boolean create(Sensor sensor) throws SQLException{
-		PreparedStatement pStmt = conn.prepareStatement("insert into sensor (sensor_name, ip_address, mac_address, date_setup, status, installed, fk_position, price, fk_room, fk_type_sensor)"
-				+ " values (?,?,?,?,?,?,?,?,?,?);");
+		PreparedStatement pStmt = conn.prepareStatement("insert into sensor (sensor_name, ip_address, mac_address,"
+				+ " date_setup, status, installed, fk_position, price, fk_room, fk_type_sensor, scope_sensor)"
+				+ " values (?,?,?,?,?,?,?,?,?,?,?);");
 		pStmt.setString(1, sensor.getSensor_name());
 		pStmt.setString(2, sensor.getIp_address());
 		pStmt.setString(3, sensor.getMac_address());
@@ -139,6 +144,7 @@ public class SensorManager {
 		pStmt.setFloat(8, sensor.getPrice());
 		pStmt.setInt(9, sensor.getFk_room().getId());
 		pStmt.setInt(10, sensor.getFk_type_sensor().getId());
+		pStmt.setInt(11, sensor.getScope_sensor());
 		
 		int n=0;
 		try {
@@ -154,8 +160,9 @@ public class SensorManager {
 
 	
 	public static boolean update(Sensor sensor) throws SQLException {
-		PreparedStatement pStmt = conn.prepareStatement("update sensor set sensor_name='?', ip_address='?', mac_address='?', date_setup='?', status=?, installed=?, fk_position=?, price=?, fk_room=?, fk_type_sensor=?)"
-				+ " values (?,?,?,?,?,?,?,?,?,?);");
+		PreparedStatement pStmt = conn.prepareStatement("update sensor set sensor_name='?', ip_address='?', mac_address='?',"
+				+ " date_setup='?', status=?, installed=?, fk_position=?, price=?, fk_room=?, fk_type_sensor=?, "
+				+ "scope_sensor=? where id=?;");
 		pStmt.setString(1, sensor.getSensor_name());
 		pStmt.setString(2, sensor.getIp_address());
 		pStmt.setString(3, sensor.getMac_address());
@@ -166,6 +173,8 @@ public class SensorManager {
 		pStmt.setFloat(8, sensor.getPrice());
 		pStmt.setInt(9, sensor.getFk_room().getId());
 		pStmt.setInt(10, sensor.getFk_type_sensor().getId());
+		pStmt.setInt(11, sensor.getScope_sensor());
+		pStmt.setInt(12, sensor.getId());
 		
 		int n=0;
 		try {

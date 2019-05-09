@@ -17,7 +17,7 @@ public class DBAccess {
 	private static int INITIAL_SIZE;
 	private static int MAX_SIZE;
 	private static int PORT_SERVER;
-	
+
 	//private Constructor
 	private DBAccess(){
 		Properties prop = new Properties();

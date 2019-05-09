@@ -1,4 +1,4 @@
-package com.shs.client.model;
+package com.shs.commons.model;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,10 +12,9 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.shs.commons.model.User;
-import com.shs.server.connection.pool.DBAccess;
+import com.shs.commons.model.Alert;
 
-public class UserServerHandler {
+public class AlertClientHandler {
 	private Socket server;
 	private JsonReader reader;
 	private JsonWriter writer;
@@ -24,7 +23,7 @@ public class UserServerHandler {
 	private int port = ServerAccess.getPORT_SERVER();
 	private String adress =ServerAccess.getSERVER();
 	
-	public UserServerHandler() throws UnknownHostException, IOException {
+	public AlertClientHandler() throws UnknownHostException, IOException {
 		gson = new Gson();
 	}
 	
@@ -48,23 +47,25 @@ public class UserServerHandler {
         }
     }
 	
-	public String insertUserToServer(User user)throws IOException  {
+	public String insertAlertToServer(Alert alert)throws IOException  {
 		//connections
      	getFlux();
-		try {//Type class
-			String request = "insert-User";
+		try {
+			String request = "insert-Alert";
 			
-			//Creation request Json
+			//Creation request Json for server
 		    writer.setIndent("	");
 		    writer.beginObject();
-		    writer.name("request").value("insert-User");
-		    writer.name("object").value(gson.toJson(user));
+		    writer.name("request").value(request);
+		    writer.name("object").value(gson.toJson(alert));
 		    writer.endObject();
-		    writer.flush();
-		    System.out.println("request:"+request+"\n object"+gson.toJson(user));
-		    //response
+		    writer.flush();//send to server
+		    System.out.println("client :request:"+request+"\n object"+gson.toJson(alert));
+		   
+		    //response from server
 		    reader.beginObject();
 		    String response = "Server "+reader.nextName()+": "+reader.nextString();
+		    System.out.println(response);
 		    reader.endObject();
 		    return response;
 	      } 
@@ -72,27 +73,28 @@ public class UserServerHandler {
 	    	throw new IOException("Error communication to server ");
 		}
 	    finally {
+	    	//stop connections
 	    	stopFlux();
 	    }
 	} 
 	
 	
-	public String updateUserToServer(User user) throws IOException {
+	public String updateAlertToServer(Alert alert) throws IOException {
 		//connections
      	getFlux();
 		try {
 			//Type class
-			String request = "update-User";
+			String request = "update-Alert";
 			
 			
 	     	//Creation request Json
 		    writer.setIndent("	");
 		    writer.beginObject();
 		    writer.name("request").value(request);
-		    writer.name("object").value(gson.toJson(user));
+		    writer.name("object").value(gson.toJson(alert));
 		    writer.endObject();
 		    writer.flush();
-		    System.out.println("request:"+request+"\n object: "+gson.toJson(user));
+		    System.out.println("request:"+request+"\n object: "+gson.toJson(alert));
 		    //response
 		    reader.beginObject();reader.nextName();
 		    String response = reader.nextString();
@@ -107,21 +109,22 @@ public class UserServerHandler {
 	    }
 	}
 	
-	public String deleteUser(User user) throws IOException {
+	
+	public String deleteAlert(Alert alert) throws IOException {
 		//connections
      	getFlux();
 		try {
 			//Type class
-			String request = "delete-User";
+			String request = "delete-Alert";
 			
 	     	//Creation request Json
 		    writer.setIndent("	");
 		    writer.beginObject();
 		    writer.name("request").value(request);
-		    writer.name("object").value(gson.toJson(user));
+		    writer.name("object").value(gson.toJson(alert));
 		    writer.endObject();
 		    writer.flush();
-		    System.out.println("request:"+request+"\n object: "+gson.toJson(user));
+		    System.out.println("request:"+request+"\n object: "+gson.toJson(alert));
 		    //response
 		    reader.beginObject();reader.nextName();
 		    String response = reader.nextString();
@@ -136,12 +139,12 @@ public class UserServerHandler {
 	    }
 	}
 
-	public String deleteAllUser() throws IOException {
+	public String deleteAllAlert() throws IOException {
 		//connections
      	getFlux();
 		try {
 			//Type class
-			String request = "deleteAll-User";
+			String request = "deleteAll-Alert";
 			
 			
 	     	//Creation request Json
@@ -165,32 +168,32 @@ public class UserServerHandler {
 	    }
 	}
 	
-	public List<User> searchUserToServer(User user) throws IOException {
+	public List<Alert> searchAlertToServer(Alert alert) throws IOException {
 		//connections
      	getFlux();
-		List<User> list=new ArrayList<>(); 
+		List<Alert> list=new ArrayList<>(); 
 		try {
 			//Type class
-			String request="select-User";
+			String request="select-Alert";
 			
 	     	//Creation request Json
 		    writer.setIndent("	");
 		    writer.beginObject();
 		    writer.name("request").value(request);
-		    writer.name("object").value(gson.toJson(user));
+		    writer.name("object").value(gson.toJson(alert));
 		    writer.endObject();
 		    writer.flush();
-		    System.out.println("request:"+request+"\n"+gson.toJson(user));
+		    System.out.println("request:"+request+"\n"+gson.toJson(alert));
 		    //response
 		    String name=null;
 		    
 		    reader.beginObject();
 		    while(reader.hasNext()) {
 		    	 name = reader.nextName();
-			    if(name.equals("user")) {
+			    if(name.equals("alert")) {
 			    	String objectJson=reader.nextString();
-			    	User receivUser=new Gson().fromJson(objectJson, User.class);
-			    	list.add(receivUser);System.out.println(list); 	
+			    	Alert receivRoom=new Gson().fromJson(objectJson, Alert.class);
+			    	list.add(receivRoom);System.out.println(list); 	
 			    }
 			    else if(name.equals("null")) {
 			    	System.out.println(reader.nextString());
@@ -210,12 +213,12 @@ public class UserServerHandler {
 	}
 		
 
-	public List<User> searchAllUser() throws IOException {
-		List<User> list = new ArrayList<>();
+	public List<Alert> searchAllAlert() throws IOException {
+		List<Alert> list = new ArrayList<>();
 		//connections
      	getFlux();
 		try {
-			String request="selectAll-User";
+			String request="selectAll-Alert";
 			
 	     	//Creation request Json
 		    writer.setIndent("	");
@@ -232,7 +235,7 @@ public class UserServerHandler {
 			    	System.out.println(reader.nextString());
 			    }else {
 				   String objectJson=reader.nextString();
-				   	list.add(new Gson().fromJson(objectJson, User.class));
+				   	list.add(new Gson().fromJson(objectJson, Alert.class));
 				 }
 		    }
 		    reader.endObject();
@@ -245,6 +248,7 @@ public class UserServerHandler {
 	    	stopFlux();
 	    }
 	}
+	
 
 	
 }
