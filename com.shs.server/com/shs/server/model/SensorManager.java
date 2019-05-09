@@ -39,14 +39,16 @@ public class SensorManager {
         RS = Stmt.executeQuery("SELECT * FROM sensor");
         
         while(RS.next()) {
-        	rswing_room=Stmt2.executeQuery("SELECT * FROM wing_room WHERE id="+RS.getInt("fk_wing_room"));
+        	rswing_room=Stmt2.executeQuery("SELECT * FROM wing_room WHERE id="+RS.getInt("fk_position"));
         	rstype_sensor=Stmt3.executeQuery("SELECT * FROM type_sensor WHERE id="+RS.getInt("fk_type_sensor"));
         	
         	
         	if ( rswing_room.next()  && rstype_sensor.next()) {
         		Room room = new Room();
-            	room.setId(RS.getInt("fk_room"));
-        	sensorsList.add(new Sensor(RS.getInt("id"),RS.getString("sensor_name"), RS.getString("ip_address"), RS.getString("mac_address"),
+        		RoomManager room_manager = new RoomManager(conn);
+        		room = RoomManager.getRoom(RS.getInt("fk_room"), false);
+
+        		sensorsList.add(new Sensor(RS.getInt("id"),RS.getString("sensor_name"), RS.getString("ip_address"), RS.getString("mac_address"),
         			dateFormat.parse(RS.getString("date_setup")), RS.getBoolean("status"), RS.getBoolean("installed"),
         			new Wing_Room(rswing_room.getInt("id"), rswing_room.getString("name")),
         			RS.getFloat("price"),
@@ -91,7 +93,7 @@ public class SensorManager {
         RS = Stmt.executeQuery("SELECT * FROM sensor WHERE id="+id);
         
         while(RS.next()) {
-        	rswing_room=Stmt2.executeQuery("SELECT * FROM wing_room WHERE id="+RS.getInt("fk_wing_room"));
+        	rswing_room=Stmt2.executeQuery("SELECT * FROM wing_room WHERE id="+RS.getInt("fk_position"));
         	rstype_sensor=Stmt3.executeQuery("SELECT * FROM type_sensor WHERE id="+RS.getInt("fk_type_sensor"));
         	
         	

@@ -27,7 +27,7 @@ public class RoomRequestManager {
 		this.writer = writer;
 		this.room = object;
 		this.request = request;
-		this.roomManager = roomManager= new RoomManager(connDB);
+		this.roomManager = new RoomManager(connDB);
 	}
 
 	
@@ -74,7 +74,7 @@ public class RoomRequestManager {
 					String reqDB="";
 					List<Room> rooms=new ArrayList<>();
 					if(room.getId()!=null) {
-						sendRoom= RoomManager.getRoom(room.getId());
+						sendRoom= RoomManager.getRoom(room.getId(), true);
 					}else {
 						if(room.getFloor()!=null) {
 							reqDB+="floor = "+room.getFloor();

@@ -1,6 +1,7 @@
 package com.shs.commons.model;
 
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Historical {
@@ -62,10 +63,15 @@ public class Historical {
 	public void setFk_sensor(int fk_sensor) {
 		this.fk_sensor = fk_sensor;
 	}
-
+	
+	public String getDate_signal_formatted() {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		return dateFormat.format(date_signal);
+	}
+	
 	@Override
 	public String toString() {
-		return "Historical [id=" + id + ", date_signal=" + date_signal + ", hour_signal=" + hour_signal + ", message="
+		return "Historical [id=" + id + ", date_signal=" + getDate_signal_formatted() + ", hour_signal=" + hour_signal + ", message="
 				+ message + ", fk_sensor=" + fk_sensor + "]";
 	}
 	

@@ -28,14 +28,12 @@ public class AlertManager {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 		try {
-			RS = Stmt.executeQuery("SELECT * FROM Alert");
+			RS = Stmt.executeQuery("SELECT * FROM alert");
 
 			while(RS.next()) {
 				alertList.add(new Alert(RS.getInt("id"),dateFormat.parse(RS.getString("date_alert")), 
 						Time.valueOf(RS.getString("hour_alert")),RS.getString("description"),
-						RS.getInt("fk_user"),RS.getInt("fk_sensor")));
-
-
+						RS.getInt("fk_users"),RS.getInt("fk_sensor")));
 			}	
 		}
 		finally {
@@ -64,7 +62,7 @@ public class AlertManager {
 
 				alert = new Alert(RS.getInt("id"),dateFormat.parse(RS.getString("date_alert")), 
 						Time.valueOf(RS.getString("hour_alert")),RS.getString("description"),
-						RS.getInt("fk_user"),RS.getInt("fk_sensor"));
+						RS.getInt("fk_users"),RS.getInt("fk_sensor"));
 
 			}	
 		}

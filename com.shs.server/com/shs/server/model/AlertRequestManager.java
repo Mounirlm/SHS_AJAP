@@ -27,6 +27,7 @@ public class AlertRequestManager {
 		this.writer = writer;
 		this.request = request;
 		this.alert = alert;
+		alertManager = new AlertManager(connDB);
 	}
 	
 	
@@ -36,7 +37,7 @@ public class AlertRequestManager {
 		String message=null, error="no row(s)";
 		String[] res=request.split("-");
 		switch (request) {
-			case "insert-alert":
+			case "insert-Alert":
 				try{
 					response=AlertManager.create(alert);
 				}
@@ -44,7 +45,7 @@ public class AlertRequestManager {
 			    	error="Error insertion "+e;
 			    }
 				break;
-			case "update-alert":
+			case "update-Alert":
 				try{
 					response=AlertManager.update(alert);
 				}
@@ -52,7 +53,7 @@ public class AlertRequestManager {
 			    	error="Error updating "+e;
 			    }
 				break;
-			case "delete-alert":
+			case "delete-Alert":
 				try{
 					response=AlertManager.delete(alert);
 				}
@@ -60,7 +61,7 @@ public class AlertRequestManager {
 			    	error="Error delete "+e;
 			    }
 				break;
-			case "deleteAll-alert":
+			case "deleteAll-Alert":
 				try{
 					response=AlertManager.deleteAll();
 				}
@@ -68,7 +69,7 @@ public class AlertRequestManager {
 			    	error="Error delete all "+e;
 			    }				
 				break;	
-			case "select-alert":
+			case "select-Alert":
 					Alert sendAlert=null;
 					try{
 						sendAlert=AlertManager.getAlert(alert.getId());
@@ -79,7 +80,7 @@ public class AlertRequestManager {
 						error+=" and Date Parse error "+e;
 					}
 					break;
-			case "selectAll-alert":
+			case "selectAll-Alert":
 				try{
 					List<Alert> alerts = AlertManager.getAlerts();
 					writer.beginObject();

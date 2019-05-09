@@ -18,7 +18,7 @@ public class HistoricalRequestManager {
 	private JsonWriter writer;
 	private String  request;
 	private Historical historical;
-	HistoricalManager HistoricalManager;
+	HistoricalManager historicalManager;
 	
 	public HistoricalRequestManager(Connection connDB, JsonReader reader, JsonWriter writer, Historical historical, String request) {
 		super();
@@ -27,6 +27,7 @@ public class HistoricalRequestManager {
 		this.writer = writer;
 		this.request = request;
 		this.historical = historical;
+		historicalManager = new HistoricalManager(connDB);
 	}
 	
 	
@@ -36,7 +37,7 @@ public class HistoricalRequestManager {
 		String message=null, error="no row(s)";
 		String[] res=request.split("-");
 		switch (request) {
-			case "insert-historical":
+			case "insert-Historical":
 				try{
 					response=HistoricalManager.create(historical);
 				}
@@ -44,7 +45,7 @@ public class HistoricalRequestManager {
 			    	error="Error insertion "+e;
 			    }
 				break;
-			case "update-historical":
+			case "update-Historical":
 				try{
 					response=HistoricalManager.update(historical);
 				}
@@ -52,7 +53,7 @@ public class HistoricalRequestManager {
 			    	error="Error updating "+e;
 			    }
 				break;
-			case "delete-historical":
+			case "delete-Historical":
 				try{
 					response=HistoricalManager.delete(historical);
 				}
@@ -60,7 +61,7 @@ public class HistoricalRequestManager {
 			    	error="Error delete "+e;
 			    }
 				break;
-			case "deleteAll-historical":
+			case "deleteAll-Historical":
 				try{
 					response=HistoricalManager.deleteAll();
 				}
@@ -68,7 +69,7 @@ public class HistoricalRequestManager {
 			    	error="Error delete all "+e;
 			    }				
 				break;	
-			case "select-historical":
+			case "select-Historical":
 					Historical sendHist=null;
 					try{
 						sendHist=HistoricalManager.getHistorical(historical.getId());
@@ -79,7 +80,7 @@ public class HistoricalRequestManager {
 						error+=" and Date Parse error "+e;
 					}
 					break;
-			case "selectAll-historical":
+			case "selectAll-Historical":
 				try{
 					List<Historical> historicals = HistoricalManager.getHistoricals();
 					writer.beginObject();

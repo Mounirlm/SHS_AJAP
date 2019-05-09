@@ -1,5 +1,6 @@
 package com.shs.commons.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Sensor {
@@ -15,6 +16,7 @@ public class Sensor {
 	private Room fk_room;
 	private Type_Sensor fk_type_sensor;
 	private Integer scope_sensor;
+	private String date_setup_formatted;
 	
 	public Sensor() {
 		// TODO Auto-generated constructor stub
@@ -113,11 +115,16 @@ public class Sensor {
 	public void setScope_sensor(Integer scope_sensor) {
 		this.scope_sensor = scope_sensor;
 	}
-
+	
+	public String getDate_setup_formatted() {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		return dateFormat.format(date_setup);
+	}
 	@Override
 	public String toString() {
+		
 		return "Sensor [id=" + id + ", sensor_name=" + sensor_name + ", ip_address=" + ip_address + ", mac_address="
-				+ mac_address + ", date_setup=" + date_setup + ", status=" + status + ", installed=" + installed
+				+ mac_address + ", date_setup=" + getDate_setup_formatted() + ", status=" + status + ", installed=" + installed
 				+ ", fk_position=" + fk_position + ", price=" + price + ", fk_room=" + fk_room + ", fk_type_sensor="
 				+ fk_type_sensor + ", scope_sensor=" + scope_sensor + "]";
 	}

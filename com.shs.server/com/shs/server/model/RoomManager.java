@@ -101,7 +101,7 @@ public class RoomManager {
 	    return roomList;
 	}
 	
-	public static Room getRoom(int id) throws SQLException{
+	public static Room getRoom(int id, boolean releaseConnection) throws SQLException{
 		Statement Stmt = conn.createStatement();
 		Statement Stmt2 = conn.createStatement();
 		Statement Stmt3 = conn.createStatement();
@@ -124,7 +124,8 @@ public class RoomManager {
         }
 		}finally {
 	        // Closing
-			DataSource.releaseConnection(conn);
+			if(releaseConnection)
+				DataSource.releaseConnection(conn);
 			if(RS!=null)
 		        try{RS.close();}catch(Exception e){e.printStackTrace();} 
 			if(rstype_room!=null)
