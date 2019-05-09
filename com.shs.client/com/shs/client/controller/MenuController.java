@@ -8,7 +8,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
-import com.shs.client.model.RoomServerHandler;
+import com.shs.client.model.RoomClientHandler;
 import com.shs.client.view.SHSView;
 import com.shs.commons.model.Type_Room;
 import com.shs.commons.model.Wing_Room;

@@ -1,4 +1,4 @@
-package com.shs.client.model;
+package com.shs.commons.model;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,13 +12,10 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.shs.commons.model.Room;
-import com.shs.commons.model.Type_Room;
-import com.shs.commons.model.User;
+import com.shs.commons.model.Sensor;
 import com.shs.commons.model.Wing_Room;
-import com.shs.server.connection.pool.DBAccess;
 
-public class RoomServerHandler {
+public class SensorClientHandler {
 	private Socket server;
 	private JsonReader reader;
 	private JsonWriter writer;
@@ -27,7 +24,7 @@ public class RoomServerHandler {
 	private int port = ServerAccess.getPORT_SERVER();
 	private String adress =ServerAccess.getSERVER();
 	
-	public RoomServerHandler() throws UnknownHostException, IOException {
+	public SensorClientHandler() throws UnknownHostException, IOException {
 		gson = new Gson();
 	}
 	
@@ -51,20 +48,20 @@ public class RoomServerHandler {
         }
     }
 	
-	public String insertRoomToServer(Room room)throws IOException  {
+	public String insertSensorToServer(Sensor sensor)throws IOException  {
 		//connections
      	getFlux();
 		try {
-			String request = "insert-Room";
+			String request = "insert-Sensor";
 			
 			//Creation request Json for server
 		    writer.setIndent("	");
 		    writer.beginObject();
 		    writer.name("request").value(request);
-		    writer.name("object").value(gson.toJson(room));
+		    writer.name("object").value(gson.toJson(sensor));
 		    writer.endObject();
 		    writer.flush();//send to server
-		    System.out.println("client :request:"+request+"\n object"+gson.toJson(room));
+		    System.out.println("client :request:"+request+"\n object"+gson.toJson(sensor));
 		   
 		    //response from server
 		    reader.beginObject();
@@ -83,22 +80,22 @@ public class RoomServerHandler {
 	} 
 	
 	
-	public String updateRoomToServer(Room room) throws IOException {
+	public String updateSensorToServer(Sensor sensor) throws IOException {
 		//connections
      	getFlux();
 		try {
 			//Type class
-			String request = "update-Room";
+			String request = "update-Sensor";
 			
 			
 	     	//Creation request Json
 		    writer.setIndent("	");
 		    writer.beginObject();
 		    writer.name("request").value(request);
-		    writer.name("object").value(gson.toJson(room));
+		    writer.name("object").value(gson.toJson(sensor));
 		    writer.endObject();
 		    writer.flush();
-		    System.out.println("request:"+request+"\n object: "+gson.toJson(room));
+		    System.out.println("request:"+request+"\n object: "+gson.toJson(sensor));
 		    //response
 		    reader.beginObject();reader.nextName();
 		    String response = reader.nextString();
@@ -113,21 +110,21 @@ public class RoomServerHandler {
 	    }
 	}
 	
-	public String deleteRoom(Room room) throws IOException {
+	public String deleteSensor(Sensor sensor) throws IOException {
 		//connections
      	getFlux();
 		try {
 			//Type class
-			String request = "delete-Room";
+			String request = "delete-Sensor";
 			
 	     	//Creation request Json
 		    writer.setIndent("	");
 		    writer.beginObject();
 		    writer.name("request").value(request);
-		    writer.name("object").value(gson.toJson(room));
+		    writer.name("object").value(gson.toJson(sensor));
 		    writer.endObject();
 		    writer.flush();
-		    System.out.println("request:"+request+"\n object: "+gson.toJson(room));
+		    System.out.println("request:"+request+"\n object: "+gson.toJson(sensor));
 		    //response
 		    reader.beginObject();reader.nextName();
 		    String response = reader.nextString();
@@ -142,12 +139,12 @@ public class RoomServerHandler {
 	    }
 	}
 
-	public String deleteAllRoom() throws IOException {
+	public String deleteAllSensors() throws IOException {
 		//connections
      	getFlux();
 		try {
 			//Type class
-			String request = "deleteAll-Room";
+			String request = "deleteAll-Sensor";
 			
 			
 	     	//Creation request Json
@@ -171,31 +168,31 @@ public class RoomServerHandler {
 	    }
 	}
 	
-	public List<Room> searchRoomToServer(Room room) throws IOException {
+	public List<Sensor> searchSensorToServer(Sensor sensor) throws IOException {
 		//connections
      	getFlux();
-		List<Room> list=new ArrayList<>(); 
+		List<Sensor> list=new ArrayList<>(); 
 		try {
 			//Type class
-			String request="select-Room";
+			String request="select-Sensor";
 			
 	     	//Creation request Json
 		    writer.setIndent("	");
 		    writer.beginObject();
 		    writer.name("request").value(request);
-		    writer.name("object").value(gson.toJson(room));
+		    writer.name("object").value(gson.toJson(sensor));
 		    writer.endObject();
 		    writer.flush();
-		    System.out.println("request:"+request+"\n"+gson.toJson(room));
+		    System.out.println("request:"+request+"\n"+gson.toJson(sensor));
 		    //response
 		    String name=null;
 		    
 		    reader.beginObject();
 		    while(reader.hasNext()) {
 		    	 name = reader.nextName();
-			    if(name.equals("room")) {
+			    if(name.equals("sensor")) {
 			    	String objectJson=reader.nextString();
-			    	Room receivRoom=new Gson().fromJson(objectJson, Room.class);
+			    	Sensor receivRoom=new Gson().fromJson(objectJson, Sensor.class);
 			    	list.add(receivRoom);System.out.println(list); 	
 			    }
 			    else if(name.equals("null")) {
@@ -216,12 +213,12 @@ public class RoomServerHandler {
 	}
 		
 
-	public List<Room> searchAllRoom() throws IOException {
-		List<Room> list = new ArrayList<>();
+	public List<Sensor> searchAllSensors() throws IOException {
+		List<Sensor> list = new ArrayList<>();
 		//connections
      	getFlux();
 		try {
-			String request="selectAll-Room";
+			String request="selectAll-Sensor";
 			
 	     	//Creation request Json
 		    writer.setIndent("	");
@@ -238,7 +235,7 @@ public class RoomServerHandler {
 			    	System.out.println(reader.nextString());
 			    }else {
 				   String objectJson=reader.nextString();
-				   	list.add(new Gson().fromJson(objectJson, Room.class));
+				   	list.add(new Gson().fromJson(objectJson, Sensor.class));
 				 }
 		    }
 		    reader.endObject();
@@ -254,16 +251,16 @@ public class RoomServerHandler {
 	
 
 	/*
-	 * @return all types of room
+	 * @return all types of sensors
 	 */
-	public List<Type_Room> selectAllTypeRoom() throws IOException {
-		List<Type_Room> list = new ArrayList<>();
+	public List<Type_Sensor> selectAllTypeSensors() throws IOException {
+		List<Type_Sensor> list = new ArrayList<>();
 		//connections
      	getFlux();
      	
      	//communication to server
 		try {
-			String request="selectAll-Type_Room";
+			String request="selectAll-Type_Sensor";
 			
 	     	//Creation request Json
 		    writer.setIndent("	");
@@ -280,7 +277,7 @@ public class RoomServerHandler {
 			    	System.out.println(reader.nextString());
 			    }else {
 				   String objectJson=reader.nextString();
-				   	list.add(new Gson().fromJson(objectJson, Type_Room.class));
+				   	list.add(new Gson().fromJson(objectJson, Type_Sensor.class));
 				 }
 		    }
 		    reader.endObject();
@@ -295,9 +292,9 @@ public class RoomServerHandler {
 	}
 
 	/*
-	 * @return all wings of rooms
+	 * @return all positions of sensors
 	 */
-	public List<Wing_Room> selectAllWingRoom() throws IOException {
+	public List<Wing_Room> selectAllWingSensors() throws IOException {
 		List<Wing_Room> list = new ArrayList<>();
 		//connections
      	getFlux();

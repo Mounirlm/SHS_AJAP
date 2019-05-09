@@ -9,7 +9,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
-import com.shs.client.model.RoomServerHandler;
+import com.shs.client.model.RoomClientHandler;
 import com.shs.client.view.SHSView;
 import com.shs.commons.model.Room;
 import com.shs.commons.model.Type_Room;
@@ -17,11 +17,11 @@ import com.shs.commons.model.Wing_Room;
 
 public class RoomController implements ActionListener{
 	 private SHSView view;
-	 private RoomServerHandler servH;
+	 private RoomClientHandler servH;
 	 
 	 public RoomController(SHSView v) throws IOException {
 		 this.view = v;
-		 this.servH  = new RoomServerHandler();
+		 this.servH  = new RoomClientHandler();
 		 //generate combos view in create, reseauch and update views
 		 this.setTypesAndWingsRooms();
 		 //add listners to gui
@@ -391,7 +391,7 @@ public class RoomController implements ActionListener{
 			List<Wing_Room> wing = null;
 			List<Type_Room> types = null;
 			try {
-				servH = new RoomServerHandler();
+				servH = new RoomClientHandler();
 				//get types and wings from database
 				 wing  = servH.selectAllWingRoom();
 				 types = servH.selectAllTypeRoom();
