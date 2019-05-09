@@ -5,22 +5,153 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-
 import com.shs.commons.model.Alert;
-import com.shs.commons.model.Sensor;
 import com.shs.server.connection.pool.DataSource;
 
 public class AlertManager {
 	private static Connection conn;
-	
+
 	public AlertManager(Connection con) {
 		this.conn=con;
 	}
-	
 
+
+	public static ArrayList<Alert> getAlerts() throws SQLException, ParseException{
+		Statement Stmt = conn.createStatement();
+
+		ArrayList<Alert> alertList = new ArrayList<Alert>();
+		ResultSet RS=null;
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+		try {
+			RS = Stmt.executeQuery("SELECT * FROM Alert");
+
+			while(RS.next()) {
+				alertList.add(new Alert(RS.getInt("id"),dateFormat.parse(RS.getString("date_alert")), 
+						Time.valueOf(RS.getString("hour_alert")),RS.getString("description"),
+						RS.getInt("fk_user"),RS.getInt("fk_sensor")));
+
+
+			}	
+		}
+		finally {
+			// Closing
+			DataSource.releaseConnection(conn);
+			if(RS!=null)
+				try{RS.close();}catch(Exception e){e.printStackTrace();} 
+			if(Stmt!=null)
+				try{Stmt.close();}catch(Exception e){e.printStackTrace();} 
+			 
+		}
+		return alertList;
+	}
 	
+	
+	public static Alert getAlert(int id) throws SQLException, ParseException{
+		Statement Stmt = conn.createStatement();
+		Alert alert=null;
+		ResultSet RS=null;
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+		try {
+			RS = Stmt.executeQuery("SELECT * FROM Alert where id="+id);
+
+			while(RS.next()) {
+
+				alert = new Alert(RS.getInt("id"),dateFormat.parse(RS.getString("date_alert")), 
+						Time.valueOf(RS.getString("hour_alert")),RS.getString("description"),
+						RS.getInt("fk_user"),RS.getInt("fk_sensor"));
+
+			}	
+		}
+		finally {
+			// Closing
+			DataSource.releaseConnection(conn);
+			if(RS!=null)
+				try{RS.close();}catch(Exception e){e.printStackTrace();} 
+			if(Stmt!=null)
+				try{Stmt.close();}catch(Exception e){e.printStackTrace();} 
+			 
+		}
+		return alert;
+	}
+	
+	public static boolean create(Alert alert) throws SQLException{
+		PreparedStatement pStmt = conn.prepareStatement("insert into alert (date_alert, hour_alert, description, fk_sensor, fk_users)"
+				+ " values (?,?,?,?,?);");
+		pStmt.setDate(1, (java.sql.Date) alert.getDate_alert());
+		pStmt.setTime(2, (java.sql.Time) alert.getHour_alert());
+		pStmt.setString(3, alert.getDescription());
+		pStmt.setInt(4, alert.getFk_sensor());
+		pStmt.setInt(5, alert.getFk_user());
+		
+		
+		int n=0;
+		try {
+			n = pStmt.executeUpdate();}
+		finally {
+		// Closing
+		if(pStmt!=null)
+		    try{pStmt.close();}catch(Exception e){e.printStackTrace();}  
+        DataSource.releaseConnection(conn);
+		}
+		return n==1;
+	}
+	
+	public static boolean update(Alert alert) throws SQLException {
+		PreparedStatement pStmt = conn.prepareStatement("update Alert set date_alert='?', hour_alert='?', description='?',"
+				+ " fk_sensor='?', fk_users=?, where id=?");
+		pStmt.setDate(1, (java.sql.Date) alert.getDate_alert());
+		pStmt.setTime(2, (java.sql.Time) alert.getHour_alert());
+		pStmt.setString(3, alert.getDescription());
+		pStmt.setInt(4, alert.getFk_sensor());
+		pStmt.setInt(5, alert.getFk_user());
+		pStmt.setInt(6, alert.getId());
+		
+		
+		int n=0;
+		try {
+			n = pStmt.executeUpdate();}
+		finally {
+		// Closing
+		if(pStmt!=null)
+		    try{pStmt.close();}catch(Exception e){e.printStackTrace();}  
+        DataSource.releaseConnection(conn);
+		}
+		return n==1;
+	}
+	
+	//TODO ADD CASCADE CONSTRAINTS ON DELETE IN SCRIPT
+		public static boolean delete(Alert alert) throws SQLException{
+			Statement Stmt = conn.createStatement();
+			int n=0;
+			try{
+			n = Stmt.executeUpdate("DELETE FROM alert WHERE id=" + alert.getId());}
+			finally {
+			//Closing
+			DataSource.releaseConnection(conn);
+			if(Stmt!=null)
+	        	try{Stmt.close();}catch(Exception e){e.printStackTrace();} 
+			}
+	        return n==1;
+		}
+
+		public static boolean deleteAll() throws SQLException{
+			Statement Stmt = conn.createStatement();
+			int n=0;
+			try{
+			n = Stmt.executeUpdate("DELETE FROM alert");System.out.println(n);
+			}finally {
+				//Closing
+				DataSource.releaseConnection(conn);
+				if(Stmt!=null)
+		        	try{Stmt.close();}catch(Exception e){e.printStackTrace();} ;
+		        
+	        }
+	        return n>0;
+		}
 }

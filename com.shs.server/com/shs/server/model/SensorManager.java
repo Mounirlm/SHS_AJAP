@@ -51,7 +51,8 @@ public class SensorManager {
         			new Wing_Room(rswing_room.getInt("id"), rswing_room.getString("name")),
         			RS.getFloat("price"),
         			room,
-        			new Type_Sensor(rstype_sensor.getInt("id"), rstype_sensor.getString("name"))));
+        			new Type_Sensor(rstype_sensor.getInt("id"), rstype_sensor.getString("name")),
+        			RS.getInt("scope_sensor")));
         			
         	}
         }	
@@ -102,7 +103,8 @@ public class SensorManager {
         			new Wing_Room(rswing_room.getInt("id"), rswing_room.getString("name")),
         			RS.getFloat("price"),
         			room,
-        			new Type_Sensor(rstype_sensor.getInt("id"), rstype_sensor.getString("name")));
+        			new Type_Sensor(rstype_sensor.getInt("id"), rstype_sensor.getString("name")),
+        			RS.getInt("scope_sensor"));
         			
         	}
         }	
@@ -127,8 +129,9 @@ public class SensorManager {
 	}
 	
 	public static boolean create(Sensor sensor) throws SQLException{
-		PreparedStatement pStmt = conn.prepareStatement("insert into sensor (sensor_name, ip_address, mac_address, date_setup, status, installed, fk_position, price, fk_room, fk_type_sensor)"
-				+ " values (?,?,?,?,?,?,?,?,?,?);");
+		PreparedStatement pStmt = conn.prepareStatement("insert into sensor (sensor_name, ip_address, mac_address,"
+				+ " date_setup, status, installed, fk_position, price, fk_room, fk_type_sensor, scope_sensor)"
+				+ " values (?,?,?,?,?,?,?,?,?,?,?);");
 		pStmt.setString(1, sensor.getSensor_name());
 		pStmt.setString(2, sensor.getIp_address());
 		pStmt.setString(3, sensor.getMac_address());
@@ -139,6 +142,7 @@ public class SensorManager {
 		pStmt.setFloat(8, sensor.getPrice());
 		pStmt.setInt(9, sensor.getFk_room().getId());
 		pStmt.setInt(10, sensor.getFk_type_sensor().getId());
+		pStmt.setInt(11, sensor.getScope_sensor());
 		
 		int n=0;
 		try {
@@ -154,8 +158,9 @@ public class SensorManager {
 
 	
 	public static boolean update(Sensor sensor) throws SQLException {
-		PreparedStatement pStmt = conn.prepareStatement("update sensor set sensor_name='?', ip_address='?', mac_address='?', date_setup='?', status=?, installed=?, fk_position=?, price=?, fk_room=?, fk_type_sensor=?)"
-				+ " values (?,?,?,?,?,?,?,?,?,?);");
+		PreparedStatement pStmt = conn.prepareStatement("update sensor set sensor_name='?', ip_address='?', mac_address='?',"
+				+ " date_setup='?', status=?, installed=?, fk_position=?, price=?, fk_room=?, fk_type_sensor=?, "
+				+ "scope_sensor=? where id=?;");
 		pStmt.setString(1, sensor.getSensor_name());
 		pStmt.setString(2, sensor.getIp_address());
 		pStmt.setString(3, sensor.getMac_address());
@@ -166,6 +171,8 @@ public class SensorManager {
 		pStmt.setFloat(8, sensor.getPrice());
 		pStmt.setInt(9, sensor.getFk_room().getId());
 		pStmt.setInt(10, sensor.getFk_type_sensor().getId());
+		pStmt.setInt(11, sensor.getScope_sensor());
+		pStmt.setInt(12, sensor.getId());
 		
 		int n=0;
 		try {

@@ -36,12 +36,12 @@ public class Alert {
 	}
 
 
-	public Date getAlert() {
+	public Date getDate_alert() {
 		return date_alert;
 	}
 
 
-	public void setAlert(Date alert) {
+	public void setDate_alert(Date alert) {
 		this.date_alert = alert;
 	}
 
@@ -66,22 +66,22 @@ public class Alert {
 	}
 
 
-	public int getIdUser() {
+	public int getFk_user() {
 		return fk_user;
 	}
 
 
-	public void setIdUser(int idUser) {
+	public void setfk_user(int idUser) {
 		this.fk_user = idUser;
 	}
 
 
-	public int getIdSensor() {
+	public int getFk_sensor() {
 		return fk_sensor;
 	}
 
 
-	public void setIdSensor(int idSensor) {
+	public void setfk_sensor(int idSensor) {
 		this.fk_sensor = idSensor;
 	}
 	
