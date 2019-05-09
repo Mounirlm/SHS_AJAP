@@ -69,6 +69,7 @@ public class AnalyzeFloorView extends JPanel {
 		pResident.add(labelResident2);
 		pCenter.add(pResident);
 	}
+	
 	public void addSelectComboBoxListener(ActionListener actionFloorComboBox, ActionListener actionMonthComboBox, ActionListener actionYearComboBox) {
 		floorComboBox.addActionListener(actionFloorComboBox);
 		monthComboBox.addActionListener(actionMonthComboBox);
