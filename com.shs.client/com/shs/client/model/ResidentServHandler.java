@@ -1,4 +1,4 @@
-package com.shs.client.controller;
+package com.shs.client.model;
 
 public class ResidentServHandler {
 
