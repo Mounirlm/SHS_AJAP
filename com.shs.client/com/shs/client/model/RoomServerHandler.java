@@ -54,20 +54,22 @@ public class RoomServerHandler {
 	public String insertRoomToServer(Room room)throws IOException  {
 		//connections
      	getFlux();
-		try {//Type class
+		try {
 			String request = "insert-Room";
 			
-			//Creation request Json
+			//Creation request Json for server
 		    writer.setIndent("	");
 		    writer.beginObject();
-		    writer.name("request").value("insert-Room");
+		    writer.name("request").value(request);
 		    writer.name("object").value(gson.toJson(room));
 		    writer.endObject();
-		    writer.flush();
-		    System.out.println("request:"+request+"\n object"+gson.toJson(room));
-		    //response
+		    writer.flush();//send to server
+		    System.out.println("client :request:"+request+"\n object"+gson.toJson(room));
+		   
+		    //response from server
 		    reader.beginObject();
 		    String response = "Server "+reader.nextName()+": "+reader.nextString();
+		    System.out.println(response);
 		    reader.endObject();
 		    return response;
 	      } 
@@ -75,6 +77,7 @@ public class RoomServerHandler {
 	    	throw new IOException("Error communication to server ");
 		}
 	    finally {
+	    	//stop connections
 	    	stopFlux();
 	    }
 	} 

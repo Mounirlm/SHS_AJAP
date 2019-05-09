@@ -37,7 +37,7 @@ public class CreateRoomView extends JPanel {
 	public void createCols(List<Type_Room> listT, List<Wing_Room> listW) {
 		Map<String, String> cols = new LinkedHashMap<>();
 		cols.put("FLOOR","");cols.put("ROOM NUMBER","");cols.put("M²","");
-				
+		cols.put("DOORS","");cols.put("WINDOWS","");		
 		ArrayList<String> buttons = new ArrayList<>();
 		buttons.add("INSERT");
 		

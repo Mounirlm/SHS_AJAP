@@ -1,14 +1,19 @@
 package com.shs.commons.model;
 
 public class Room implements Comparable<Room>{
+	
 	private Integer id;
 	private Integer floor;
 	private Integer room_number;
 	private Integer m2;
 	private Type_Room type_room;
 	private Wing_Room wing_room;
+	private Integer nb_doors;
+	private Integer nb_windows;
 	
-	public Room(int id, int floor, int room_number, int m2, Type_Room type_room, Wing_Room wing_room) {
+
+	public Room(Integer id, Integer floor, Integer room_number, Integer m2, Type_Room type_room, Wing_Room wing_room,
+			int nb_doors, int nb_windows) {
 		super();
 		this.id = id;
 		this.floor = floor;
@@ -16,7 +21,11 @@ public class Room implements Comparable<Room>{
 		this.m2 = m2;
 		this.type_room = type_room;
 		this.wing_room = wing_room;
+		this.nb_doors = nb_doors;
+		this.nb_windows = nb_windows;
 	}
+
+	
 	
 	public Room() {
 	}
@@ -67,6 +76,29 @@ public class Room implements Comparable<Room>{
 	public void setWing_room(Wing_Room wing_room) {
 		this.wing_room = wing_room;
 	}
+	
+
+	public Integer getNb_doors() {
+		return nb_doors;
+	}
+
+
+
+	public void setNb_doors(int nb_doors) {
+		this.nb_doors = nb_doors;
+	}
+
+
+
+	public Integer getNb_windows() {
+		return nb_windows;
+	}
+
+
+
+	public void setNb_windows(int nb_windows) {
+		this.nb_windows = nb_windows;
+	}
 
 	
 
@@ -80,13 +112,16 @@ public class Room implements Comparable<Room>{
 		return 0;
 	}
 
+
+
 	@Override
 	public String toString() {
 		return "Room [id=" + id + ", floor=" + floor + ", room_number=" + room_number + ", m2=" + m2 + ", type_room="
-				+ type_room + ", wing_room=" + wing_room + "]";
+				+ type_room + ", wing_room=" + wing_room + ", nb_doors=" + nb_doors + ", nb_windows=" + nb_windows
+				+ "]";
 	}
 
-	
-	
+
+
 	
 }

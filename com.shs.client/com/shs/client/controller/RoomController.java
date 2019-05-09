@@ -37,7 +37,7 @@ public class RoomController implements ActionListener{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String[] form = new String[5];
+				String[] form = new String[7];
 				form[0] = view.getpApp().getSupRoomView().getCreateView().getFormView().getJtf(0).getText();
 				form[1] = view.getpApp().getSupRoomView().getCreateView().getFormView().getJtf(1).getText();
 				form[2] = view.getpApp().getSupRoomView().getCreateView().getFormView().getJtf(2).getText();
@@ -45,7 +45,8 @@ public class RoomController implements ActionListener{
 				Wing_Room wing = (Wing_Room) view.getpApp().getSupRoomView().getCreateView().getFormView().getCombo_wing().getSelectedItem();
 				form[3] = type.toString();
 				form[4] = wing.toString();
-				
+				form[5] = view.getpApp().getSupRoomView().getCreateView().getFormView().getJtf(3).getText();
+				form[6] = view.getpApp().getSupRoomView().getCreateView().getFormView().getJtf(4).getText();
 				try {
 					String message =null;
 					message=insert(form, type, wing);
@@ -68,7 +69,7 @@ public class RoomController implements ActionListener{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String[] form = new String[6];
+				String[] form = new String[8];
 				form[0] = view.getpApp().getSupRoomView().getRudView().getSearchView().getFormView().getJtf(0).getText();
 				form[1] = view.getpApp().getSupRoomView().getRudView().getSearchView().getFormView().getJtf(1).getText();
 				form[2] = view.getpApp().getSupRoomView().getRudView().getSearchView().getFormView().getJtf(2).getText();
@@ -77,7 +78,9 @@ public class RoomController implements ActionListener{
 				Wing_Room wing = (Wing_Room) view.getpApp().getSupRoomView().getRudView().getSearchView().getFormView().getCombo_wing().getSelectedItem();
 				form[4] = type.toString();
 				form[5] = wing.toString();
-				
+				form[6] = view.getpApp().getSupRoomView().getRudView().getSearchView().getFormView().getJtf(4).getText();
+				form[7] = view.getpApp().getSupRoomView().getRudView().getSearchView().getFormView().getJtf(5).getText();
+
 				String choix = e.getActionCommand();
 				String message =null;
 				List<Room> rooms=new ArrayList<>();
@@ -111,7 +114,7 @@ public class RoomController implements ActionListener{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String[] form = new String[6];
+				String[] form = new String[8];
 				form[0] = view.getpApp().getSupRoomView().getRudView().getUpdateView().getFormView().getJtf(0).getText();
 				form[1] = view.getpApp().getSupRoomView().getRudView().getUpdateView().getFormView().getJtf(1).getText();
 				form[2] = view.getpApp().getSupRoomView().getRudView().getUpdateView().getFormView().getJtf(2).getText();
@@ -122,7 +125,9 @@ public class RoomController implements ActionListener{
 								
 				form[4] = type.toString();
 				form[5] = wing.toString();
-				
+				form[6] = view.getpApp().getSupRoomView().getRudView().getUpdateView().getFormView().getJtf(4).getText();
+				form[7] = view.getpApp().getSupRoomView().getRudView().getUpdateView().getFormView().getJtf(5).getText();
+
 				try {
 					String message =null;
 					message=update(form, type, wing);
@@ -183,7 +188,8 @@ public class RoomController implements ActionListener{
 		
 		
 		private List<Room> search(String[] form, Type_Room type_room, Wing_Room wing_room) throws Exception {
-			if(form[0].isEmpty() && form[1].isEmpty() && form[2].isEmpty()&&form[3].isEmpty()&&(form[4].equals("null")) &&(form[5].equals("null")))
+			if(form[0].isEmpty() && form[1].isEmpty() && form[2].isEmpty()&&form[3].isEmpty()&&(form[4].equals("null"))
+					&&(form[5].equals("null")) && form[6].isEmpty() && form[7].isEmpty())
 				throw new Exception("A value must be specified for research");
 			
 			if(!form[0].isEmpty()) {
@@ -203,8 +209,14 @@ public class RoomController implements ActionListener{
 				if(!isInteger(form[3]))
 				throw new Exception("M² must be a number");
 			}
-			
-			
+			if(!form[6].isEmpty()){
+				if(!isInteger(form[6]))
+				throw new Exception("doors must be a number");
+			}
+			if(!form[7].isEmpty()){
+				if(!isInteger(form[7]))
+				throw new Exception("windows must be a number");
+			}
 			
 			Room room = new Room();
 			if(!form[0].isEmpty())
@@ -215,7 +227,11 @@ public class RoomController implements ActionListener{
 				room.setRoom_number(Integer.valueOf(form[2]));
 			if(!form[3].isEmpty())
 				room.setM2(Integer.valueOf(form[3]));
-				
+			if(!form[6].isEmpty())
+				room.setNb_doors(Integer.valueOf(form[6]));
+			if(!form[7].isEmpty())
+				room.setNb_windows(Integer.valueOf(form[7]));
+			
 			room.setType_room(type_room);
 			room.setWing_room(wing_room);
 			
@@ -245,7 +261,8 @@ public class RoomController implements ActionListener{
 		}
 
 	public String update(String[] form, Type_Room type_room, Wing_Room wing_room) throws Exception {
-		if(!form[0].isEmpty() && form[1].isEmpty() && form[2].isEmpty()&&form[3].isEmpty()&&(form[4].equals("null")) &&(form[5].equals("null")))
+		if(!form[0].isEmpty() && form[1].isEmpty() && form[2].isEmpty()&&form[3].isEmpty()&&(form[4].equals("null")) &&(form[5].equals("null"))
+				&&form[6].isEmpty()&&form[7].isEmpty())
 			throw new Exception("A value must be specified for update");
 		
 		if(form[0].isEmpty()) {
@@ -268,7 +285,14 @@ public class RoomController implements ActionListener{
 			if(!isInteger(form[3]))
 			throw new Exception("M² must be a number");
 		}
-		
+		if(!form[6].isEmpty()){
+			if(!isInteger(form[6]))
+			throw new Exception("doors must be a number");
+		}
+		if(!form[7].isEmpty()){
+			if(!isInteger(form[7]))
+			throw new Exception("windows must be a number");
+		}
 		
 		Room room = new Room();
 		if(!form[0].isEmpty())
@@ -279,6 +303,10 @@ public class RoomController implements ActionListener{
 			room.setRoom_number(Integer.valueOf(form[2]));
 		if(!form[3].isEmpty())
 			room.setM2(Integer.valueOf(form[3]));
+		if(!form[6].isEmpty())
+			room.setNb_doors(Integer.valueOf(form[6]));
+		if(!form[7].isEmpty())
+			room.setNb_windows(Integer.valueOf(form[7]));
 			
 		room.setType_room(type_room);
 		room.setWing_room(wing_room);
@@ -296,7 +324,11 @@ public class RoomController implements ActionListener{
 		if(!isInteger(form[1]))
 			throw new Exception("Room number must be a number");
 		if (!isInteger(form[2]))
-			throw new Exception("M² msut be a number");
+			throw new Exception("M² must be a number");
+		if (!isInteger(form[5]))
+			throw new Exception("doors must be a number");
+		if (!isInteger(form[6]))
+			throw new Exception("windows must be a number");
 		if (form[3].equals("null"))
 			throw new Exception("A type have to be selected");
 		if (form[4].equals("null"))
@@ -307,6 +339,8 @@ public class RoomController implements ActionListener{
 			room.setFloor(Integer.parseInt(form[0]));
 			room.setRoom_number(Integer.parseInt(form[1]));
 			room.setM2(Integer.parseInt(form[2]));
+			room.setNb_doors(Integer.parseInt(form[5]));
+			room.setNb_windows(Integer.parseInt(form[6]));
 			room.setType_room(type_room);
 			room.setWing_room(wing_room);
 			

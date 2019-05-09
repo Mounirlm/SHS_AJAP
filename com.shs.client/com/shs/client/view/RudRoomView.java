@@ -59,7 +59,7 @@ public class RudRoomView extends JPanel {
 		public void createCols(List<Type_Room> listT, List<Wing_Room> listW) {
 			Map<String, String> cols = new LinkedHashMap<>();
 			cols.put("ONLY BY ID","");cols.put("BY FLOOR","");cols.put("BY ROOM NUMBER","");cols.put("BY M²","");
-			
+			cols.put("BY DOORS","");cols.put("BY WINDOWS","");
 			ArrayList<String> buttons = new ArrayList<>();
 			buttons.add("RESEARCH");buttons.add("RESEARCH ALL");
 			
@@ -84,7 +84,7 @@ public class RudRoomView extends JPanel {
 		public void createCols(List<Type_Room> listT, List<Wing_Room> listW) {
 			Map<String, String> cols = new LinkedHashMap<>();
 			cols.put("ID","");cols.put("FLOOR","");cols.put("ROOM NUMBER","");cols.put("M²","");
-			
+			cols.put("DOORS","");cols.put("WINDOWS","");
 			ArrayList<String> buttons = new ArrayList<>();
 			buttons.add("UPDATE");
 			
@@ -176,16 +176,20 @@ public class RudRoomView extends JPanel {
 				this.setLayout(new BorderLayout());
 				cols = new LinkedHashMap<>();
 				cols.put("ID",""+room.getId());cols.put("FLOOR",""+room.getFloor());
-				cols.put("M²",""+room.getM2());
 				cols.put("ROOM NUMBER",""+room.getRoom_number());
 				cols.put("TYPE",""+room.getType_room().getName());
 				cols.put("WING",""+room.getWing_room().getName());
+				cols.put("M²",""+room.getM2());
+				cols.put("DOORS",""+room.getNb_doors());
+				cols.put("WINDOWS",""+room.getNb_windows());
+				
 				ArrayList<String> buttons = new ArrayList<>();
 				ArrayList<String> labels = new ArrayList<>();
 				ArrayList<Type_Room> list1 = new ArrayList<>();
 				ArrayList<Wing_Room> list2 = new ArrayList<>();
 				labels.add("ID");labels.add("FLOOR");labels.add("ROOM NUMBER");
-				labels.add("M²");labels.add("TYPE");labels.add("WING");
+				labels.add("TYPE");labels.add("WING");
+				labels.add("M²");labels.add("DOORS");labels.add("WINDOWS");
 				
 				formView = new FormView("Read Secured Room", cols, buttons,labels,list1, list2, "h",title,false,15,18,20);
 				this.add(formView, BorderLayout.CENTER);
