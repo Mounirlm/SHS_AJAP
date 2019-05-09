@@ -19,6 +19,7 @@ public class AnalyzeView extends JPanel {
 	private JButton WingTopBarButton;
 	private JButton TotalTopBarButton;
 	private CardLayout centerCardLayout;
+	private AnalyzeFloorView pFloorView;
 
 	public AnalyzeView() {
 		super();
@@ -50,8 +51,8 @@ public class AnalyzeView extends JPanel {
 		centerCardLayout = new CardLayout();
 		pCenter.setLayout(centerCardLayout);
 		
-		AnalyzeFloorView pFloor = new AnalyzeFloorView();
-		pCenter.add("floor", pFloor);
+		pFloorView = new AnalyzeFloorView();
+		pCenter.add("floor", pFloorView);
 		AnalyzeWingView pWing = new AnalyzeWingView();
 		pCenter.add("wing", pWing);
 		AnalyzeTotalView pTotal = new AnalyzeTotalView();
@@ -86,6 +87,10 @@ public class AnalyzeView extends JPanel {
 	
 	public CardLayout getCenterCardLayout() {
 		return centerCardLayout;
+	}
+
+	public AnalyzeFloorView getFloorView() {
+		return pFloorView;
 	}
 	
 }
