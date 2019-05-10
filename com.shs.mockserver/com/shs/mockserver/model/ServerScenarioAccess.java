@@ -9,7 +9,7 @@ import com.shs.server.connection.pool.DBAccess;
 
 public class ServerScenarioAccess {
 	private static ServerScenarioAccess serverScenarioAccess = new ServerScenarioAccess();
-	private String scenario;
+	private static String scenarios;
 	
 	private ServerScenarioAccess() {
 		Properties prop = new Properties();
@@ -17,13 +17,13 @@ public class ServerScenarioAccess {
 		
 		try {
 			
-			input = new FileInputStream("./mockserver.resources/server-scenario.properties");
+			input = new FileInputStream("ressources\\server-scenario.properties");
 
 			// load a properties file
 			prop.load(input);
 			
 			// get the property value and print it out
-			scenario = prop.getProperty("scenario");
+			scenarios = prop.getProperty("scenarios");
 			
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -45,13 +45,13 @@ public class ServerScenarioAccess {
 		    return serverScenarioAccess;
 		}
 
-		public String getScenario() {
-			return scenario;
+		public static String getScenario() {
+			return scenarios;
 		}
 
 		@Override
 		public String toString() {
-			return "ServerScenarioAccess [scenario=" + scenario + "]";
+			return "ServerScenarioAccess [scenarios=" + scenarios + "]";
 		}
 
 		

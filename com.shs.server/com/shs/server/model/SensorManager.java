@@ -53,7 +53,9 @@ public class SensorManager {
         			new Wing_Room(rswing_room.getInt("id"), rswing_room.getString("name")),
         			RS.getFloat("price"),
         			room,
-        			new Type_Sensor(rstype_sensor.getInt("id"), rstype_sensor.getString("name")),
+        			new Type_Sensor(rstype_sensor.getInt("id"), rstype_sensor.getString("name"),
+        					rstype_sensor.getInt("trigger_point_min"),rstype_sensor.getInt("trigger_point_max"),
+        					rstype_sensor.getInt("nb_alerts")),
         			RS.getInt("scope_sensor")));
         			
         	}
@@ -105,7 +107,9 @@ public class SensorManager {
         			new Wing_Room(rswing_room.getInt("id"), rswing_room.getString("name")),
         			RS.getFloat("price"),
         			room,
-        			new Type_Sensor(rstype_sensor.getInt("id"), rstype_sensor.getString("name")),
+        			new Type_Sensor(rstype_sensor.getInt("id"), rstype_sensor.getString("name"),
+        					rstype_sensor.getInt("trigger_point_min"),rstype_sensor.getInt("trigger_point_max"),
+        					rstype_sensor.getInt("nb_alerts")),
         			RS.getInt("scope_sensor"));
         			
         	}
