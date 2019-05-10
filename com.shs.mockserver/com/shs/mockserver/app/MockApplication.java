@@ -83,6 +83,7 @@ public class MockApplication {
 				for (int i = 0; i < scenas.size(); i++) {
 					if (sensor.getId() == Integer.parseInt(scenas.get(i).get("id"))) {
 						mockSensors.add(new MockSensor(sensor,histH, scenas.get(i)));
+						//send signals to server
 						mockSensors.get(mockSensors.size()-1).start();
 					}
 					else {
