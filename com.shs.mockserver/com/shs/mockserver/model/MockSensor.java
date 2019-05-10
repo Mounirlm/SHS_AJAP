@@ -32,18 +32,14 @@ public class MockSensor extends Thread{
 	HistoricalClientHandler histH;
 
 
-	public MockSensor(Sensor sensor) {
-		try {
-			this.histH = new HistoricalClientHandler();
-		} catch (IOException e) {
-			System.err.println(e.getMessage());
-		}
+	public MockSensor(Sensor sensor, HistoricalClientHandler histH2) {
 		this.sensor = sensor;
+		this.histH = histH2;
 		this.defaultMockSensorMessage = new MockSensorMessage(sensor, sensor.getFk_type_sensor().getTrigger_point_max()-1 , 1);
 	}
 
-	public MockSensor(Sensor sensor2, Map<String, String> map) {
-		this(sensor2);
+	public MockSensor(Sensor sensor2, HistoricalClientHandler histH2, Map<String, String> map) {
+		this(sensor2, histH2);
 		this.scenas = map;
 
 
@@ -80,7 +76,7 @@ public class MockSensor extends Thread{
 			while(true) {
 				jsonSignals(defaultMockSensorMessage);
 			}
-			
+
 
 		}
 
@@ -89,29 +85,31 @@ public class MockSensor extends Thread{
 
 
 	private void jsonSignals(MockSensorMessage mockSensorMessage) {
-		Historical historic = new Historical();
-		//Calendar calendar = Calendar.getInstance();
-		//DateFormat format = new SimpleDateFormat("HH:mm:ss");
-		
-		historic.setFk_sensor(mockSensorMessage.getSensor().getId());
-		historic.setMessage(String.valueOf(mockSensorMessage.getCurrent_value()));
-		historic.setDate_signal(new Date());
-		historic.setHour_signal(new java.sql.Time(new Date().getTime()));
-		//System.out.println(historic);
-		//send to server
-		try {
-			histH.insertHistoricalToServer(historic);
-		} catch (IOException e1) {
-			System.err.println(e1.getMessage());
+		synchronized (histH) {
+			Historical historic = new Historical();
+			//Calendar calendar = Calendar.getInstance();
+			//DateFormat format = new SimpleDateFormat("HH:mm:ss");
+
+			historic.setFk_sensor(mockSensorMessage.getSensor().getId());
+			historic.setMessage(String.valueOf(mockSensorMessage.getCurrent_value()));
+			historic.setDate_signal(new Date());
+			historic.setHour_signal(new java.sql.Time(new Date().getTime()));
+			//System.out.println(historic);
+			//send to server
+			try {
+				histH.insertHistoricalToServer(historic);
+			} catch (IOException e1) {
+				System.err.println(e1.getMessage());
+			}
+
+			//Delta of messages 
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				System.err.println(e.getMessage());
+			}
 		}
 
-		//Delta of messages every 1 seconde
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			System.err.println(e.getMessage());
-		}
-		
 	}
 
 	@Override

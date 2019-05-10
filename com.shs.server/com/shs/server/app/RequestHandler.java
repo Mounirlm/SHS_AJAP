@@ -8,7 +8,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
@@ -19,10 +21,12 @@ import com.shs.commons.model.Room;
 import com.shs.commons.model.Sensor;
 import com.shs.commons.model.Type_Room;
 import com.shs.commons.model.User;
+import com.shs.server.connection.pool.DataSource;
 import com.shs.server.model.AlertRequestManager;
 import com.shs.server.model.HistoricalRequestManager;
 import com.shs.server.model.RoomManager;
 import com.shs.server.model.RoomRequestManager;
+import com.shs.server.model.SensorManager;
 import com.shs.server.model.SensorRequestManager;
 import com.shs.server.model.Type_RoomRequestManager;
 import com.shs.server.model.UserManager;
@@ -37,6 +41,7 @@ public class RequestHandler implements Runnable {
 	private Connection connDB;
 	private JsonReader reader;
 	private JsonWriter writer;
+	private static Map<Integer, ArrayList<Historical>> CACHE = new HashMap<>();
 
 	
 	public RequestHandler(Socket client, Connection connDB) {
@@ -55,7 +60,7 @@ public class RequestHandler implements Runnable {
 	public void run(){
 		//Communication Json
 		try {
-			System.out.println("Thread:"+num+" "+readMessage(reader));
+			System.out.println("Thread:"+num+" "+requestHandler(reader));
 		} catch (IOException e) {
 	    	System.out.println("Error communication to client "+e);
 		} catch (SQLException e) {
@@ -71,7 +76,7 @@ public class RequestHandler implements Runnable {
 		
 	}
 	
-	public String readMessage(JsonReader reader) throws IOException, SQLException, ParseException {
+	public String requestHandler(JsonReader reader) throws IOException, SQLException, ParseException {
 		String request=null;
 		Object object=null;
 		String className=null;
@@ -142,9 +147,15 @@ public class RequestHandler implements Runnable {
 			break;
 			
 		case "Historical":
-			Historical historic =(Historical) object;
+			Historical historic =(Historical) object;			
+			//add to DB
 			HistoricalRequestManager reqHist = new HistoricalRequestManager(connDB, reader, writer, historic, "insert-Historical");
 			message=reqHist.requestManager();
+			//CACHE
+			synchronized (CACHE) {
+				this.isAlertToCache(historic);
+			}
+
 			break;
 
 		default:
@@ -154,6 +165,49 @@ public class RequestHandler implements Runnable {
 	}
 	
 	
+	private void isAlertToCache(Historical historic) {
+		try {//get sensor of signal
+			SensorManager sensM = new SensorManager(DataSource.getConnection());
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		Sensor sensor = null;
+		try {
+			sensor = SensorManager.getSensor(historic.getFk_sensor());
+		} catch (SQLException | ParseException e) {
+			e.printStackTrace();
+		}
+		if (sensor.getFk_type_sensor().getTrigger_point_max()!=null) {
+			if (Integer.parseInt(historic.getMessage())> sensor.getFk_type_sensor().getTrigger_point_max()) {
+				this.addToCache(historic);
+			}
+		}
+		if (sensor.getFk_type_sensor().getTrigger_point_min()!=null) {
+			if (Integer.parseInt(historic.getMessage())< sensor.getFk_type_sensor().getTrigger_point_min()) {
+				this.addToCache(historic);
+			}
+		}
+		
+	}
+
+	private void addToCache(Historical historic) {
+		//add to cache
+		if (!CACHE.containsKey(historic.getFk_sensor())) {
+			ArrayList<Historical> a  = new ArrayList<Historical>();
+			a.add(historic);
+			CACHE.put(historic.getFk_sensor(), a);
+		}else {
+			ArrayList<Historical> a = CACHE.get(historic.getFk_sensor());
+			a.add(historic);
+		}
+		
+		//TODOVerification of alerts
+		System.out.println("CACHE size :"+CACHE);
+
+		//this.isAlertToDB();
+
+	}
+
 	public void stopConnection() throws IOException {
         reader.close();
         writer.close();

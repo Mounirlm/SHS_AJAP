@@ -19,6 +19,7 @@ public class MockApplication {
 	private List<Sensor> sensors;
 	private List<MockSensor> mockSensors;
 	private SensorClientHandler sensorH;
+	private HistoricalClientHandler histH;
 
 
 	public MockApplication() {
@@ -38,8 +39,10 @@ public class MockApplication {
 		//upload real sensors from database
 		try {
 			sensors = sensorH.searchAllSensors();
+			histH = new HistoricalClientHandler();
+
 		} catch (IOException e) {
-			System.err.println("error select-all-sensors: "+e.getMessage());
+			System.err.println("error : "+e.getMessage());
 		}
 
 		if (!sensors.isEmpty()) {
@@ -79,10 +82,11 @@ public class MockApplication {
 			for (Sensor sensor : sensors) {
 				for (int i = 0; i < scenas.size(); i++) {
 					if (sensor.getId() == Integer.parseInt(scenas.get(i).get("id"))) {
-						mockSensors.add(new MockSensor(sensor, scenas.get(i)));
+						mockSensors.add(new MockSensor(sensor,histH, scenas.get(i)));
+						mockSensors.get(mockSensors.size()-1).start();
 					}
 					else {
-						mockSensors.add(new MockSensor(sensor));
+						mockSensors.add(new MockSensor(sensor,histH));
 					}
 				}	
 			}
@@ -90,7 +94,8 @@ public class MockApplication {
 
 			//Send signals to server
 			for (MockSensor mockSensor : mockSensors) {
-				mockSensor.start();
+				
+				//mockSensor.start();
 				//System.out.println(mockSensor.toString()+"\n");
 			}
 		}
