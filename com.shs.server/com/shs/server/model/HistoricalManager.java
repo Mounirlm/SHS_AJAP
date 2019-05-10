@@ -30,7 +30,7 @@ public class HistoricalManager {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 		try {
-			RS = Stmt.executeQuery("SELECT * FROM Historical");
+			RS = Stmt.executeQuery("SELECT * FROM historical");
 
 			while(RS.next()) {
 				historicalList.add(new Historical(RS.getInt("id"),dateFormat.parse(RS.getString("date_signal")), 
@@ -60,7 +60,7 @@ public class HistoricalManager {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 		try {
-			RS = Stmt.executeQuery("SELECT * FROM Historical where id="+id);
+			RS = Stmt.executeQuery("SELECT * FROM historical where id="+id);
 
 			while(RS.next()) {
 
@@ -83,43 +83,36 @@ public class HistoricalManager {
 	}
 	
 	public static boolean create(Historical historical) throws SQLException{
-		PreparedStatement pStmt = conn.prepareStatement("insert into Historical (date_signal, hour_signale, message, fk_sensor)"
-				+ " values (?,?,?,?);");
-		pStmt.setDate(1, (java.sql.Date) historical.getDate_signal());
-		pStmt.setTime(2, (java.sql.Time) historical.getHour_signal());
-		pStmt.setString(3, historical.getMessage());
-		pStmt.setInt(4, historical.getFk_sensor());
+		Statement Stmt = conn.createStatement();
 		
-		
+		String req = "insert into historical (date_signal, hour_signal, message, fk_sensor)"
+				+ " values ('"+historical.getDate_signal_formatted()+"','"+historical.getHour_signal()+"','"+historical.getMessage()+"',"
+						+ ""+historical.getFk_sensor()+");";
 		int n=0;
 		try {
-			n = pStmt.executeUpdate();}
+			n = Stmt.executeUpdate(req);}
 		finally {
 		// Closing
-		if(pStmt!=null)
-		    try{pStmt.close();}catch(Exception e){e.printStackTrace();}  
+		if(Stmt!=null)
+		    try{Stmt.close();}catch(Exception e){e.printStackTrace();}  
         DataSource.releaseConnection(conn);
 		}
 		return n==1;
 	}
 	
 	public static boolean update(Historical historical) throws SQLException {
-		PreparedStatement pStmt = conn.prepareStatement("update Historical set date_signal='?', hour_signal='?', message='?',"
-				+ " fk_sensor='?', where id=?");
-		pStmt.setDate(1, (java.sql.Date) historical.getDate_signal());
-		pStmt.setTime(2, (java.sql.Time) historical.getHour_signal());
-		pStmt.setString(3, historical.getMessage());
-		pStmt.setInt(4, historical.getFk_sensor());
-		pStmt.setInt(5, historical.getId());
+		Statement Stmt = conn.createStatement();
 		
-		
+		String req = "update historical set date_signal='"+historical.getDate_signal_formatted()+"', hour_signal='"+historical.getHour_signal()+"',"
+				+ " message='"+historical.getMessage()+"',"
+				+ " fk_sensor="+historical.getFk_sensor()+", where id="+historical.getId()+";";
 		int n=0;
 		try {
-			n = pStmt.executeUpdate();}
+			n = Stmt.executeUpdate(req);}
 		finally {
 		// Closing
-		if(pStmt!=null)
-		    try{pStmt.close();}catch(Exception e){e.printStackTrace();}  
+		if(Stmt!=null)
+		    try{Stmt.close();}catch(Exception e){e.printStackTrace();}  
         DataSource.releaseConnection(conn);
 		}
 		return n==1;
@@ -130,7 +123,7 @@ public class HistoricalManager {
 			Statement Stmt = conn.createStatement();
 			int n=0;
 			try{
-			n = Stmt.executeUpdate("DELETE FROM Historical WHERE id=" + historical.getId());}
+			n = Stmt.executeUpdate("DELETE FROM historical WHERE id=" + historical.getId());}
 			finally {
 			//Closing
 			DataSource.releaseConnection(conn);
@@ -144,7 +137,7 @@ public class HistoricalManager {
 			Statement Stmt = conn.createStatement();
 			int n=0;
 			try{
-			n = Stmt.executeUpdate("DELETE FROM Historical");System.out.println(n);
+			n = Stmt.executeUpdate("DELETE FROM historical");
 			}finally {
 				//Closing
 				DataSource.releaseConnection(conn);

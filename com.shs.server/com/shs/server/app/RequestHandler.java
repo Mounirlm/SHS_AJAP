@@ -14,11 +14,13 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.shs.commons.model.Alert;
+import com.shs.commons.model.Historical;
 import com.shs.commons.model.Room;
 import com.shs.commons.model.Sensor;
 import com.shs.commons.model.Type_Room;
 import com.shs.commons.model.User;
 import com.shs.server.model.AlertRequestManager;
+import com.shs.server.model.HistoricalRequestManager;
 import com.shs.server.model.RoomManager;
 import com.shs.server.model.RoomRequestManager;
 import com.shs.server.model.SensorRequestManager;
@@ -94,6 +96,8 @@ public class RequestHandler implements Runnable {
 	    		   object = new Gson().fromJson(objectJson, Sensor.class);
 	    	   if(className.equals("Alert"))
 	    		   object = new Gson().fromJson(objectJson, Alert.class);
+	    	   if(className.equals("Historical"))
+	    		   object = new Gson().fromJson(objectJson, Historical.class);
 	    	   
 	       }else {
 	         reader.skipValue();
@@ -135,6 +139,12 @@ public class RequestHandler implements Runnable {
 		case "Wing_Room":
 			Wing_RoomRequestManager reqWing_Room = new Wing_RoomRequestManager(connDB, reader, writer, request);
 			message=reqWing_Room.requestManager();
+			break;
+			
+		case "Historical":
+			Historical historic =(Historical) object;
+			HistoricalRequestManager reqHist = new HistoricalRequestManager(connDB, reader, writer, historic, "insert-Historical");
+			message=reqHist.requestManager();
 			break;
 
 		default:

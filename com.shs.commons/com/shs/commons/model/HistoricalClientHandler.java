@@ -50,16 +50,16 @@ public class HistoricalClientHandler {
 		//connections
      	getFlux();
 		try {
-			String request = "insert- Historical";
+			String request = "insert-Historical";
 			
 			//Creation request Json for server
 		    writer.setIndent("	");
 		    writer.beginObject();
 		    writer.name("request").value(request);
-		    writer.name("object").value(gson.toJson( historical));
+		    writer.name("object").value(gson.toJson(historical));
 		    writer.endObject();
 		    writer.flush();//send to server
-		    System.out.println("client :request:"+request+"\n object"+gson.toJson( historical));
+		    System.out.println("client :request:"+request+"\n object"+gson.toJson(historical));
 		   
 		    //response from server
 		    reader.beginObject();
@@ -83,7 +83,7 @@ public class HistoricalClientHandler {
      	getFlux();
 		try {
 			//Type class
-			String request = "update- Historical";
+			String request = "update-Historical";
 			
 			
 	     	//Creation request Json
@@ -114,7 +114,7 @@ public class HistoricalClientHandler {
      	getFlux();
 		try {
 			//Type class
-			String request = "delete- Historical";
+			String request = "delete-Historical";
 			
 	     	//Creation request Json
 		    writer.setIndent("	");
@@ -143,7 +143,7 @@ public class HistoricalClientHandler {
      	getFlux();
 		try {
 			//Type class
-			String request = "deleteAll- Historical";
+			String request = "deleteAll-Historical";
 			
 			
 	     	//Creation request Json
@@ -173,7 +173,7 @@ public class HistoricalClientHandler {
 		List< Historical> list=new ArrayList<>(); 
 		try {
 			//Type class
-			String request="select- Historical";
+			String request="select-Historical";
 			
 	     	//Creation request Json
 		    writer.setIndent("	");
@@ -217,7 +217,7 @@ public class HistoricalClientHandler {
 		//connections
      	getFlux();
 		try {
-			String request="selectAll- Historical";
+			String request="selectAll-Historical";
 			
 	     	//Creation request Json
 		    writer.setIndent("	");

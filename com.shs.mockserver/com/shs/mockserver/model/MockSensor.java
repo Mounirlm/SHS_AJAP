@@ -4,41 +4,50 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import com.shs.commons.model.Historical;
+import com.shs.commons.model.HistoricalClientHandler;
 import com.shs.commons.model.MockSensorMessage;
 import com.shs.commons.model.Sensor;
 import com.shs.commons.model.ServerAccess;
 
 
-public class MockSensor {
+public class MockSensor extends Thread{
 	private Sensor sensor;
-	private MockSensorMessage mockSensorMessage;
 	private Map<String, String> scenas;
 	private ArrayList<MockSensorMessage> messages = new ArrayList<>();
+	private MockSensorMessage defaultMockSensorMessage;
 	//communication to server
-	private Socket server;
-	private JsonReader reader;
-	private JsonWriter writer;
-	private int port = ServerAccess.getPORT_SERVER();
-	private String adress =ServerAccess.getSERVER();
-	
+	HistoricalClientHandler histH;
+
 
 	public MockSensor(Sensor sensor) {
+		try {
+			this.histH = new HistoricalClientHandler();
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
 		this.sensor = sensor;
+		this.defaultMockSensorMessage = new MockSensorMessage(sensor, sensor.getFk_type_sensor().getTrigger_point_max()-1 , 1);
 	}
 
 	public MockSensor(Sensor sensor2, Map<String, String> map) {
 		this(sensor2);
 		this.scenas = map;
-		
-		
-		//Get messages from hashmap of values
+
+
+		//Get messages from map of values
 		for(Map.Entry<String, String> val : scenas.entrySet()) {
 			if (val.getKey().startsWith("value")) {
 				String [] mess = val.getValue().split("-");
@@ -47,82 +56,68 @@ public class MockSensor {
 				messages.add(new MockSensorMessage(sensor, value, time));
 			}
 		}
-		System.out.println(messages);
-		
+		//System.out.println(messages);
+
 	}
 
-	public void getFlux() throws IOException { 
-		try {
-			this.server = new Socket(adress,port);		
-			reader = new JsonReader(new InputStreamReader(server.getInputStream(), "UTF-8"));
-			writer = new JsonWriter(new OutputStreamWriter(server.getOutputStream(), "UTF-8"));
-		}catch(IOException e) {
-			throw new IOException("Error connection to server ");
-		}
-	}
 
-	public void stopFlux() throws IOException {
-		try{
-			reader.close();
-			writer.close();
-			server.close();}
-		catch(IOException e) {
-			throw new IOException("Error closed flux "+e);
-		}
-	}
 
 	/*
 	 * send to server signal of life with
 	 */
-	public void sendSignalToServer() {
+	public void run() {
 		while(true){
-			
-			//get connections to socket server
-			try {
-				getFlux();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-			try {
-				String request = "mock-Sensor";
-
-				//Creation request Json for server
-				writer.beginObject();
-				writer.name("request").value(request);
-				writer.name("object").value(new Gson().toJson(sensor));
-				writer.name("message").value(new Gson().toJson(mockSensorMessage));
-				writer.endObject();
-				writer.flush();//send to server
-				System.out.println("client :request:"+request+"\n object"+new Gson().toJson(sensor));
-
-				//response from server
-				reader.beginObject();
-				String response = "Server "+reader.nextName()+": "+reader.nextString();
-				System.out.println(response);
-				reader.endObject();
-			} 
-			catch (IOException ioe) { 
-				System.out.println("Error communication to server ");
-			}
-			finally {
-				//stop connections
-				try {
-					stopFlux();
-				} catch (IOException e1) {
-					e1.printStackTrace();
+			//for each scenario
+			for (MockSensorMessage mockSensorMessage : messages) {
+				if(mockSensorMessage.getTime_sc()>0) {
+					for (int i = 0; i < mockSensorMessage.getTime_sc(); i++) {
+						//Send signal to server
+						jsonSignals(mockSensorMessage);
+					}
 				}
 			}
+			//default messages
+			while(true) {
+				jsonSignals(defaultMockSensorMessage);
+			}
+			
+
+		}
+
 	}
 
 
-}
 
+	private void jsonSignals(MockSensorMessage mockSensorMessage) {
+		Historical historic = new Historical();
+		//Calendar calendar = Calendar.getInstance();
+		//DateFormat format = new SimpleDateFormat("HH:mm:ss");
+		
+		historic.setFk_sensor(mockSensorMessage.getSensor().getId());
+		historic.setMessage(String.valueOf(mockSensorMessage.getCurrent_value()));
+		historic.setDate_signal(new Date());
+		historic.setHour_signal(new java.sql.Time(new Date().getTime()));
+		//System.out.println(historic);
+		//send to server
+		try {
+			histH.insertHistoricalToServer(historic);
+		} catch (IOException e1) {
+			System.err.println(e1.getMessage());
+		}
 
+		//Delta of messages every 1 seconde
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			System.err.println(e.getMessage());
+		}
+		
+	}
 
-@Override
-public String toString() {
-	return "MockSensor [sensor=" + sensor + "]";
-}
+	@Override
+	public String toString() {
+		return "MockSensor [sensor=" + sensor + "]";
+	}
 
 
 }

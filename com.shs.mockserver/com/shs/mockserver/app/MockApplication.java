@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.shs.commons.model.HistoricalClientHandler;
 import com.shs.commons.model.Sensor;
 import com.shs.commons.model.SensorClientHandler;
 import com.shs.mockserver.model.MockSensor;
@@ -46,7 +47,8 @@ public class MockApplication {
 			List<Map<String, String>> scenas = new ArrayList<>();
 			String scenarios = ServerScenarioAccess.getScenario();
 			Map<String, String> map;
-			//get each scenarios to HashMap
+			
+			//get each scenarios to a Map
 			String [] tabscenas = scenarios.split("/");
 			for (int i = 0; i < tabscenas.length; i++) {
 				map = new TreeMap<>(new Comparator<String>(){
@@ -88,7 +90,7 @@ public class MockApplication {
 
 			//Send signals to server
 			for (MockSensor mockSensor : mockSensors) {
-				//mockSensor.sendSignalToServer();
+				mockSensor.start();
 				//System.out.println(mockSensor.toString()+"\n");
 			}
 		}

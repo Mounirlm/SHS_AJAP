@@ -73,6 +73,7 @@ public class AlertRequestManager {
 					Alert sendAlert=null;
 					try{
 						sendAlert=AlertManager.getAlert(alert.getId());
+						response=true;
 					}
 				    catch(SQLException e) {
 				    	error="Error delete "+e;
