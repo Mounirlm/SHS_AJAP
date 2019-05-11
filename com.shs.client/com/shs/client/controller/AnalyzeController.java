@@ -13,18 +13,25 @@ import javax.swing.JComboBox;
 import com.shs.client.view.AnalyzeFloorView;
 import com.shs.client.view.AnalyzeView;
 import com.shs.client.view.SHSView;
+import com.shs.commons.model.AlertClientHandler;
+import com.shs.commons.model.SensorClientHandler;
 
 public class AnalyzeController{
-
+	
 	private SHSView view;
 	private AnalyzeView analyzeView;
 	private AnalyzeFloorView analyzeFloorView;
 	private int floor;
 	private String month;
 	private int year;
+	private AlertClientHandler alertH;
+	private SensorClientHandler sensorH;
 	
 	public AnalyzeController(SHSView v) throws UnknownHostException, IOException {
 		this.view = v;
+		
+		alertH = new AlertClientHandler();
+		sensorH = new SensorClientHandler();
 		analyzeView = view.getpApp().getAnalyzeView();
 		analyzeView.addTopBarButtonListener(actionTopBarButton);
 		
@@ -61,8 +68,7 @@ public class AnalyzeController{
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			JComboBox cb = (JComboBox)e.getSource();
-	        int floor= (int)cb.getSelectedItem();
+			updateInfoFromComboBox();
 	        System.out.println(floor);
 	        Map<String,Integer> indicators=searchIndicators(floor,month,year);
 			
@@ -73,8 +79,7 @@ public class AnalyzeController{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			JComboBox cb = (JComboBox)e.getSource();
-	        String month= (String)cb.getSelectedItem();
+			updateInfoFromComboBox();
 			
 		}};
 	
@@ -82,15 +87,28 @@ public class AnalyzeController{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			JComboBox cb = (JComboBox)e.getSource();
-	        year= (int)cb.getSelectedItem();
-			
+			updateInfoFromComboBox();
 		}};
 
 	protected Map<String, Integer> searchIndicators(int floor2, String month2, int year2) {
 		Map<String, Integer> indicators = new HashMap<String,Integer>();
 		
-		return null;
+		int nAlerts=0;
+		
+		try {
+			nAlerts = alertH.searchAlertByFloor(floor2,month2,year2);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		indicators.put("nAlerts", nAlerts);
+		System.out.println(indicators.get("nAlerts"));
+		return indicators;
+	}
+
+	protected void updateInfoFromComboBox() {
+		floor = (int) analyzeFloorView.floorComboBox.getSelectedItem();
+		month = (String) analyzeFloorView.monthComboBox.getSelectedItem();
+		year = (int) analyzeFloorView.yearComboBox.getSelectedItem();
 	}
 
 }

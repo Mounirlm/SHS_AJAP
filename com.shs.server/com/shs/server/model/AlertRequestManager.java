@@ -102,6 +102,12 @@ public class AlertRequestManager {
 					
 				break;
 			default:
+				if(request.startsWith("countByFloor-Alert")) {
+					int nAlerts = AlertManager.countByFloorMonthYear(Integer.valueOf(res[2]),Integer.valueOf(res[3]),Integer.valueOf(res[4]));
+					writer.beginObject();
+					writer.name("nAlert").value(nAlerts);
+					writer.endObject();
+				}
 				break;
 			}
 			

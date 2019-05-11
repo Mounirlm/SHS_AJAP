@@ -79,45 +79,37 @@ public class AlertManager {
 	}
 	
 	public static boolean create(Alert alert) throws SQLException{
-		PreparedStatement pStmt = conn.prepareStatement("insert into alert (date_alert, hour_alert, description, fk_sensor, fk_users)"
-				+ " values (?,?,?,?,?);");
-		pStmt.setDate(1, (java.sql.Date) alert.getDate_alert());
-		pStmt.setTime(2, (java.sql.Time) alert.getHour_alert());
-		pStmt.setString(3, alert.getDescription());
-		pStmt.setInt(4, alert.getFk_sensor());
-		pStmt.setInt(5, alert.getFk_user());
+		Statement Stmt = conn.createStatement();
 		
-		
+		String req = "insert into alert (date_alert, hour_alert, description, fk_sensor, fk_users)"
+				+ " values ('"+alert.getDate_alert_formatted()+"','"+alert.getHour_alert()+"',"
+						+ "'"+alert.getDescription()+"',"+alert.getFk_sensor()+","+alert.getFk_user()+");";
 		int n=0;
 		try {
-			n = pStmt.executeUpdate();}
+			n = Stmt.executeUpdate(req);}
 		finally {
 		// Closing
-		if(pStmt!=null)
-		    try{pStmt.close();}catch(Exception e){e.printStackTrace();}  
+		if(Stmt!=null)
+		    try{Stmt.close();}catch(Exception e){e.printStackTrace();}  
         DataSource.releaseConnection(conn);
 		}
 		return n==1;
 	}
 	
 	public static boolean update(Alert alert) throws SQLException {
-		PreparedStatement pStmt = conn.prepareStatement("update Alert set date_alert='?', hour_alert='?', description='?',"
-				+ " fk_sensor='?', fk_users=?, where id=?");
-		pStmt.setDate(1, (java.sql.Date) alert.getDate_alert());
-		pStmt.setTime(2, (java.sql.Time) alert.getHour_alert());
-		pStmt.setString(3, alert.getDescription());
-		pStmt.setInt(4, alert.getFk_sensor());
-		pStmt.setInt(5, alert.getFk_user());
-		pStmt.setInt(6, alert.getId());
+		Statement Stmt = conn.createStatement();
 		
+		String req= "update Alert set date_alert='"+alert.getDate_alert_formatted()+"', hour_alert='"+alert.getHour_alert()+"', "
+				+ "description='"+alert.getDescription()+"',"
+				+ " fk_sensor="+alert.getFk_sensor()+", fk_users="+alert.getFk_user()+", where id="+alert.getId()+"";
 		
 		int n=0;
 		try {
-			n = pStmt.executeUpdate();}
+			n = Stmt.executeUpdate(req);}
 		finally {
 		// Closing
-		if(pStmt!=null)
-		    try{pStmt.close();}catch(Exception e){e.printStackTrace();}  
+		if(Stmt!=null)
+		    try{Stmt.close();}catch(Exception e){e.printStackTrace();}  
         DataSource.releaseConnection(conn);
 		}
 		return n==1;
@@ -151,5 +143,12 @@ public class AlertManager {
 		        
 	        }
 	        return n>0;
+		}
+
+
+		public static int countByFloorMonthYear(int floor, int month, int year) throws SQLException {
+			PreparedStatement Stmt = conn.prepareStatement("SELECT COUNT(*) FROM alert ");
+			
+			return 0;
 		}
 }

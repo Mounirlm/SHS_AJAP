@@ -248,6 +248,34 @@ public class AlertClientHandler {
 	    	stopFlux();
 	    }
 	}
+
+	public int searchAlertByFloor(int floor2, String month2, int year2) throws IOException {
+		getFlux();
+		
+		try {
+			
+			String request = "countByFloor-Alert-"+floor2+"-"+month2+"-"+year2;
+			//Creation request Json
+		    writer.setIndent("	");
+		    writer.beginObject();
+		    writer.name("request").value(request);
+		    writer.endObject();
+		    writer.flush();
+		    System.out.println("request:"+request);
+		    //response
+		    reader.beginObject();
+		    while(reader.hasNext()) {
+		    	
+		    }
+		} catch (IOException ioe) { 
+	    	throw new IOException("Error communication to server ");
+		}
+	    finally {
+	    	stopFlux();
+	    }
+		
+		return 0;
+	}
 	
 
 	
