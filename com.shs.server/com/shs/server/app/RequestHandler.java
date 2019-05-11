@@ -220,7 +220,7 @@ public class RequestHandler implements Runnable {
 				boolean date_ok=false, time_ok=false;
 				for (int i = 0; i < last.size(); i++) {
 					if (last.size()>i+1) {
-						if (last.get(i).getDate_signal() == last.get(i+1).getDate_signal()) {
+						if (last.get(i).getDate_signal_formatted().equals(last.get(i+1).getDate_signal_formatted())) {
 							date_ok=true;
 						}
 					}
@@ -229,18 +229,19 @@ public class RequestHandler implements Runnable {
 				//check if signals of alerts are close in time
 				for (int i = 0; i < last.size(); i++) {
 					if (last.size()>i+1) {
-						if ((last.get(i).getHour_signal().getTime() - last.get(i+1).getHour_signal().getTime())< 5000) {
+						if ((last.get(i).getHour_signal().getTime() - last.get(i+1).getHour_signal().getTime())< 10000) {
 							time_ok=true;
 						}
 					}
 
-				}	
+				}	System.out.println(""+date_ok+" ici "+time_ok);
 				if (date_ok && time_ok) {
 					Alert alert = new Alert();
 					alert.setfk_sensor(sensor.getId());
 					alert.setDescription(historic.getMessage());
 					alert.setDate_alert(historic.getDate_signal());
 					alert.setHour_alert(historic.getHour_signal());
+					alert.setfk_user(1);
 					try {
 						AlertManager alertManager = new AlertManager(DataSource.getConnection());
 						AlertManager.create(alert);
