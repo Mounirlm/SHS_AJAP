@@ -80,14 +80,17 @@ public class MockApplication {
 
 			//creation of mocksensors with scenarios 
 			for (Sensor sensor : sensors) {
-				for (int i = 0; i < scenas.size(); i++) {
-					if (sensor.getId() == Integer.parseInt(scenas.get(i).get("id"))) {
-						mockSensors.add(new MockSensor(sensor,histH, scenas.get(i)));
-						//send signals to server
-						mockSensors.get(mockSensors.size()-1).start();
-					}
-					else {
-						mockSensors.add(new MockSensor(sensor,histH));
+				if(sensor.getInstalled() && sensor.getStatus()) {
+					for (int i = 0; i < scenas.size(); i++) {
+						if (sensor.getId() == Integer.parseInt(scenas.get(i).get("id"))) {
+							mockSensors.add(new MockSensor(sensor,histH, scenas.get(i)));
+							//send signals to server
+							mockSensors.get(mockSensors.size()-1).start();
+						}
+						else {
+							mockSensors.add(new MockSensor(sensor,histH));
+							mockSensors.get(mockSensors.size()-1).start();
+						}
 					}
 				}	
 			}

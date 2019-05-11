@@ -229,12 +229,12 @@ public class RequestHandler implements Runnable {
 				//check if signals of alerts are close in time
 				for (int i = 0; i < last.size(); i++) {
 					if (last.size()>i+1) {
-						if ((last.get(i).getHour_signal().getTime() - last.get(i+1).getHour_signal().getTime())< 10000) {
+						if ((last.get(i).getHour_signal().getTime() - last.get(i+1).getHour_signal().getTime())<= 4000) {
 							time_ok=true;
 						}
 					}
 
-				}	System.out.println(""+date_ok+" ici "+time_ok);
+				}	
 				if (date_ok && time_ok) {
 					Alert alert = new Alert();
 					alert.setFk_sensor(sensor.getId());
@@ -247,6 +247,7 @@ public class RequestHandler implements Runnable {
 						AlertManager alertManager = new AlertManager(DataSource.getConnection());
 						//if(AlertManager.getAlertBySensor(al))
 						//TODO creare one and only alert
+						//TOD En panne
 						//add statue to alert table
 						AlertManager.create(alert);
 						 System.out.println("alert inserted for sensor "+sensor.getId());

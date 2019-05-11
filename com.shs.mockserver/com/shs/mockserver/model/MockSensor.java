@@ -65,7 +65,7 @@ public class MockSensor extends Thread{
 		while(true){
 			//for each scenario
 			for (MockSensorMessage mockSensorMessage : messages) {
-				if(mockSensorMessage.getTime_sc()>0) {
+				if(mockSensorMessage.getTime_sc()>0) {//if sensor is not broken
 					for (int i = 0; i < mockSensorMessage.getTime_sc(); i++) {
 						//Send signal to server
 						jsonSignals(mockSensorMessage);
@@ -73,10 +73,15 @@ public class MockSensor extends Thread{
 				}
 			}
 			//default messages
-			while(true) {
-				jsonSignals(defaultMockSensorMessage);
+			if(messages.isEmpty()) {
+				while(true) {
+					jsonSignals(defaultMockSensorMessage);
+				}
+			}else if (messages.get(0).getTime_sc()>0){//if sensor is not broken
+				while(true) {
+					jsonSignals(defaultMockSensorMessage);
+				}
 			}
-
 
 		}
 
