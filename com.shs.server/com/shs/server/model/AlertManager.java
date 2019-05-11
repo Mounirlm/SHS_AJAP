@@ -33,7 +33,7 @@ public class AlertManager {
 			while(RS.next()) {
 				alertList.add(new Alert(RS.getInt("id"),dateFormat.parse(RS.getString("date_alert")), 
 						Time.valueOf(RS.getString("hour_alert")),RS.getString("description"),
-						RS.getInt("fk_users"),RS.getInt("fk_sensor")));
+						RS.getInt("fk_users"),RS.getInt("fk_sensor"), RS.getBoolean("status")));
 			}	
 		}
 		finally {
@@ -62,7 +62,7 @@ public class AlertManager {
 
 				alert = new Alert(RS.getInt("id"),dateFormat.parse(RS.getString("date_alert")), 
 						Time.valueOf(RS.getString("hour_alert")),RS.getString("description"),
-						RS.getInt("fk_users"),RS.getInt("fk_sensor"));
+						RS.getInt("fk_users"),RS.getInt("fk_sensor"), RS.getBoolean("status"));
 
 			}	
 		}
@@ -81,9 +81,9 @@ public class AlertManager {
 	public static boolean create(Alert alert) throws SQLException{
 		Statement Stmt = conn.createStatement();
 		
-		String req = "insert into alert (date_alert, hour_alert, description, fk_sensor, fk_users)"
+		String req = "insert into alert (date_alert, hour_alert, description, fk_sensor, fk_users, status)"
 				+ " values ('"+alert.getDate_alert_formatted()+"','"+alert.getHour_alert()+"',"
-						+ "'"+alert.getDescription()+"',"+alert.getFk_sensor()+","+alert.getFk_user()+");";
+						+ "'"+alert.getDescription()+"',"+alert.getFk_sensor()+","+alert.getFk_user()+","+alert.getStatus()+");";
 		int n=0;
 		try {
 			n = Stmt.executeUpdate(req);}
@@ -101,7 +101,7 @@ public class AlertManager {
 		
 		String req= "update Alert set date_alert='"+alert.getDate_alert_formatted()+"', hour_alert='"+alert.getHour_alert()+"', "
 				+ "description='"+alert.getDescription()+"',"
-				+ " fk_sensor="+alert.getFk_sensor()+", fk_users="+alert.getFk_user()+", where id="+alert.getId()+"";
+				+ " fk_sensor="+alert.getFk_sensor()+", fk_users="+alert.getFk_user()+", status="+alert.getStatus()+" where id="+alert.getId()+"";
 		
 		int n=0;
 		try {

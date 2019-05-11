@@ -237,13 +237,17 @@ public class RequestHandler implements Runnable {
 				}	System.out.println(""+date_ok+" ici "+time_ok);
 				if (date_ok && time_ok) {
 					Alert alert = new Alert();
-					alert.setfk_sensor(sensor.getId());
+					alert.setFk_sensor(sensor.getId());
 					alert.setDescription(historic.getMessage());
 					alert.setDate_alert(historic.getDate_signal());
 					alert.setHour_alert(historic.getHour_signal());
-					alert.setfk_user(1);
+					alert.setFk_user(1);
+					alert.setStatus(true);
 					try {
 						AlertManager alertManager = new AlertManager(DataSource.getConnection());
+						//if(AlertManager.getAlertBySensor(al))
+						//TODO creare one and only alert
+						//add statue to alert table
 						AlertManager.create(alert);
 						 System.out.println("alert inserted for sensor "+sensor.getId());
 					}catch(SQLException ex) {
