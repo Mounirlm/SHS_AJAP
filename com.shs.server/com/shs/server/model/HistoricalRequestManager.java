@@ -34,7 +34,7 @@ public class HistoricalRequestManager {
 	
 	public String requestManager() throws SQLException, IOException, ParseException {		
 		boolean response = false;
-		String message=null, error="no row(s)";
+		String message="empty", error="no row(s)";
 		String[] res=request.split("-");
 		switch (request) {
 			case "insert-Historical":
@@ -73,6 +73,7 @@ public class HistoricalRequestManager {
 					Historical sendHist=null;
 					try{
 						sendHist=HistoricalManager.getHistorical(historical.getId());
+						response=true;
 					}
 				    catch(SQLException e) {
 				    	error="Error delete "+e;
