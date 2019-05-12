@@ -150,7 +150,7 @@ public class RequestHandler implements Runnable {
 			break;
 		case "Resident":
 			Resident resident =(Resident) object;
-			ResidentRequestManager reqResident = new ResidentRequestManager(connDB, reader, writer, resident, "insert-Historical");
+			ResidentRequestManager reqResident = new ResidentRequestManager(connDB, reader, writer, resident, request);
 			message=reqResident.requestManager();
 			break;
 
