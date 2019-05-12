@@ -29,8 +29,8 @@ public class MockSensor extends Thread{
 	private ArrayList<MockSensorMessage> messages = new ArrayList<>();
 	private MockSensorMessage defaultMockSensorMessage;
 	//communication to server
-	HistoricalClientHandler histH;
-
+	private HistoricalClientHandler histH;
+	private boolean run = true;
 
 	public MockSensor(Sensor sensor, HistoricalClientHandler histH2) {
 		this.sensor = sensor;
@@ -62,7 +62,7 @@ public class MockSensor extends Thread{
 	 * send to server signal of life with
 	 */
 	public void run() {
-		while(true){
+		while(run){
 			//for each scenario
 			for (MockSensorMessage mockSensorMessage : messages) {
 				if(mockSensorMessage.getTime_sc()>0) {//if sensor is not broken
@@ -77,10 +77,12 @@ public class MockSensor extends Thread{
 				while(true) {
 					jsonSignals(defaultMockSensorMessage);
 				}
-			}else if (messages.get(0).getTime_sc()>0){//if sensor is not broken
+			}else if (messages.get(messages.size()-1).getTime_sc()>0){//if sensor is not broken
 				while(true) {
 					jsonSignals(defaultMockSensorMessage);
 				}
+			}else {
+				run=false;
 			}
 
 		}

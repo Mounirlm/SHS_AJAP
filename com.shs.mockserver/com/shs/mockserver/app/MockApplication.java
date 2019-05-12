@@ -89,7 +89,7 @@ public class MockApplication {
 						}
 						else {
 							mockSensors.add(new MockSensor(sensor,histH));
-							//TODO mockSensors.get(mockSensors.size()-1).start();
+							//mockSensors.get(mockSensors.size()-1).start();
 						}
 					}
 				}	
