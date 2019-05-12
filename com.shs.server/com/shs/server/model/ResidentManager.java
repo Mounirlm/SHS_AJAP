@@ -19,7 +19,7 @@ public class ResidentManager {
 		this.conn=con;
 	}
 	
-	public static int countByFloorMonthYear(int floor, int month, int year) throws SQLException {
+	public static int countByFloorMonthYear(int floor) throws SQLException {
 		PreparedStatement pStmt = conn.prepareStatement("SELECT COUNT(*) FROM resident INNER JOIN room r ON fk_resident_room = r.id  WHERE r.floor=?;");
 		pStmt.setInt(1, floor);
 		ResultSet rs = pStmt.executeQuery();

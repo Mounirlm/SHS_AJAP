@@ -42,12 +42,12 @@ public class ResidentClientHandler {
         	throw new IOException("Error closed flux "+e);
         }
     }
-	public int countResidentByFloor(int floor2, int month2, int year2) throws IOException {
+	public int countResidentByFloor(int floor2) throws IOException {
 		getFlux();
 		int nResidents = 0;
 		try {
 			
-			String request = "countByFloor-Resident-"+floor2+"-"+month2+"-"+year2;
+			String request = "countByFloor-Resident-"+floor2;
 			//Creation request Json
 		    writer.setIndent("	");
 		    writer.beginObject();
