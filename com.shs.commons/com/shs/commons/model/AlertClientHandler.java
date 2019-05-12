@@ -249,9 +249,9 @@ public class AlertClientHandler {
 	    }
 	}
 
-	public int searchAlertByFloor(int floor2, String month2, int year2) throws IOException {
+	public int countAlertByFloor(int floor2, int month2, int year2) throws IOException {
 		getFlux();
-		
+		int nAlerts = 0;
 		try {
 			
 			String request = "countByFloor-Alert-"+floor2+"-"+month2+"-"+year2;
@@ -265,8 +265,13 @@ public class AlertClientHandler {
 		    //response
 		    reader.beginObject();
 		    while(reader.hasNext()) {
-		    	
+		    	String name = reader.nextName();
+		    	if(name.equals("nAlerts"))
+		    		nAlerts=reader.nextInt();
+		    	else
+		    		reader.skipValue();
 		    }
+		    reader.endObject();
 		} catch (IOException ioe) { 
 	    	throw new IOException("Error communication to server ");
 		}
@@ -274,7 +279,7 @@ public class AlertClientHandler {
 	    	stopFlux();
 	    }
 		
-		return 0;
+		return nAlerts;
 	}
 	
 
