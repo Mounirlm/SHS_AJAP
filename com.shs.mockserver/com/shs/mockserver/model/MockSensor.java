@@ -109,7 +109,7 @@ public class MockSensor extends Thread{
 
 			//Delta of messages 
 			try {
-				Thread.sleep(1500);
+				Thread.sleep(ServerScenarioAccess.getDELTA_SIGNALS());
 			} catch (InterruptedException e) {
 				System.err.println(e.getMessage());
 			}

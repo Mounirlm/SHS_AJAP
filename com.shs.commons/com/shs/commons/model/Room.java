@@ -1,7 +1,7 @@
 package com.shs.commons.model;
 
 public class Room implements Comparable<Room>{
-	
+
 	private Integer id;
 	private Integer floor;
 	private Integer room_number;
@@ -10,7 +10,7 @@ public class Room implements Comparable<Room>{
 	private Wing_Room wing_room;
 	private Integer nb_doors;
 	private Integer nb_windows;
-	
+
 
 	public Room(Integer id, Integer floor, Integer room_number, Integer m2, Type_Room type_room, Wing_Room wing_room,
 			int nb_doors, int nb_windows) {
@@ -25,25 +25,25 @@ public class Room implements Comparable<Room>{
 		this.nb_windows = nb_windows;
 	}
 
-	
-	
+
+
 	public Room() {
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	public Integer getFloor() {
 		return floor;
 	}
 	public void setFloor(Integer floor) {
 		this.floor = floor;
 	}
-	
+
 
 	public Integer getRoom_number() {
 		return room_number;
@@ -52,7 +52,7 @@ public class Room implements Comparable<Room>{
 	public void setRoom_number(Integer room_number) {
 		this.room_number = room_number;
 	}
-	
+
 	public Integer getM2() {
 		return m2;
 	}
@@ -76,7 +76,7 @@ public class Room implements Comparable<Room>{
 	public void setWing_room(Wing_Room wing_room) {
 		this.wing_room = wing_room;
 	}
-	
+
 
 	public Integer getNb_doors() {
 		return nb_doors;
@@ -100,16 +100,16 @@ public class Room implements Comparable<Room>{
 		this.nb_windows = nb_windows;
 	}
 
-	
+
 
 	@Override
 	public int compareTo(Room o) {
 		if(this.getId()<o.getId())
 			return -1;
 		else if(this.getId()>o.getId())
-		return 1;
+			return 1;
 		else
-		return 0;
+			return 0;
 	}
 
 
@@ -123,5 +123,5 @@ public class Room implements Comparable<Room>{
 
 
 
-	
+
 }

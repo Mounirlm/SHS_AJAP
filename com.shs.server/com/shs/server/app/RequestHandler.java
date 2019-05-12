@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +30,7 @@ import com.shs.commons.model.Room;
 import com.shs.commons.model.Sensor;
 import com.shs.commons.model.Type_Room;
 import com.shs.commons.model.User;
+import com.shs.server.connection.pool.AccessConfig;
 import com.shs.server.connection.pool.DataSource;
 import com.shs.server.model.AlertManager;
 import com.shs.server.model.AlertRequestManager;
@@ -167,7 +169,7 @@ public class RequestHandler implements Runnable {
 			message=reqHist.requestManager();
 			//CACHE
 			synchronized (CACHE) {
-				this.isAlertToCache(historic);
+				this.addToCacheAndTreatment(historic);
 			}
 
 			break;
@@ -178,30 +180,45 @@ public class RequestHandler implements Runnable {
 		return message;
 	}
 
+	/*
+	 * Check if the signal(historical receive) had a message value upper or lower than trigger points of alerts
+	 */
+	private boolean isAlertInCache(Historical historic, Sensor sensor) {
+		boolean rep = false;
+		//check if value lower than trigger point min
+		if (sensor.getFk_type_sensor().getTrigger_point_min()!=0) {
+			if (Integer.parseInt(historic.getMessage())< sensor.getFk_type_sensor().getTrigger_point_min()) {
+				rep=true;
+			}
+		}
+		//check if value upper than max trigger
+		else if (sensor.getFk_type_sensor().getTrigger_point_max()!=0) {
+			if (Integer.parseInt(historic.getMessage())> sensor.getFk_type_sensor().getTrigger_point_max()) {
+				rep=true;
+			}
+		}
+		return rep;
 
-	private void isAlertToCache(Historical historic) {
+	}
+
+	/*
+	 * Add the signal value in hash map of cache with id sensor in key and historical in value
+	 * Check if nb_alert signal is reach
+	 * Insert an alert in DB if it is the case
+	 */
+	private void addToCacheAndTreatment(Historical historic) {
+		//get sensor of signal
 		SensorManager sensM = new SensorManager(connDB);
 		Sensor sensor = null;
-		try {
+		boolean isAlert=false;
+
+		try {//get the sensor of the signal
 			sensor = SensorManager.getSensor(historic.getFk_sensor());
 		} catch (SQLException | ParseException e) {
 			e.printStackTrace();
 		}
-		if (sensor.getFk_type_sensor().getTrigger_point_max()!=null) {
-			if (Integer.parseInt(historic.getMessage())> sensor.getFk_type_sensor().getTrigger_point_max()) {
-				this.addToCacheAndTreatment(historic, sensor);
-			}
-		}
-		if (sensor.getFk_type_sensor().getTrigger_point_min()!=null) {
-			if (Integer.parseInt(historic.getMessage())< sensor.getFk_type_sensor().getTrigger_point_min()) {
-				this.addToCacheAndTreatment(historic, sensor);
-			}
-		}
 
-	}
-
-	private void addToCacheAndTreatment(Historical historic, Sensor sensor) {
-		//add to cache
+		//add to cache evry signals
 		if (!CACHE.containsKey(historic.getFk_sensor())) {
 			ArrayList<Historical> a  = new ArrayList<Historical>();
 			a.add(historic);
@@ -217,66 +234,65 @@ public class RequestHandler implements Runnable {
 			ArrayList<Historical> hitoricals = cache.getValue();
 			ArrayList<Historical> last = new ArrayList<>();
 
-			//get last signals of alerts
+			//get last signals
 			for (int i = hitoricals.size()-1; i+1 >= sensor.getFk_type_sensor().getNb_alerts(); i--) {
 				last.add(hitoricals.get(i));
 			}
 
 			//check if we have a number of signals of alert high
-			if(last.size() >= sensor.getFk_type_sensor().getNb_alerts()) {
-				//check if signals of alerts have the same date
-				boolean date_ok=false, time_ok=false;
-				for (int i = 0; i < last.size(); i++) {
-					if (last.get(i).getDate_signal_formatted().equals(RequestHandler.todayFormatted())) {
-						date_ok=true;
-					}
-
-
-				}
-				//check if signals of alerts are close in time
-				for (int i = 0; i < last.size(); i++) {
-					if (last.size()>i+1) {
-						if ((last.get(i).getHour_signal().getTime() - last.get(i+1).getHour_signal().getTime())<= 5000) {
-							time_ok=true;
-						}
-					}
-
-				}	
-				if (date_ok && time_ok) {
-					Alert alert = new Alert();
-					alert.setFk_sensor(sensor.getId());
-					alert.setDescription(historic.getMessage());
-					alert.setDate_alert(historic.getDate_signal());
-					alert.setHour_alert(historic.getHour_signal());
-					alert.setFk_user(1);
-					alert.setStatus(true);
-					try {
-						AlertManager alertManager = new AlertManager(connDB);
-						SensorManager sensorManager = new SensorManager(connDB);
-						AlertManager.create(alert);
-						sensor.setStatus(false);
-						SensorManager.update(sensor);
-						//TODO create one and only alert
-						//TOD En panne
-						System.out.println("alert inserted for sensor "+sensor.getId());
-					}catch(SQLException ex) {
-						System.err.println("Error Cache insert alert or sensor: "+ex.getMessage());
-					}
+			int cpt_alert_signals = 0;
+			for (int i = 0; i < last.size(); i++) {
+				if (isAlertInCache(last.get(i), sensor)) {
+					cpt_alert_signals++;
 				}
 			}
+			if (cpt_alert_signals==sensor.getFk_type_sensor().getNb_alerts()) {
+				isAlert=true;
+			}
 
+			//insert an alert in alert table	
+			if (isAlert) {
+				Alert alert = new Alert();
+				alert.setFk_sensor(sensor.getId());
+				alert.setDescription(historic.getMessage());
+				alert.setDate_alert(historic.getDate_signal());
+				alert.setHour_alert(historic.getHour_signal());
+				alert.setFk_user(1);
+				alert.setStatus(true);
+				try {
+					AlertManager alertManager = new AlertManager(connDB);
+					SensorManager sensorManager = new SensorManager(connDB);
+					AlertManager.create(alert);
+					sensor.setStatus(false);
+					SensorManager.update(sensor);
+					System.out.println("alert inserted for sensor "+sensor.getId());
+				}catch(SQLException ex) {
+					System.err.println("Error Cache insert alert or sensor: "+ex.getMessage());
+				}
+			}
 		}
+
 	}
-	//Create thread to detect broken sensors
+
+
+	private static String todayFormatted() {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		return dateFormat.format(new Date());
+	}
+	private static Time todayTime() {
+		return new java.sql.Time(new Date().getTime());
+	}
+
+	//Create static thread to detect broken sensors
 	private static Thread taskBrokenSensors = new Thread(new Runnable() {
 		public void run() {
 			try {//initial delay
-				Thread.sleep(3000);
+				Thread.sleep(AccessConfig.getINITIAL_DELAY());
 			}catch(Exception ex) {
 				System.err.println(ex.getMessage());
 			}
 			while(true) {
-				
+
 				Connection conBS=null;
 				try {
 					try {
@@ -284,7 +300,7 @@ public class RequestHandler implements Runnable {
 					} catch (SQLException e1) {
 						System.err.println(e1.getMessage());
 					}
-					
+
 					SensorManager sensorManager = new SensorManager(conBS);
 					HistoricalManager historicalManager = new HistoricalManager(conBS);
 					AlertManager alertManager = new AlertManager(conBS);
@@ -293,7 +309,7 @@ public class RequestHandler implements Runnable {
 
 					//get installed and status ok sensors
 					try {
-						sensors = SensorManager.getSensors("select * from sensor where sensor.installed=true and sensor.status=true;");
+						sensors = SensorManager.getSensors("select * from sensor where installed=true;");
 					} catch (SQLException | ParseException e) {
 						System.err.println(e.getMessage());
 					}
@@ -302,7 +318,7 @@ public class RequestHandler implements Runnable {
 						//get signals
 						ArrayList<Historical> hists = new ArrayList<>();
 						try {
-							hists = HistoricalManager.getHistoricals("select * from historical where historical.fk_sensor="+sensor.getId());
+							hists = HistoricalManager.getHistoricals("select * from historical where fk_sensor="+sensor.getId());
 						} catch (SQLException | ParseException e) {
 							System.err.println(e.getMessage());
 						}
@@ -312,7 +328,7 @@ public class RequestHandler implements Runnable {
 						}else {//create an alert if last historcal high
 							Historical hist = hists.get(hists.size()-1);
 							if (hist.getDate_signal_formatted().equals(todayFormatted())) {
-								if ((hist.getHour_signal().getTime() - todayTime().getTime()) > 8000) {
+								if ((hist.getHour_signal().getTime() - todayTime().getTime()) > AccessConfig.getLAST_SIGNAL_DELAY()) {
 									signal=false;
 								}
 							}
@@ -344,9 +360,9 @@ public class RequestHandler implements Runnable {
 						System.err.println(e1.getMessage());
 					}
 				}
-				
+
 				try {//delay
-					Thread.sleep(3000);
+					Thread.sleep(AccessConfig.getDEFAULT_DELAY());
 				}catch(Exception ex) {
 					System.err.println(ex.getMessage());
 				}
@@ -357,13 +373,7 @@ public class RequestHandler implements Runnable {
 
 
 	});
-	private static String todayFormatted() {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		return dateFormat.format(new Date());
-	}
-	private static Time todayTime() {
-		return new java.sql.Time(new Date().getTime());
-	}
+
 
 	public void stopConnection() throws IOException {
 		reader.close();
