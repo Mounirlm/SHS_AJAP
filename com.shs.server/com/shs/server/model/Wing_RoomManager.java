@@ -32,7 +32,7 @@ private static Connection conn;
         }
         finally {
         // Closing
-        DataSource.releaseConnection(conn);
+        
 	    RS.close();
 	    Stmt.close();
 	    

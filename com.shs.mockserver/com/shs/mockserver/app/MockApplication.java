@@ -77,10 +77,10 @@ public class MockApplication {
 				scenas.add(map);
 			}
 			System.out.println(scenas);
-
+			System.out.println(sensors);
 			//creation of mocksensors with scenarios 
 			for (Sensor sensor : sensors) {
-				if(sensor.getInstalled() && sensor.getStatus()) {
+				if((sensor.getInstalled() && sensor.getStatus())) {
 					for (int i = 0; i < scenas.size(); i++) {
 						if (sensor.getId() == Integer.parseInt(scenas.get(i).get("id"))) {
 							mockSensors.add(new MockSensor(sensor,histH, scenas.get(i)));
@@ -89,7 +89,7 @@ public class MockApplication {
 						}
 						else {
 							mockSensors.add(new MockSensor(sensor,histH));
-							mockSensors.get(mockSensors.size()-1).start();
+							//TODO mockSensors.get(mockSensors.size()-1).start();
 						}
 					}
 				}	

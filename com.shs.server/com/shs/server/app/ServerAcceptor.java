@@ -6,14 +6,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import com.shs.server.connection.pool.DBAccess;
+import com.shs.server.connection.pool.AccessConfig;
 import com.shs.server.connection.pool.DataSource;
 
 public class ServerAcceptor {
 	 public static void main (String[] args) throws SQLException, ClassNotFoundException, IOException {
 		 //create a serverSocket	
 		 	ServerSocket server = null;
-		    int port = DBAccess.getPORT_SERVER();
+		    int port = AccessConfig.getPORT_SERVER();
 		    DataSource dt = new DataSource();
 		    
 		    try {//PORT OF SERVER

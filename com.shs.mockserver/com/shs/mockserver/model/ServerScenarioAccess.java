@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import com.shs.server.connection.pool.DBAccess;
+import com.shs.server.connection.pool.AccessConfig;
 
 public class ServerScenarioAccess {
 	private static ServerScenarioAccess serverScenarioAccess = new ServerScenarioAccess();

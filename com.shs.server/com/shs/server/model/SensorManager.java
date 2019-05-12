@@ -24,7 +24,7 @@ public class SensorManager {
 	}
 
 
-	public static ArrayList<Sensor> getSensors() throws SQLException, ParseException{
+	public static ArrayList<Sensor> getSensors(String req) throws SQLException, ParseException{
 		Statement Stmt = conn.createStatement();
 		Statement Stmt2 = conn.createStatement();
 		Statement Stmt3 = conn.createStatement();
@@ -36,7 +36,12 @@ public class SensorManager {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 		try {
-			RS = Stmt.executeQuery("SELECT * FROM sensor");
+			if (req.isEmpty()) {
+				RS = Stmt.executeQuery("SELECT * FROM sensor");
+			}else {
+				RS = Stmt.executeQuery(req);
+			}
+			
 
 			while(RS.next()) {
 				rswing_room=Stmt2.executeQuery("SELECT * FROM wing_room WHERE id="+RS.getInt("fk_position"));
@@ -46,7 +51,7 @@ public class SensorManager {
 				if ( rswing_room.next()  && rstype_sensor.next()) {
 					Room room = new Room();
 					RoomManager room_manager = new RoomManager(conn);
-					room = RoomManager.getRoom(RS.getInt("fk_room"), false);
+					room = RoomManager.getRoom(RS.getInt("fk_room"));
 
 					sensorsList.add(new Sensor(RS.getInt("id"),RS.getString("sensor_name"), RS.getString("ip_address"), RS.getString("mac_address"),
 							dateFormat.parse(RS.getString("date_setup")), RS.getBoolean("status"), RS.getBoolean("installed"),
@@ -63,7 +68,7 @@ public class SensorManager {
 		}
 		finally {
 			// Closing
-			DataSource.releaseConnection(conn);
+			
 			if(RS!=null)
 				try{RS.close();}catch(Exception e){e.printStackTrace();} 
 			if(rstype_sensor!=null)
@@ -117,7 +122,7 @@ public class SensorManager {
 		}
 		finally {
 			// Closing
-			DataSource.releaseConnection(conn);
+			
 			if(RS!=null)
 				try{RS.close();}catch(Exception e){e.printStackTrace();} 
 			if(rstype_sensor!=null)
@@ -150,7 +155,7 @@ public class SensorManager {
 			// Closing
 			if(Stmt!=null)
 				try{Stmt.close();}catch(Exception e){e.printStackTrace();}  
-			DataSource.releaseConnection(conn);
+			
 		}
 		return n==1;
 	}
@@ -161,9 +166,9 @@ public class SensorManager {
 
 		String req = "update sensor set sensor_name='"+sensor.getSensor_name()+"', ip_address='"+sensor.getIp_address()+"', "
 				+ "mac_address='"+sensor.getMac_address()+"',"
-				+ " date_setup='"+sensor.getDate_setup_formatted()+"', status="+sensor.getStatus()+", installed=?, "
-				+ "fk_position="+sensor.getInstalled()+", price="+sensor.getFk_position().getId()+", "
-				+ "fk_room="+sensor.getFk_position().getId()+", fk_type_sensor="+sensor.getFk_type_sensor().getId()+", "
+				+ " date_setup='"+sensor.getDate_setup_formatted()+"', status="+sensor.getStatus()+", installed="+sensor.getInstalled()+", "
+				+ "fk_position="+sensor.getFk_position().getId()+", price="+sensor.getPrice()+", "
+				+ "fk_room="+sensor.getFk_room().getId()+", fk_type_sensor="+sensor.getFk_type_sensor().getId()+", "
 				+ "scope_sensor="+sensor.getScope_sensor()+" where id="+sensor.getId()+";";
 		int n=0;
 		try {
@@ -172,7 +177,7 @@ public class SensorManager {
 			// Closing
 			if(Stmt!=null)
 				try{Stmt.close();}catch(Exception e){e.printStackTrace();}  
-			DataSource.releaseConnection(conn);
+			
 		}
 		return n==1;
 	}
@@ -184,7 +189,7 @@ public class SensorManager {
 			n = Stmt.executeUpdate("DELETE FROM sensor WHERE id=" + sensor.getId());}
 		finally {
 			//Closing
-			DataSource.releaseConnection(conn);
+			
 			if(Stmt!=null)
 				try{Stmt.close();}catch(Exception e){e.printStackTrace();} 
 		}
@@ -198,7 +203,7 @@ public class SensorManager {
 			n = Stmt.executeUpdate("DELETE FROM sensor");System.out.println(n);
 		}finally {
 			//Closing
-			DataSource.releaseConnection(conn);
+			
 			if(Stmt!=null)
 				try{Stmt.close();}catch(Exception e){e.printStackTrace();} ;
 

@@ -38,7 +38,7 @@ public class AlertManager {
 		}
 		finally {
 			// Closing
-			DataSource.releaseConnection(conn);
+			
 			if(RS!=null)
 				try{RS.close();}catch(Exception e){e.printStackTrace();} 
 			if(Stmt!=null)
@@ -68,7 +68,7 @@ public class AlertManager {
 		}
 		finally {
 			// Closing
-			DataSource.releaseConnection(conn);
+			
 			if(RS!=null)
 				try{RS.close();}catch(Exception e){e.printStackTrace();} 
 			if(Stmt!=null)
@@ -91,7 +91,7 @@ public class AlertManager {
 		// Closing
 		if(Stmt!=null)
 		    try{Stmt.close();}catch(Exception e){e.printStackTrace();}  
-        DataSource.releaseConnection(conn);
+        
 		}
 		return n==1;
 	}
@@ -110,7 +110,7 @@ public class AlertManager {
 		// Closing
 		if(Stmt!=null)
 		    try{Stmt.close();}catch(Exception e){e.printStackTrace();}  
-        DataSource.releaseConnection(conn);
+        
 		}
 		return n==1;
 	}
@@ -123,7 +123,7 @@ public class AlertManager {
 			n = Stmt.executeUpdate("DELETE FROM alert WHERE id=" + alert.getId());}
 			finally {
 			//Closing
-			DataSource.releaseConnection(conn);
+			
 			if(Stmt!=null)
 	        	try{Stmt.close();}catch(Exception e){e.printStackTrace();} 
 			}
@@ -137,7 +137,7 @@ public class AlertManager {
 			n = Stmt.executeUpdate("DELETE FROM alert");System.out.println(n);
 			}finally {
 				//Closing
-				DataSource.releaseConnection(conn);
+				
 				if(Stmt!=null)
 		        	try{Stmt.close();}catch(Exception e){e.printStackTrace();} ;
 		        

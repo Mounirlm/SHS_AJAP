@@ -33,7 +33,7 @@ public class Type_RoomManager {
         }
         finally {
         // Closing
-        DataSource.releaseConnection(conn);
+        
 	    RS.close();
 	    Stmt.close();
 	   

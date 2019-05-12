@@ -6,10 +6,10 @@ import java.io.InputStream;
 import java.util.Properties;
 
 
-public class DBAccess {
+public class AccessConfig {
 	//singleton
 
-	private static DBAccess dbAccess = new DBAccess();
+	private static AccessConfig dbAccess = new AccessConfig();
 	private static  String DB_DRIVER_CLASS;
 	private static String DB_URL;
 	private static String DB_USERNAME;
@@ -19,7 +19,7 @@ public class DBAccess {
 	private static int PORT_SERVER;
 
 	//private Constructor
-	private DBAccess(){
+	private AccessConfig(){
 		Properties prop = new Properties();
 		InputStream input = null;
 		
@@ -52,9 +52,9 @@ public class DBAccess {
 	}
 	   
 	//getters
-	public static DBAccess getInstance(){
+	public static AccessConfig getInstance(){
 	if(dbAccess == null)
-		dbAccess = new DBAccess();  
+		dbAccess = new AccessConfig();  
 	    return dbAccess;
 	}
 	
