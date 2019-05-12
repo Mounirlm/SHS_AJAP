@@ -331,4 +331,36 @@ public class SensorClientHandler {
 	    	stopFlux();
 	    }
 	}
+
+	public int countSensorsByFloor(int floor2, int month2, int year2) throws IOException {
+		getFlux();
+		int nSensors = 0;
+		try {
+			
+			String request = "countByFloor-Sensor-"+floor2+"-"+month2+"-"+year2;
+			//Creation request Json
+		    writer.setIndent("	");
+		    writer.beginObject();
+		    writer.name("request").value(request);
+		    writer.endObject();
+		    writer.flush();
+		    System.out.println("request:"+request);
+		    //response
+		    reader.beginObject();
+		    while(reader.hasNext()) {
+		    	String name = reader.nextName();
+		    	if(name.equals("nSensors"))
+		    		nSensors=reader.nextInt();
+		    	else
+		    		reader.skipValue();
+		    }
+		} catch (IOException ioe) { 
+	    	throw new IOException("Error communication to server ");
+		}
+	    finally {
+	    	stopFlux();
+	    }
+		
+		return nSensors;
+	}
 }

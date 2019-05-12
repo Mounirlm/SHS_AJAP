@@ -205,4 +205,13 @@ public class SensorManager {
 		}
 		return n>0;
 	}
+
+
+	public static int countByFloorMonthYear(Integer floor, Integer month, Integer year) throws SQLException {
+		PreparedStatement pStmt = conn.prepareStatement("SELECT COUNT(*) FROM sensor INNER JOIN room r ON fk_room = r.id  WHERE r.floor=?;");
+		pStmt.setInt(1, floor);
+		ResultSet rs = pStmt.executeQuery();
+		rs.next();
+		return rs.getInt(1);
+	}
 }
