@@ -52,15 +52,7 @@ public class AnalyzeFloorView extends JPanel {
 		pSensor.add(labelSensor1);
 		pSensor.add(labelSensor2);
 		pCenter.add(pSensor);
-		
-		//pErrorSensorr
-		JPanel pErrorSensor = new JPanel(new GridLayout(1,2));
-		JLabel labelErrorSensor1 = new JLabel("Sensors' Errors",SwingConstants.CENTER);
-		JLabel labelErrorSensor2 = new JLabel("201 errors",SwingConstants.LEFT);
-		pErrorSensor.add(labelErrorSensor1);
-		pErrorSensor.add(labelErrorSensor2);
-		pCenter.add(pErrorSensor);
-		
+				
 		//pResident
 		JPanel pResident = new JPanel(new GridLayout(1,2));
 		JLabel labelResident1 = new JLabel("Residents",SwingConstants.CENTER);
@@ -68,6 +60,14 @@ public class AnalyzeFloorView extends JPanel {
 		pResident.add(labelResident1);
 		pResident.add(labelResident2);
 		pCenter.add(pResident);
+		
+		//pRoom
+		JPanel pRoom = new JPanel(new GridLayout(1,2));
+		JLabel labelRoom1 = new JLabel("Room",SwingConstants.CENTER);
+		JLabel labelRoom2 = new JLabel("201 rooms",SwingConstants.LEFT);
+		pRoom.add(labelRoom1);
+		pRoom.add(labelRoom2);
+		pCenter.add(pRoom);
 	}
 	
 	public void addSelectComboBoxListener(ActionListener actionFloorComboBox, ActionListener actionMonthComboBox, ActionListener actionYearComboBox) {
