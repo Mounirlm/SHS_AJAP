@@ -179,8 +179,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="23" language="java" name="com.shs.client.view.LBTitle" project="SHS" 
-    file="/SHS/com.shs.client/com/shs/client/view/LBTitle.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="23" language="java" name="com.shs.commons.model.LBTitle" project="SHS" 
+    file="/SHS/com.shs.commons/com/shs/commons/model/LBTitle.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1492" y="815"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
