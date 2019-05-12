@@ -186,7 +186,7 @@ public class RequestHandler implements Runnable {
 	private boolean isAlertInCache(Historical historic, Sensor sensor) {
 		boolean rep = false;
 		//check if value lower than trigger point min
-		if (sensor.getFk_type_sensor().getTrigger_point_min()!=0) {
+		if (sensor.getFk_type_sensor().getTrigger_point_min()!=0) {//TODO insert 11 is false
 			if (Integer.parseInt(historic.getMessage())< sensor.getFk_type_sensor().getTrigger_point_min()) {
 				rep=true;
 			}
@@ -304,7 +304,7 @@ public class RequestHandler implements Runnable {
 					SensorManager sensorManager = new SensorManager(conBS);
 					HistoricalManager historicalManager = new HistoricalManager(conBS);
 					AlertManager alertManager = new AlertManager(conBS);
-					boolean signal=true;
+					
 					ArrayList<Sensor> sensors = new ArrayList<>();
 
 					//get installed and status ok sensors
@@ -315,6 +315,7 @@ public class RequestHandler implements Runnable {
 					}
 					//for each sensor, we check historical table if the last message is superior than 10000 mil of actual hour
 					for (Sensor sensor : sensors) {
+						boolean signal=true;
 						//get signals
 						ArrayList<Historical> hists = new ArrayList<>();
 						try {
@@ -327,8 +328,8 @@ public class RequestHandler implements Runnable {
 							signal=false;
 						}else {//create an alert if last historcal high
 							Historical hist = hists.get(hists.size()-1);
-							if (hist.getDate_signal_formatted().equals(todayFormatted())) {
-								if ((hist.getHour_signal().getTime() - todayTime().getTime()) > AccessConfig.getLAST_SIGNAL_DELAY()) {
+							if (hist.getDate_signal_formatted().equals(todayFormatted())) {System.out.println(hist.getFk_sensor()+" last "+(new Date().getTime() - (hist.getDate_signal().getTime()+hist.getHour_signal().getTime()))/1000);
+								if ((new Date().getTime() - (hist.getDate_signal().getTime()+hist.getHour_signal().getTime()))/1000 > AccessConfig.getLAST_SIGNAL_DELAY()) {
 									signal=false;
 								}
 							}
