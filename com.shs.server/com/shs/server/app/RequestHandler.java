@@ -15,12 +15,14 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.shs.commons.model.Alert;
 import com.shs.commons.model.Historical;
+import com.shs.commons.model.Resident;
 import com.shs.commons.model.Room;
 import com.shs.commons.model.Sensor;
 import com.shs.commons.model.Type_Room;
 import com.shs.commons.model.User;
 import com.shs.server.model.AlertRequestManager;
 import com.shs.server.model.HistoricalRequestManager;
+import com.shs.server.model.ResidentRequestManager;
 import com.shs.server.model.RoomManager;
 import com.shs.server.model.RoomRequestManager;
 import com.shs.server.model.SensorRequestManager;
@@ -145,6 +147,11 @@ public class RequestHandler implements Runnable {
 			Historical historic =(Historical) object;
 			HistoricalRequestManager reqHist = new HistoricalRequestManager(connDB, reader, writer, historic, "insert-Historical");
 			message=reqHist.requestManager();
+			break;
+		case "Resident":
+			Resident resident =(Resident) object;
+			ResidentRequestManager reqResident = new ResidentRequestManager(connDB, reader, writer, resident, "insert-Historical");
+			message=reqResident.requestManager();
 			break;
 
 		default:
