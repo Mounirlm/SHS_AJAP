@@ -332,12 +332,12 @@ public class SensorClientHandler {
 	    }
 	}
 
-	public int countSensorsByFloor(int floor2, int month2, int year2) throws IOException {
+	public int countSensorsByFloor(int floor2) throws IOException {
 		getFlux();
 		int nSensors = 0;
 		try {
 			
-			String request = "countByFloor-Sensor-"+floor2+"-"+month2+"-"+year2;
+			String request = "countByFloor-Sensor-"+floor2;
 			//Creation request Json
 		    writer.setIndent("	");
 		    writer.beginObject();

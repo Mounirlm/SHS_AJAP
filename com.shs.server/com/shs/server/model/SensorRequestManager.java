@@ -114,7 +114,7 @@ public class SensorRequestManager {
 			default:
 				if(request.startsWith("countByFloor-Sensor")) {
 					response=true;
-					int nSensors = SensorManager.countByFloorMonthYear(Integer.valueOf(res[2]),Integer.valueOf(res[3]),Integer.valueOf(res[4]));
+					int nSensors = SensorManager.countByFloorMonthYear(Integer.valueOf(res[2]));
 					writer.beginObject();
 					writer.name("nSensors").value(nSensors);
 					writer.endObject();

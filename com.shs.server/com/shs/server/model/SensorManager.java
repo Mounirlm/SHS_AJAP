@@ -207,7 +207,7 @@ public class SensorManager {
 	}
 
 
-	public static int countByFloorMonthYear(Integer floor, Integer month, Integer year) throws SQLException {
+	public static int countByFloorMonthYear(Integer floor) throws SQLException {
 		PreparedStatement pStmt = conn.prepareStatement("SELECT COUNT(*) FROM sensor INNER JOIN room r ON fk_room = r.id  WHERE r.floor=?;");
 		pStmt.setInt(1, floor);
 		ResultSet rs = pStmt.executeQuery();
