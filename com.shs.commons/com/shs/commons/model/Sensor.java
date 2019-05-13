@@ -129,5 +129,10 @@ public class Sensor {
 				+ fk_type_sensor + ", scope_sensor=" + scope_sensor + "]";
 	}
 	
+	public Object[] getAsArray() {
+		Object[] array = {id, sensor_name, ip_address, mac_address, date_setup, status, installed, fk_position, price, fk_room, fk_type_sensor, scope_sensor};
+		return array;
+	}
+	
 	
 }
