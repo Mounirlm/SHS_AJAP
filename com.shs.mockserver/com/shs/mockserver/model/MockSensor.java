@@ -1,5 +1,6 @@
 package com.shs.mockserver.model;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -21,6 +22,7 @@ import com.shs.commons.model.HistoricalClientHandler;
 import com.shs.commons.model.MockSensorMessage;
 import com.shs.commons.model.Sensor;
 import com.shs.commons.model.ServerAccess;
+import com.shs.mockserver.view.MockSHS;
 
 
 public class MockSensor extends Thread{
@@ -31,15 +33,17 @@ public class MockSensor extends Thread{
 	//communication to server
 	private HistoricalClientHandler histH;
 	private boolean run = true;
+	private MockSHS view;
 
-	public MockSensor(Sensor sensor, HistoricalClientHandler histH2) {
+	public MockSensor(Sensor sensor, HistoricalClientHandler histH2, MockSHS view) {
 		this.sensor = sensor;
 		this.histH = histH2;
 		this.defaultMockSensorMessage = new MockSensorMessage(sensor, sensor.getFk_type_sensor().getTrigger_point_max()-1 , 1);
+		this.view = view;
 	}
 
-	public MockSensor(Sensor sensor2, HistoricalClientHandler histH2, Map<String, String> map) {
-		this(sensor2, histH2);
+	public MockSensor(Sensor sensor2, HistoricalClientHandler histH2, Map<String, String> map, MockSHS v) {
+		this(sensor2, histH2, v);
 		this.scenas = map;
 
 
@@ -68,18 +72,33 @@ public class MockSensor extends Thread{
 				if(mockSensorMessage.getTime_sc()>0) {//if sensor is not broken
 					for (int i = 0; i < mockSensorMessage.getTime_sc(); i++) {
 						//Send signal to server
-						jsonSignals(mockSensorMessage);
+						try {
+							jsonSignals(mockSensorMessage);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 				}
 			}
 			//default messages
 			if(messages.isEmpty()) {
 				while(true) {
-					jsonSignals(defaultMockSensorMessage);
+					try {
+						jsonSignals(defaultMockSensorMessage);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}else if (messages.get(messages.size()-1).getTime_sc()>0){//if sensor is not broken
 				while(true) {
-					jsonSignals(defaultMockSensorMessage);
+					try {
+						jsonSignals(defaultMockSensorMessage);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}else {
 				run=false;
@@ -91,7 +110,7 @@ public class MockSensor extends Thread{
 
 
 
-	private void jsonSignals(MockSensorMessage mockSensorMessage) {
+	private void jsonSignals(MockSensorMessage mockSensorMessage) throws IOException {
 		synchronized (histH) {
 			Historical historic = new Historical();
 			//Calendar calendar = Calendar.getInstance();
@@ -104,16 +123,24 @@ public class MockSensor extends Thread{
 			//System.out.println(historic);
 			//send to server
 			try {
+				Color color =Color.BLUE;
+				if(isAlert(historic, sensor))
+					color = Color.RED;
+				
+				view.addSignals(historic.toString(), color);
+				
 				histH.insertHistoricalToServer(historic);
+				
 			} catch (IOException e1) {
-				System.err.println(e1.getMessage());
+				System.err.println("error : "+e1.getMessage());
+
 			}
 
 			//Delta of messages 
 			try {
 				Thread.sleep(ServerScenarioAccess.getDELTA_SIGNALS());
 			} catch (InterruptedException e) {
-				System.err.println(e.getMessage());
+				throw new  IOException(e.getMessage());
 			}
 		}
 
@@ -123,6 +150,23 @@ public class MockSensor extends Thread{
 	public String toString() {
 		return "MockSensor [sensor=" + sensor + "]";
 	}
+	
+	private boolean isAlert(Historical historic, Sensor sensor) {
+		boolean rep = false;
+		//check if value lower than trigger point min
+		if (sensor.getFk_type_sensor().getTrigger_point_min()!=0) {
+			if (Integer.parseInt(historic.getMessage())< sensor.getFk_type_sensor().getTrigger_point_min()) {
+				rep=true;
+			}
+		}
+		//check if value upper than max trigger
+		else if (sensor.getFk_type_sensor().getTrigger_point_max()!=0) {
+			if (Integer.parseInt(historic.getMessage())> sensor.getFk_type_sensor().getTrigger_point_max()) {
+				rep=true;
+			}
+		}
+		return rep;
 
+	}
 
 }

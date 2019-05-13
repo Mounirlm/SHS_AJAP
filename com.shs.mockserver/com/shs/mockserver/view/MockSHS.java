@@ -1,7 +1,9 @@
 package com.shs.mockserver.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 
 import javax.swing.JButton;
@@ -10,14 +12,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import com.shs.client.view.ColorsApp;
 import com.shs.commons.model.LBTitle;
 
 public class MockSHS extends JFrame {
-	private static final int WIDTH = 820;
-	private static final int HIGH = 820;
-	private JButton bStart= new JButton("Start");
-	private JButton bStop= new JButton("Stop");
-	private LBTitle screenServer = new LBTitle("Wait ...");
+	private static final int WIDTH = 1520;
+	private static final int HIGH = 720;
+	private JButton bStart= new JButton("START");
+	private JButton bStop= new JButton("STOP");
+	private LBTitle screenServer = new LBTitle("Waiting start ...");
 	private JPanel pLeft;
 	private JPanel pRight;
 	private LBTitle lbSignals;
@@ -27,11 +30,13 @@ public class MockSHS extends JFrame {
 
 	public MockSHS() {
 		super("Mock Sever SHS");
-		this.setSize(new Dimension(HIGH, WIDTH));
+		this.setSize(new Dimension(WIDTH, HIGH));
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setLayout(new BorderLayout());
 		//North
+		bStart.setBackground(Color.GREEN);
+		bStop.setBackground(Color.RED);
 		JPanel pNorth = new JPanel();
 		pNorth.setLayout(new BorderLayout());
 		JPanel pStartAndStop = new JPanel();
@@ -47,15 +52,20 @@ public class MockSHS extends JFrame {
 		pRight = new JPanel(new BorderLayout());
 		//pLeft
 		lbSignals = new LBTitle("Signals");
+		pSignals = new JPanel(new GridLayout(1000, 1000));//TODO Prop
+		JScrollPane scroller = new JScrollPane(pSignals, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		pLeft.add(lbSignals, BorderLayout.NORTH);
-		pSignals = new JPanel(new BorderLayout());
-		JScrollPane scroller = new JScrollPane(pSignals, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		
+		pLeft.add(scroller, BorderLayout.CENTER);
+
 		//pRigh
 		lbScenarios = new LBTitle("Scenarios");
+		pScenarios = new JPanel(new GridLayout(1000, 1000));//TODO Prop
+		JScrollPane scrollerSc = new JScrollPane(pScenarios, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		pRight.add(lbScenarios, BorderLayout.NORTH);
-		pScenarios = new JPanel();
-		JScrollPane scrollerSc = new JScrollPane(pScenarios, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		pRight.add(scrollerSc, BorderLayout.CENTER);
+		
+		
+		
 		pCenter.add(pRight, BorderLayout.EAST);
 		pCenter.add(pLeft, BorderLayout.WEST);
 		
@@ -101,8 +111,12 @@ public class MockSHS extends JFrame {
 		return pScenarios;
 	}
 	
-	public void addSignals(String s) {
-		pSignals.add(new JLabel(s));
+	public void addSignals(String s, Color c) {
+		JLabel lb = new JLabel(s);
+		lb.setForeground(c);
+		lb.setFont(new Font("Arial", Font.BOLD, 15));
+		pSignals.add(lb);
+		pSignals.revalidate();
 	}
 	public void removeSignals() {
 		pSignals.removeAll();
@@ -110,14 +124,23 @@ public class MockSHS extends JFrame {
 	}
 	
 	public void addScenarios(String s) {
-		pScenarios.add(new JLabel(s));
+		JLabel lb = new JLabel(s);
+		lb.setForeground(Color.BLUE);
+		lb.setFont(new Font("Arial", Font.BOLD, 15));
+
+		pScenarios.add(lb);
+		pScenarios.revalidate();
 	}
 	public void removeScenarios() {
 		pScenarios.removeAll();
 		pScenarios.revalidate();
 	}
-	
-	public static void main(String[] args) {
-		MockSHS mockSHS= new MockSHS();
+
+	public void setScreenServer(String mess, Color color) {
+		this.screenServer.setText(mess);
+		this.screenServer.setBackground(color);
+		
 	}
+	
+	
 }
