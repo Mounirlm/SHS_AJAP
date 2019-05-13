@@ -190,7 +190,7 @@ public class RequestHandler implements Runnable {
 	 * Check if the signal(historical receive) had a message value upper or lower than trigger points of alerts
 	 */
 	private boolean isAlertInCache(Historical historic, Sensor sensor) {
-		boolean rep = false;
+		boolean rep = false;//TODO CHECK FOR WINDOWS AND DOOR
 		//check if value lower than trigger point min
 		if (sensor.getFk_type_sensor().getTrigger_point_min()!=0) {
 			if (Integer.parseInt(historic.getMessage())<= sensor.getFk_type_sensor().getTrigger_point_min()) {
@@ -334,7 +334,7 @@ public class RequestHandler implements Runnable {
 							Historical hist = hists.get(hists.size()-1);
 							if (hist.getDate_signal_formatted().equals(todayFormatted())) {
 								if ((new Date().getTime() - (hist.getDate_signal().getTime()+hist.getHour_signal().getTime()))/1000 > AccessConfig.getLAST_SIGNAL_DELAY()) {
-									signal=false;//TODO sensor ok then ko
+									signal=false;
 								}
 							}
 						}
