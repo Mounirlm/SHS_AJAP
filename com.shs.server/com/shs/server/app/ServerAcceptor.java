@@ -31,7 +31,7 @@ public class ServerAcceptor {
 			    	  System.out.println("Connection DB ok");
 			    	  }catch(SQLException e1) {
 			    		  System.out.println("Connection DB Refused "+e1);
-			    	  }System.out.println(DataSource.getSize());
+			    	  }
 			    	  if(connDB != null) {
 				        System.out.println("Waiting client") ;
 				        Socket client = null;

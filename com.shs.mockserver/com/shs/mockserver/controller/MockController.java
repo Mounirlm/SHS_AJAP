@@ -105,6 +105,7 @@ public class MockController implements ActionListener {
 		if (!sensors.isEmpty()) {
 			//Get scenarios from properties
 			List<Map<String, String>> scenas = new ArrayList<>();
+			ServerScenarioAccess.getInstance();
 			String scenarios = ServerScenarioAccess.getScenario();
 			Map<String, String> map;
 

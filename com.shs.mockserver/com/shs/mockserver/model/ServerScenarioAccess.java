@@ -13,7 +13,7 @@ public class ServerScenarioAccess {
 	private static Long DELTA_SIGNALS;
 	private static int ROWS_VIEWS;
 	
-	private ServerScenarioAccess() {
+	public ServerScenarioAccess() {
 		Properties prop = new Properties();
 		InputStream input = null;
 		
@@ -44,7 +44,6 @@ public class ServerScenarioAccess {
 	
 	//getters
 		public static ServerScenarioAccess getInstance(){
-		if(serverScenarioAccess == null)
 			serverScenarioAccess = new ServerScenarioAccess();  
 		    return serverScenarioAccess;
 		}

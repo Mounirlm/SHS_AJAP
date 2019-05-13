@@ -162,7 +162,7 @@ public class RequestHandler implements Runnable {
 			Wing_RoomRequestManager reqWing_Room = new Wing_RoomRequestManager(connDB, reader, writer, request);
 			message=reqWing_Room.requestManager();
 			break;
-		
+
 		case "Type_Sensor":
 			Type_SensorRequestManager reqType_Sensor = new Type_SensorRequestManager(connDB, reader, writer, request);
 			message=reqType_Sensor.requestManager();
@@ -193,13 +193,13 @@ public class RequestHandler implements Runnable {
 		boolean rep = false;
 		//check if value lower than trigger point min
 		if (sensor.getFk_type_sensor().getTrigger_point_min()!=0) {
-			if (Integer.parseInt(historic.getMessage())< sensor.getFk_type_sensor().getTrigger_point_min()) {
+			if (Integer.parseInt(historic.getMessage())<= sensor.getFk_type_sensor().getTrigger_point_min()) {
 				rep=true;
 			}
 		}
 		//check if value upper than max trigger
 		else if (sensor.getFk_type_sensor().getTrigger_point_max()!=0) {
-			if (Integer.parseInt(historic.getMessage())> sensor.getFk_type_sensor().getTrigger_point_max()) {
+			if (Integer.parseInt(historic.getMessage())>= sensor.getFk_type_sensor().getTrigger_point_max()) {
 				rep=true;
 			}
 		}
@@ -223,7 +223,6 @@ public class RequestHandler implements Runnable {
 		} catch (SQLException | ParseException e) {
 			e.printStackTrace();
 		}
-
 		//add to cache evry signals
 		if (!CACHE.containsKey(historic.getFk_sensor())) {
 			ArrayList<Historical> a  = new ArrayList<Historical>();
@@ -236,8 +235,7 @@ public class RequestHandler implements Runnable {
 
 		//check of cache to add alert in DB
 		System.out.println("CACHE size :"+CACHE);
-		for(Map.Entry<Integer, ArrayList<Historical>> cache : CACHE.entrySet()) {
-			ArrayList<Historical> hitoricals = cache.getValue();
+			ArrayList<Historical> hitoricals = CACHE.get(sensor.getId());//get all signals of the sensor
 			ArrayList<Historical> last = new ArrayList<>();
 
 			//get last signals
@@ -245,7 +243,7 @@ public class RequestHandler implements Runnable {
 				last.add(hitoricals.get(i));
 			}
 
-			//check if we have a number of signals of alert high
+			//check if we have a number of signals of alert of alert high
 			int cpt_alert_signals = 0;
 			for (int i = 0; i < last.size(); i++) {
 				if (isAlertInCache(last.get(i), sensor)) {
@@ -278,7 +276,7 @@ public class RequestHandler implements Runnable {
 			}
 		}
 
-	}
+
 
 
 	private static String todayFormatted() {
@@ -310,7 +308,7 @@ public class RequestHandler implements Runnable {
 					SensorManager sensorManager = new SensorManager(conBS);
 					HistoricalManager historicalManager = new HistoricalManager(conBS);
 					AlertManager alertManager = new AlertManager(conBS);
-					
+
 					ArrayList<Sensor> sensors = new ArrayList<>();
 
 					//get installed and status ok sensors
@@ -334,7 +332,7 @@ public class RequestHandler implements Runnable {
 							signal=false;
 						}else {//create an alert if last historcal high
 							Historical hist = hists.get(hists.size()-1);
-							if (hist.getDate_signal_formatted().equals(todayFormatted())) {System.out.println(hist.getFk_sensor()+" last "+(new Date().getTime() - (hist.getDate_signal().getTime()+hist.getHour_signal().getTime()))/1000);
+							if (hist.getDate_signal_formatted().equals(todayFormatted())) {
 								if ((new Date().getTime() - (hist.getDate_signal().getTime()+hist.getHour_signal().getTime()))/1000 > AccessConfig.getLAST_SIGNAL_DELAY()) {
 									signal=false;//TODO sensor ok then ko
 								}

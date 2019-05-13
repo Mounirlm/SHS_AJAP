@@ -170,13 +170,13 @@ public class MockSensor extends Thread{
 		boolean rep = false;
 		//check if value lower than trigger point min
 		if (sensor.getFk_type_sensor().getTrigger_point_min()!=0) {
-			if (Integer.parseInt(historic.getMessage())< sensor.getFk_type_sensor().getTrigger_point_min()) {
+			if (Integer.parseInt(historic.getMessage())<= sensor.getFk_type_sensor().getTrigger_point_min()) {
 				rep=true;
 			}
 		}
 		//check if value upper than max trigger
 		else if (sensor.getFk_type_sensor().getTrigger_point_max()!=0) {
-			if (Integer.parseInt(historic.getMessage())> sensor.getFk_type_sensor().getTrigger_point_max()) {
+			if (Integer.parseInt(historic.getMessage())>= sensor.getFk_type_sensor().getTrigger_point_max()) {
 				rep=true;
 			}
 		}
