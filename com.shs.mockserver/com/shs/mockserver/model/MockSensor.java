@@ -67,13 +67,19 @@ public class MockSensor extends Thread{
 	 */
 	public void run() {
 		while(run){
+
 			//for each scenario
 			for (MockSensorMessage mockSensorMessage : messages) {
 				if(mockSensorMessage.getTime_sc()>0) {//if sensor is not broken
 					for (int i = 0; i < mockSensorMessage.getTime_sc(); i++) {
 						//Send signal to server
 						try {
-							jsonSignals(mockSensorMessage);
+							if(run==true) {
+								jsonSignals(mockSensorMessage);
+							}
+							else {
+								break;
+							}
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -83,27 +89,32 @@ public class MockSensor extends Thread{
 			}
 			//default messages
 			if(messages.isEmpty()) {
-				while(true) {
+				while(run) {
 					try {
-						jsonSignals(defaultMockSensorMessage);
+						if(run==true)
+							jsonSignals(defaultMockSensorMessage);
+						else 
+							break;
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
 			}else if (messages.get(messages.size()-1).getTime_sc()>0){//if sensor is not broken
-				while(true) {
+				while(run) {
 					try {
-						jsonSignals(defaultMockSensorMessage);
+						if(run==true)
+							jsonSignals(defaultMockSensorMessage);
+						else 
+							break;
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
 			}else {
-				run=false;
+				stopMockSensor();
 			}
-
 		}
 
 	}
@@ -123,14 +134,14 @@ public class MockSensor extends Thread{
 			//System.out.println(historic);
 			//send to server
 			try {
-				Color color =Color.BLUE;
+				Color color =Color.BLACK;
 				if(isAlert(historic, sensor))
 					color = Color.RED;
-				
+
 				view.addSignals(historic.toString(), color);
-				
+
 				histH.insertHistoricalToServer(historic);
-				
+
 			} catch (IOException e1) {
 				System.err.println("error : "+e1.getMessage());
 
@@ -146,11 +157,15 @@ public class MockSensor extends Thread{
 
 	}
 
+	public void stopMockSensor() {
+		run=false;
+	}
+
 	@Override
 	public String toString() {
 		return "MockSensor [sensor=" + sensor + "]";
 	}
-	
+
 	private boolean isAlert(Historical historic, Sensor sensor) {
 		boolean rep = false;
 		//check if value lower than trigger point min

@@ -14,6 +14,7 @@ import javax.swing.JScrollPane;
 
 import com.shs.client.view.ColorsApp;
 import com.shs.commons.model.LBTitle;
+import com.shs.mockserver.model.ServerScenarioAccess;
 
 public class MockSHS extends JFrame {
 	private static final int WIDTH = 1520;
@@ -22,11 +23,12 @@ public class MockSHS extends JFrame {
 	private JButton bStop= new JButton("STOP");
 	private LBTitle screenServer = new LBTitle("Waiting start ...");
 	private JPanel pLeft;
-	private JPanel pRight;
+	private JPanel pScens;
 	private LBTitle lbSignals;
 	private LBTitle lbScenarios;
 	private JPanel pSignals;
 	private JPanel pScenarios;
+	private JPanel ptypesSensors;
 
 	public MockSHS() {
 		super("Mock Sever SHS");
@@ -49,24 +51,36 @@ public class MockSHS extends JFrame {
 		//Center
 		JPanel pCenter = new JPanel(new GridLayout(1, 2));
 		pLeft = new JPanel(new BorderLayout());
-		pRight = new JPanel(new BorderLayout());
+		pScens = new JPanel(new BorderLayout());
 		//pLeft
 		lbSignals = new LBTitle("Signals");
-		pSignals = new JPanel(new GridLayout(1000, 1000));//TODO Prop
+		pSignals = new JPanel(new GridLayout(ServerScenarioAccess.getROWS_VIEWS(), 1));
 		JScrollPane scroller = new JScrollPane(pSignals, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		pLeft.add(lbSignals, BorderLayout.NORTH);
 		pLeft.add(scroller, BorderLayout.CENTER);
 
-		//pRigh
+		//pR
+		JPanel pR = new JPanel(new GridLayout(2, 1));
+		//pType 
+		LBTitle lbTypes= new LBTitle("Type Sensors");
+		JPanel pTypes = new JPanel(new BorderLayout()); 
+		ptypesSensors = new JPanel(new GridLayout(ServerScenarioAccess.getROWS_VIEWS(), 1));
+		JScrollPane scrollerType = new JScrollPane(ptypesSensors, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		pTypes.add(lbTypes, BorderLayout.NORTH);
+		pTypes.add(scrollerType, BorderLayout.CENTER);
+		//pScenarios
 		lbScenarios = new LBTitle("Scenarios");
-		pScenarios = new JPanel(new GridLayout(1000, 1000));//TODO Prop
+		pScenarios = new JPanel(new GridLayout(ServerScenarioAccess.getROWS_VIEWS(), 1));
 		JScrollPane scrollerSc = new JScrollPane(pScenarios, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		pRight.add(lbScenarios, BorderLayout.NORTH);
-		pRight.add(scrollerSc, BorderLayout.CENTER);
+		pScens.add(lbScenarios, BorderLayout.NORTH);
+		pScens.add(scrollerSc, BorderLayout.CENTER);
+		
+		pR.add(pScens, BorderLayout.CENTER);
+		pR.add(pTypes, BorderLayout.NORTH);
 		
 		
 		
-		pCenter.add(pRight, BorderLayout.EAST);
+		pCenter.add(pR, BorderLayout.EAST);
 		pCenter.add(pLeft, BorderLayout.WEST);
 		
 		this.add(pNorth, BorderLayout.NORTH);
@@ -92,7 +106,7 @@ public class MockSHS extends JFrame {
 	}
 
 	public JPanel getpRight() {
-		return pRight;
+		return pScens;
 	}
 
 	public LBTitle getLbSignals() {
@@ -114,7 +128,7 @@ public class MockSHS extends JFrame {
 	public void addSignals(String s, Color c) {
 		JLabel lb = new JLabel(s);
 		lb.setForeground(c);
-		lb.setFont(new Font("Arial", Font.BOLD, 15));
+		lb.setFont(new Font("Arial", Font.BOLD, 16));
 		pSignals.add(lb);
 		pSignals.revalidate();
 	}
@@ -125,8 +139,8 @@ public class MockSHS extends JFrame {
 	
 	public void addScenarios(String s) {
 		JLabel lb = new JLabel(s);
-		lb.setForeground(Color.BLUE);
-		lb.setFont(new Font("Arial", Font.BOLD, 15));
+		lb.setForeground(Color.BLACK);
+		lb.setFont(new Font("Arial", Font.BOLD, 16));
 
 		pScenarios.add(lb);
 		pScenarios.revalidate();
@@ -142,5 +156,32 @@ public class MockSHS extends JFrame {
 		
 	}
 	
+	public void cleanViews() {
+		removeScenarios();
+		removeSignals();
+		removePtypesSensors();
+	}
+
 	
+
+	public static int getHigh() {
+		return HIGH;
+	}
+
+	public JPanel getPtypesSensors() {
+		return ptypesSensors;
+	}
+	
+	public void addPtypesSensors(String s) {
+		JLabel lb = new JLabel(s);
+		lb.setForeground(Color.BLACK);
+		lb.setFont(new Font("Arial", Font.BOLD, 16));
+
+		ptypesSensors.add(lb);
+		ptypesSensors.revalidate();
+	}
+	public void removePtypesSensors() {
+		ptypesSensors.removeAll();
+		ptypesSensors.revalidate();
+	}
 }

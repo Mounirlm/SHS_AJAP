@@ -11,7 +11,7 @@ public class ServerScenarioAccess {
 	private static ServerScenarioAccess serverScenarioAccess = new ServerScenarioAccess();
 	private static String scenarios;
 	private static Long DELTA_SIGNALS;
-
+	private static int ROWS_VIEWS;
 	
 	private ServerScenarioAccess() {
 		Properties prop = new Properties();
@@ -27,6 +27,7 @@ public class ServerScenarioAccess {
 			// get the property value and print it out
 			scenarios = prop.getProperty("scenarios");
 			DELTA_SIGNALS=Long.parseLong(prop.getProperty("DELTA_SIGNALS"));
+			ROWS_VIEWS=Integer.parseInt(prop.getProperty("ROWS_VIEWS"));
 			
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -59,6 +60,10 @@ public class ServerScenarioAccess {
 
 		public static Long getDELTA_SIGNALS() {
 			return DELTA_SIGNALS;
+		}
+
+		public static int getROWS_VIEWS() {
+			return ROWS_VIEWS;
 		}
 
 		

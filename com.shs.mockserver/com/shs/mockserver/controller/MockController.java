@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import com.shs.commons.model.HistoricalClientHandler;
 import com.shs.commons.model.Sensor;
 import com.shs.commons.model.SensorClientHandler;
+import com.shs.commons.model.Type_Sensor;
 import com.shs.mockserver.model.MockSensor;
 import com.shs.mockserver.model.ServerScenarioAccess;
 import com.shs.mockserver.view.MockSHS;
@@ -26,14 +27,12 @@ public class MockController implements ActionListener {
 	private List<MockSensor> mockSensors;
 	private SensorClientHandler sensorH;
 	private HistoricalClientHandler histH;
-
+	private List<Type_Sensor> types_sensors;
 	public MockController(MockSHS view) {
 		super();
 		this.view = view;
 		view.getbStart().addActionListener(this);
 		view.getbStop().addActionListener(this);
-		sensors = new ArrayList<>();
-		mockSensors = new ArrayList<>();
 	}
 
 
@@ -81,15 +80,23 @@ public class MockController implements ActionListener {
 	 * 
 	 */
 	public void start() throws Exception {
+		sensors = new ArrayList<>();
+		mockSensors = new ArrayList<>();
+		types_sensors = new ArrayList<>();
+		view.cleanViews();
 		try {
 			sensorH = new SensorClientHandler();
+			histH = new HistoricalClientHandler();
 		} catch (IOException e) {
-			throw new  IOException("error sensorclienthandler: "+e.getMessage());
+			throw new  IOException("error clienthandler: "+e.getMessage());
 		}
 		//upload real sensors from database
 		try {
 			sensors = sensorH.searchAllSensors();
-			histH = new HistoricalClientHandler();
+			types_sensors = sensorH.selectAllTypeSensors();
+			for (Type_Sensor types : types_sensors) {
+				view.addPtypesSensors(types.toString2());
+			}
 
 		} catch (IOException e) {
 			throw new  Exception("error : "+e.getMessage());
@@ -162,7 +169,12 @@ public class MockController implements ActionListener {
 
 
 	private void stop() {
-		// TODO Auto-generated method stub
+		for (MockSensor mockSensor : mockSensors) {
+			mockSensor.stopMockSensor();
+		}
+		mockSensors.clear();
+		sensors.clear();
+		types_sensors.clear();
 
 	}
 

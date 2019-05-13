@@ -41,6 +41,7 @@ import com.shs.server.model.RoomRequestManager;
 import com.shs.server.model.SensorManager;
 import com.shs.server.model.SensorRequestManager;
 import com.shs.server.model.Type_RoomRequestManager;
+import com.shs.server.model.Type_SensorRequestManager;
 import com.shs.server.model.UserManager;
 import com.shs.server.model.UserRequestManager;
 import com.shs.server.model.Wing_RoomRequestManager;
@@ -160,6 +161,11 @@ public class RequestHandler implements Runnable {
 		case "Wing_Room":
 			Wing_RoomRequestManager reqWing_Room = new Wing_RoomRequestManager(connDB, reader, writer, request);
 			message=reqWing_Room.requestManager();
+			break;
+		
+		case "Type_Sensor":
+			Type_SensorRequestManager reqType_Sensor = new Type_SensorRequestManager(connDB, reader, writer, request);
+			message=reqType_Sensor.requestManager();
 			break;
 
 		case "Historical":
