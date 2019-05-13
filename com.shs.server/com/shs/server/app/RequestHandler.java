@@ -234,7 +234,6 @@ public class RequestHandler implements Runnable {
 		}
 
 		//check of cache to add alert in DB
-		System.out.println("CACHE size :"+CACHE);
 			ArrayList<Historical> hitoricals = CACHE.get(sensor.getId());//get all signals of the sensor
 			ArrayList<Historical> last = new ArrayList<>();
 
@@ -269,7 +268,6 @@ public class RequestHandler implements Runnable {
 					AlertManager.create(alert);
 					sensor.setStatus(false);
 					SensorManager.update(sensor);
-					System.out.println("alert inserted for sensor "+sensor.getId());
 				}catch(SQLException ex) {
 					System.err.println("Error Cache insert alert or sensor: "+ex.getMessage());
 				}
@@ -350,7 +348,6 @@ public class RequestHandler implements Runnable {
 								AlertManager.create(alert);
 								sensor.setStatus(false);
 								SensorManager.update(sensor);
-								System.out.println("alert inserted for sensor "+sensor.getId());
 							}catch(SQLException ex) {
 								System.err.println("Error Cache insert alert or sensor: "+ex.getMessage());
 							}

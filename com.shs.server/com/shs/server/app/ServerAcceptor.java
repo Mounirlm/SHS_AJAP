@@ -10,6 +10,7 @@ import com.shs.server.connection.pool.AccessConfig;
 import com.shs.server.connection.pool.DataSource;
 
 public class ServerAcceptor {
+	private static int cpt=0;
 	 public static void main (String[] args) throws SQLException, ClassNotFoundException, IOException {
 		 //create a serverSocket	
 		 	ServerSocket server = null;
@@ -38,7 +39,8 @@ public class ServerAcceptor {
 						try {
 							client = server.accept();
 						} catch (IOException e) {System.out.println("Error connection client");}
-				        System.out.println("Connection established");      
+						cpt++;
+				        System.out.println("Connection established "+cpt);      
 				        //creation RequsetHandlre
 				        RequestHandler req = new RequestHandler(client, connDB);
 				        Thread service = new Thread(req);
