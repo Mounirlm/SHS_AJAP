@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import com.shs.client.controller.AnalyzePanel;
+import com.shs.commons.model.LBTitle;
 import com.shs.commons.model.Wing_Room;
 
 public class AnalyzeWingView extends JPanel implements AnalyzePanel{
@@ -85,10 +85,10 @@ public class AnalyzeWingView extends JPanel implements AnalyzePanel{
 	}
 
 	@Override
-	public void addSelectComboBoxListener(ActionListener actionWingComboBox, ActionListener actionMonthComboBox,ActionListener actionYearComboBox) {
-		wingComboBox.addActionListener(actionWingComboBox);
-		monthComboBox.addActionListener(actionMonthComboBox);
-		yearComboBox.addActionListener(actionYearComboBox);
+	public void addSelectComboBoxListener(ActionListener actionComboBox) {
+		wingComboBox.addActionListener(actionComboBox);
+		monthComboBox.addActionListener(actionComboBox);
+		yearComboBox.addActionListener(actionComboBox);
 		
 	}
 

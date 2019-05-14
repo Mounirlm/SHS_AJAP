@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 
 import com.shs.client.model.RoomClientHandler;
 import com.shs.client.view.AnalyzeFloorView;
+import com.shs.client.view.AnalyzePanel;
 import com.shs.client.view.AnalyzeView;
 import com.shs.client.view.AnalyzeWingView;
 import com.shs.client.view.SHSView;
@@ -40,6 +41,7 @@ public class AnalyzeController{
 	protected AnalyzePanel currentView;
 	private AnalyzeWingView analyzeWingView;
 	private String wing;
+	private Map<Integer, String> wingRooms;
 	
 	public AnalyzeController(SHSView v) throws UnknownHostException, IOException {
 		this.view = v;
@@ -52,15 +54,18 @@ public class AnalyzeController{
 		analyzeView.addTopBarButtonListener(actionTopBarButton);
 		
 		analyzeFloorView = analyzeView.getFloorView();
-		analyzeFloorView.addSelectComboBoxListener(actionFloorComboBox, actionMonthComboBox, actionYearComboBox);
+		analyzeFloorView.addSelectComboBoxListener(actionComboBox);
 		
 		analyzeWingView = analyzeView.getWingView();
 		
 		wingRooms = getWingRooms();
 		analyzeWingView.setWingComboBox(wingRooms);
-		analyzeWingView.addSelectComboBoxListener(actionFloorComboBox, actionMonthComboBox, actionYearComboBox);
+		analyzeWingView.addSelectComboBoxListener(actionComboBox);
 		
 		currentView = analyzeFloorView;
+		updateInfoFromComboBox();
+		Map<String, Integer> indicators = searchFloorIndicators(floor,month,year);
+		currentView.updateInfoGUI(indicators);
 	}
 
 	private Map<Integer, String> getWingRooms() throws IOException {
@@ -99,7 +104,7 @@ public class AnalyzeController{
 		}
 	};
 	
-	ActionListener actionFloorComboBox = new ActionListener() {
+	ActionListener actionComboBox = new ActionListener() {
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -113,30 +118,6 @@ public class AnalyzeController{
 	        currentView.updateInfoGUI(indicators);
 		}
 	};
-	
-	ActionListener actionMonthComboBox = new ActionListener() {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			updateInfoFromComboBox();
-			Map<String,Integer> indicators = null;
-			if (currentView.equals(analyzeFloorView))
-				indicators=searchFloorIndicators(floor,month,year);
-			else if(currentView.equals(analyzeWingView))
-				indicators =searchWingIndicators(wing,month,year);
-	        
-	        currentView.updateInfoGUI(indicators);
-		}};
-	
-	ActionListener actionYearComboBox = new ActionListener() {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			updateInfoFromComboBox();
-	        Map<String,Integer> indicators=searchFloorIndicators(floor,month,year);
-	        currentView.updateInfoGUI(indicators);
-		}};
-	private Map<Integer, String> wingRooms;
 	
 
 	protected Map<String, Integer> searchFloorIndicators(int floor2, String month2, int year2) {

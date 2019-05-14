@@ -12,8 +12,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
-import com.shs.client.controller.AnalyzePanel;
-
 public class AnalyzeView extends JPanel {
 	
 	private JPanel pCenter;

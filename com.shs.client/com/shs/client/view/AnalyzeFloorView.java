@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import com.shs.client.controller.AnalyzePanel;
+import com.shs.commons.model.LBTitle;
 
 public class AnalyzeFloorView extends JPanel implements AnalyzePanel{
 	
@@ -77,10 +77,10 @@ public class AnalyzeFloorView extends JPanel implements AnalyzePanel{
 		pCenter.add(pRoom);
 	}
 	
-	public void addSelectComboBoxListener(ActionListener actionFloorComboBox, ActionListener actionMonthComboBox, ActionListener actionYearComboBox) {
-		floorComboBox.addActionListener(actionFloorComboBox);
-		monthComboBox.addActionListener(actionMonthComboBox);
-		yearComboBox.addActionListener(actionYearComboBox);
+	public void addSelectComboBoxListener(ActionListener actionComboBox) {
+		floorComboBox.addActionListener(actionComboBox);
+		monthComboBox.addActionListener(actionComboBox);
+		yearComboBox.addActionListener(actionComboBox);
 	}
 
 	@Override

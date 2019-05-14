@@ -6,7 +6,7 @@ import java.util.Map;
 
 import javax.swing.JPanel;
 
-import com.shs.client.controller.AnalyzePanel;
+import com.shs.commons.model.LBTitle;
 
 public class AnalyzeTotalView extends JPanel implements AnalyzePanel{
 	public AnalyzeTotalView() {
@@ -23,8 +23,7 @@ public class AnalyzeTotalView extends JPanel implements AnalyzePanel{
 	}
 
 	@Override
-	public void addSelectComboBoxListener(ActionListener actionFloorComboBox, ActionListener actionMonthComboBox,
-			ActionListener actionYearComboBox) {
+	public void addSelectComboBoxListener(ActionListener actionComboBox) {
 		// TODO Auto-generated method stub
 		
 	}

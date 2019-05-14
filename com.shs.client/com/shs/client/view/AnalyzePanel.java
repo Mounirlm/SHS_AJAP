@@ -1,4 +1,4 @@
-package com.shs.client.controller;
+package com.shs.client.view;
 
 import java.awt.event.ActionListener;
 import java.util.Map;
@@ -9,8 +9,7 @@ public interface AnalyzePanel {
 
 	void updateInfoGUI(Map<String, Integer> indicators);
 
-	void addSelectComboBoxListener(ActionListener actionFloorComboBox, ActionListener actionMonthComboBox,
-			ActionListener actionYearComboBox);
+	void addSelectComboBoxListener(ActionListener actionComboBox);
 	
 	
 }
