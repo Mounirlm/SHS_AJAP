@@ -314,6 +314,11 @@ public class AlertClientHandler {
 		
 		return nAlerts;
 	}
+
+	public int countAlert(int monthValue, int year2) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 
 	

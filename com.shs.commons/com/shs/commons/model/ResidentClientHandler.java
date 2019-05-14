@@ -108,4 +108,9 @@ public class ResidentClientHandler {
 		return nResidents;
 	}
 
+	public int countResident() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

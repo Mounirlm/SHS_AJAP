@@ -400,4 +400,9 @@ public class RoomClientHandler {
 		
 		return nRooms;
 	}
+
+	public int countRoom() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
