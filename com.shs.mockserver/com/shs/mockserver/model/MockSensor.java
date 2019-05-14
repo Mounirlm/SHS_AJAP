@@ -38,7 +38,12 @@ public class MockSensor extends Thread{
 	public MockSensor(Sensor sensor, HistoricalClientHandler histH2, MockSHS view) {
 		this.sensor = sensor;
 		this.histH = histH2;
-		this.defaultMockSensorMessage = new MockSensorMessage(sensor, sensor.getFk_type_sensor().getTrigger_point_max()-1 , 1);
+		if (sensor.getFk_type_sensor().getName().equals("door_sensor") || sensor.getFk_type_sensor().getName().equals("window_sensor") || sensor.getFk_type_sensor().getName().equals("fall_sensor")) {
+			this.defaultMockSensorMessage = new MockSensorMessage(sensor, 0 , 1);
+
+		}else {
+			this.defaultMockSensorMessage = new MockSensorMessage(sensor, sensor.getFk_type_sensor().getTrigger_point_max()-1 , 1);
+		}
 		this.view = view;
 	}
 
@@ -175,7 +180,7 @@ public class MockSensor extends Thread{
 		if (sensor.getFk_type_sensor().getName().equals("door_sensor") || sensor.getFk_type_sensor().getName().equals("window_sensor")) {
 			Time hour_min= new Time(60*60*1000*sensor.getFk_type_sensor().getTrigger_point_min());
 			Time hour_max= new Time(60*60*1000*sensor.getFk_type_sensor().getTrigger_point_max());
-			
+
 			//Check if the hour of today is upper or lower than trigger hours
 			if ((todayTime().getTime()<= hour_min.getTime()) && (Integer.parseInt(historic.getMessage())==1)) {
 				rep=true;
