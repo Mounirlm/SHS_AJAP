@@ -166,22 +166,42 @@ public class MockSensor extends Thread{
 		return "MockSensor [sensor=" + sensor + "]";
 	}
 
+
+	/*
+	 * Check if the signal(historical receive) had a message value upper or lower than trigger points of alerts
+	 */
 	private boolean isAlert(Historical historic, Sensor sensor) {
 		boolean rep = false;
-		//check if value lower than trigger point min
-		if (sensor.getFk_type_sensor().getTrigger_point_min()!=0) {
-			if (Integer.parseInt(historic.getMessage())<= sensor.getFk_type_sensor().getTrigger_point_min()) {
+		if (sensor.getFk_type_sensor().getName().equals("door_sensor") || sensor.getFk_type_sensor().getName().equals("window_sensor")) {
+			Time hour_min= new Time(60*60*1000*sensor.getFk_type_sensor().getTrigger_point_min());
+			Time hour_max= new Time(60*60*1000*sensor.getFk_type_sensor().getTrigger_point_max());
+			
+			//Check if the hour of today is upper or lower than trigger hours
+			if ((todayTime().getTime()<= hour_min.getTime()) && (Integer.parseInt(historic.getMessage())==1)) {
 				rep=true;
 			}
-		}
-		//check if value upper than max trigger
-		else if (sensor.getFk_type_sensor().getTrigger_point_max()!=0) {
-			if (Integer.parseInt(historic.getMessage())>= sensor.getFk_type_sensor().getTrigger_point_max()) {
+			if ((todayTime().getTime()>= hour_max.getTime()) && (Integer.parseInt(historic.getMessage())==1)) {
 				rep=true;
+			}
+		}else {//temperature, fall and smoke sensors
+			//check if value lower than trigger point min
+			if (sensor.getFk_type_sensor().getTrigger_point_min()!=0) {
+				if (Integer.parseInt(historic.getMessage())<= sensor.getFk_type_sensor().getTrigger_point_min()) {
+					rep=true;
+				}
+			}
+			//check if value upper than max trigger
+			else if (sensor.getFk_type_sensor().getTrigger_point_max()!=0) {
+				if (Integer.parseInt(historic.getMessage())>= sensor.getFk_type_sensor().getTrigger_point_max()) {
+					rep=true;
+				}
 			}
 		}
 		return rep;
 
+	}
+	private  Time todayTime() {
+		return new java.sql.Time(new Date().getTime());
 	}
 
 }
