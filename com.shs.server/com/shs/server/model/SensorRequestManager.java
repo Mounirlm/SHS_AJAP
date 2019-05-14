@@ -112,6 +112,25 @@ public class SensorRequestManager {
 					
 				break;
 			default:
+				if(request.startsWith("countByFloor-Sensor")) {
+					response=true;
+					int nSensors = SensorManager.countByFloor(Integer.valueOf(res[2]));
+					writer.beginObject();
+					writer.name("nSensors").value(nSensors);
+					writer.endObject();
+				} else if(request.startsWith("countByWing-Sensor")) {
+					response=true;
+					int nSensors = SensorManager.countByWing(Integer.valueOf(res[2]));
+					writer.beginObject();
+					writer.name("nSensors").value(nSensors);
+					writer.endObject();
+				}else if(request.startsWith("countAll-Sensor")) {
+					response=true;
+					int nSensors = SensorManager.count(Integer.valueOf(res[2]));
+					writer.beginObject();
+					writer.name("nSensors").value(nSensors);
+					writer.endObject();
+				}
 				break;
 			}
 			
@@ -121,7 +140,7 @@ public class SensorRequestManager {
 			message=request+"-failed: "+error;
 		
 		//Creation response Json
-		if(!res[0].equals("select") && !res[0].equals("selectAll")) {
+		if(!res[0].equals("select") && !res[0].equals("selectAll") && !res[0].startsWith("count")) {
 			writer.beginObject();
 			writer.name("response").value(message);
 			writer.endObject();	

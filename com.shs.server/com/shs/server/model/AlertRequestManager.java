@@ -103,6 +103,25 @@ public class AlertRequestManager {
 					
 				break;
 			default:
+				if(request.startsWith("countByFloor-Alert")) {
+					response=true;
+					int nAlerts = AlertManager.countByFloorMonthYear(Integer.valueOf(res[2]),Integer.valueOf(res[3]),Integer.valueOf(res[4]));
+					writer.beginObject();
+					writer.name("nAlerts").value(nAlerts);
+					writer.endObject();
+				}else if(request.startsWith("countByWing-Alert")){
+					response=true;
+					int nAlerts = AlertManager.countByWingMonthYear(Integer.valueOf(res[2]),Integer.valueOf(res[3]),Integer.valueOf(res[4]));
+					writer.beginObject();
+					writer.name("nAlerts").value(nAlerts);
+					writer.endObject();
+				}else if(request.startsWith("countAll-Alert")){
+					response=true;
+					int nAlerts = AlertManager.count(Integer.valueOf(res[3]),Integer.valueOf(res[4]));
+					writer.beginObject();
+					writer.name("nAlerts").value(nAlerts);
+					writer.endObject();
+				}
 				break;
 			}
 			
@@ -112,7 +131,7 @@ public class AlertRequestManager {
 			message=request+"-failed: "+error;
 		
 		//Creation response Json
-		if(!res[0].equals("select") && !res[0].equals("selectAll")) {
+		if(!res[0].equals("select") && !res[0].equals("selectAll") && !res[0].startsWith("count")) {
 			writer.beginObject();
 			writer.name("response").value(message);
 			writer.endObject();	

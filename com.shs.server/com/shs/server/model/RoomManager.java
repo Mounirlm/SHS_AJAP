@@ -1,6 +1,7 @@
 package com.shs.server.model;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -281,5 +282,29 @@ public class RoomManager {
 	        
         }
         return n>0;
+	}
+
+	public static int countByFloorMonthYear(Integer floor) throws SQLException {
+		PreparedStatement pStmt = conn.prepareStatement("SELECT COUNT(*) FROM room WHERE floor=?;");
+		pStmt.setInt(1, floor);
+		ResultSet rs = pStmt.executeQuery();
+		rs.next();
+		return rs.getInt(1);
+	}
+
+	public static int countByWing(Integer wing) throws SQLException {
+		PreparedStatement pStmt = conn.prepareStatement("SELECT COUNT(*) FROM room WHERE fk_wing_room=?;");
+		pStmt.setInt(1, wing);
+		ResultSet rs = pStmt.executeQuery();
+		rs.next();
+		return rs.getInt(1);
+	}
+
+	public static int count(Integer wing) throws SQLException {
+		PreparedStatement pStmt = conn.prepareStatement("SELECT COUNT(*) FROM room");
+		pStmt.setInt(1, wing);
+		ResultSet rs = pStmt.executeQuery();
+		rs.next();
+		return rs.getInt(1);
 	}
 }

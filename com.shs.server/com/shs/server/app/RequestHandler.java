@@ -26,6 +26,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.shs.commons.model.Alert;
 import com.shs.commons.model.Historical;
+import com.shs.commons.model.Resident;
 import com.shs.commons.model.Room;
 import com.shs.commons.model.Sensor;
 import com.shs.commons.model.Type_Room;
@@ -36,6 +37,7 @@ import com.shs.server.model.AlertManager;
 import com.shs.server.model.AlertRequestManager;
 import com.shs.server.model.HistoricalManager;
 import com.shs.server.model.HistoricalRequestManager;
+import com.shs.server.model.ResidentRequestManager;
 import com.shs.server.model.RoomManager;
 import com.shs.server.model.RoomRequestManager;
 import com.shs.server.model.SensorManager;
@@ -178,6 +180,11 @@ public class RequestHandler implements Runnable {
 				this.addToCacheAndTreatment(historic);
 			}
 
+			break;
+		case "Resident":
+			Resident resident =(Resident) object;
+			ResidentRequestManager reqResident = new ResidentRequestManager(connDB, reader, writer, resident, request);
+			message=reqResident.requestManager();
 			break;
 
 		default:

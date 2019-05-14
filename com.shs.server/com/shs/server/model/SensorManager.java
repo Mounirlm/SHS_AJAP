@@ -210,4 +210,30 @@ public class SensorManager {
 		}
 		return n>0;
 	}
+
+
+	public static int countByFloor(Integer floor) throws SQLException {
+		PreparedStatement pStmt = conn.prepareStatement("SELECT COUNT(*) FROM sensor INNER JOIN room r ON fk_room = r.id  WHERE r.floor=?;");
+		pStmt.setInt(1, floor);
+		ResultSet rs = pStmt.executeQuery();
+		rs.next();
+		return rs.getInt(1);
+	}
+
+
+	public static int countByWing(Integer wing) throws SQLException {
+		PreparedStatement pStmt = conn.prepareStatement("SELECT COUNT(*) FROM sensor INNER JOIN room r ON fk_room = r.id  WHERE r.fk_wing_room=?;");
+		pStmt.setInt(1, wing);
+		ResultSet rs = pStmt.executeQuery();
+		rs.next();
+		return rs.getInt(1);
+	}
+	
+	public static int count(Integer wing) throws SQLException {
+		PreparedStatement pStmt = conn.prepareStatement("SELECT COUNT(*) FROM sensor INNER JOIN room r ON fk_room = r.id");
+		pStmt.setInt(1, wing);
+		ResultSet rs = pStmt.executeQuery();
+		rs.next();
+		return rs.getInt(1);
+	}
 }
