@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import com.shs.commons.model.Type_Sensor;
@@ -21,7 +22,15 @@ public class DoorSensorView extends SensorTypeGenericView {
 	@Override
 	public void display() {
 		// TODO Auto-generated method stub
+		/*Type_Sensor received = getSensorToUpdate();
 		
+		JTextField textField = new JTextField();
+        textField.setBounds(128, 28, 86, 20);
+        textField.setColumns(10);
+        if (received != null) {
+        	textField.setText(received.getTrigger_point_max().toString());
+        }
+		*/
 		JLabel lblHeureDeb = new JLabel("Heure début");
 		lblHeureDeb.setBounds(65, 31, 46, 14);
         this.add(lblHeureDeb);
@@ -93,6 +102,31 @@ public class DoorSensorView extends SensorTypeGenericView {
         btnConf.setBackground(Color.BLUE);
         btnConf.setForeground(Color.MAGENTA);
         btnConf.setBounds(65, 387, 89, 23);
+        
+        btnConf.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+            	int alert = Integer.parseInt(comboBox_3.getSelectedItem().toString());
+            	int heureDeb = Integer.parseInt(comboBox.getSelectedItem().toString());
+            	int heureFin = Integer.parseInt(comboBox_2.getSelectedItem().toString());
+            	Type_Sensor typeSensor = getSensorToUpdate();
+            	typeSensor.setNb_alerts(alert);
+            	typeSensor.setTrigger_point_max(heureDeb);
+            	typeSensor.setTrigger_point_min(heureFin);
+            	try {
+					boolean updated = update(typeSensor);
+					if (updated) {
+						
+						 
+						JOptionPane jop1 = new JOptionPane();
+						jop1.showMessageDialog(null, "Capteur porte configuré", "Information", JOptionPane.INFORMATION_MESSAGE);
+					}
+				} catch (IOException | SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            }
+        });
+        
         this.add(btnConf);
 		   
 	}

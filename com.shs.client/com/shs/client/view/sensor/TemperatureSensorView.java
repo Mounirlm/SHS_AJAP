@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import com.shs.commons.model.Type_Sensor;
@@ -79,11 +80,13 @@ public class TemperatureSensorView extends SensorTypeGenericView {
             	Type_Sensor typeSensor = getSensorToUpdate();
             	typeSensor.setNb_alerts(alert);
             	typeSensor.setTrigger_point_max(TempMax);
-            	typeSensor.setTrigger_point_max(TempMin);
+            	typeSensor.setTrigger_point_min(TempMin);
             	try {
 					boolean updated = update(typeSensor);
 					if (updated) {
 						
+						JOptionPane jop1 = new JOptionPane();
+						jop1.showMessageDialog(null, "Capteur température configuré", "Information", JOptionPane.INFORMATION_MESSAGE);
 					}
 				} catch (IOException | SQLException e) {
 					// TODO Auto-generated catch block

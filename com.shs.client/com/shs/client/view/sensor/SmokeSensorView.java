@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -77,6 +78,9 @@ public class SmokeSensorView extends SensorTypeGenericView {
 					boolean updated = update(typeSensor);
 					if (updated) {
 						
+						 
+						JOptionPane jop1 = new JOptionPane();
+						jop1.showMessageDialog(null, "Capteur fumé configuré", "Information", JOptionPane.INFORMATION_MESSAGE);
 					}
 				} catch (IOException | SQLException e) {
 					// TODO Auto-generated catch block
