@@ -42,10 +42,9 @@ public class AnalyzeView extends JPanel {
 		title.setBackground(ColorsApp.getBgApp());
 		//pTopb
 		pTopB = new JPanel();
-		pTopB.setLayout(new GridLayout(1, 3));
+		pTopB.setLayout(new GridLayout(1, 2));
 		FloorTopBarButton = addTopBarButton("Floor");
 		WingTopBarButton = addTopBarButton("Wing");
-		TotalTopBarButton =addTopBarButton("Total");
 		pTop.add(title, BorderLayout.NORTH);
 		pTop.add(pTopB, BorderLayout.SOUTH);
 		
@@ -80,7 +79,6 @@ public class AnalyzeView extends JPanel {
 	public void addTopBarButtonListener(ActionListener action) {
 		FloorTopBarButton.addActionListener(action);
 		WingTopBarButton.addActionListener(action);
-		TotalTopBarButton.addActionListener(action);
 	}
 	
 	public void setCard(String name) {
