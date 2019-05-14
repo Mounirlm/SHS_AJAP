@@ -22,6 +22,8 @@ public class TemperatureSensorView extends SensorTypeGenericView {
 	public void display() {
 		// TODO Auto-generated method stub
 		
+		Type_Sensor received = getSensorToUpdate();
+		
 		JTextField textField = new JTextField();
         textField.setBounds(128, 28, 86, 20);
         textField.setColumns(10);
@@ -34,6 +36,10 @@ public class TemperatureSensorView extends SensorTypeGenericView {
 		JTextField textField_1 = new JTextField();
         textField_1.setBounds(128, 65, 86, 20);
         textField_1.setColumns(10);
+        
+        if (received != null) {
+        	textField.setText(received.getTrigger_point_max().toString());
+        }
 		
         JLabel lblTempMin = new JLabel("Temperature minimal");
         lblTempMin.setBounds(65, 68, 46, 14);
@@ -65,6 +71,26 @@ public class TemperatureSensorView extends SensorTypeGenericView {
         btnConf.setBackground(Color.BLUE);
         btnConf.setForeground(Color.MAGENTA);
         btnConf.setBounds(65, 387, 89, 23);
+        btnConf.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+            	int alert = Integer.parseInt(comboBox.getSelectedItem().toString());
+            	int TempMax = Integer.parseInt(textField.getText());
+            	int TempMin = Integer.parseInt(textField.getText());
+            	Type_Sensor typeSensor = getSensorToUpdate();
+            	typeSensor.setNb_alerts(alert);
+            	typeSensor.setTrigger_point_max(TempMax);
+            	typeSensor.setTrigger_point_max(TempMin);
+            	try {
+					boolean updated = update(typeSensor);
+					if (updated) {
+						
+					}
+				} catch (IOException | SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            }
+        });
         this.add(btnConf);
 		   
         
