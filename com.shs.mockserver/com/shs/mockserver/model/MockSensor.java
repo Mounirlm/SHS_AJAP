@@ -1,5 +1,6 @@
 package com.shs.mockserver.model;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -21,6 +22,7 @@ import com.shs.commons.model.HistoricalClientHandler;
 import com.shs.commons.model.MockSensorMessage;
 import com.shs.commons.model.Sensor;
 import com.shs.commons.model.ServerAccess;
+import com.shs.mockserver.view.MockSHS;
 
 
 public class MockSensor extends Thread{
@@ -29,21 +31,24 @@ public class MockSensor extends Thread{
 	private ArrayList<MockSensorMessage> messages = new ArrayList<>();
 	private MockSensorMessage defaultMockSensorMessage;
 	//communication to server
-	HistoricalClientHandler histH;
+	private HistoricalClientHandler histH;
+	private boolean run = true;
+	private MockSHS view;
 
-
-	public MockSensor(Sensor sensor) {
-		try {
-			this.histH = new HistoricalClientHandler();
-		} catch (IOException e) {
-			System.err.println(e.getMessage());
-		}
+	public MockSensor(Sensor sensor, HistoricalClientHandler histH2, MockSHS view) {
 		this.sensor = sensor;
-		this.defaultMockSensorMessage = new MockSensorMessage(sensor, sensor.getFk_type_sensor().getTrigger_point_max()-1 , 1);
+		this.histH = histH2;
+		if (sensor.getFk_type_sensor().getName().equals("door_sensor") || sensor.getFk_type_sensor().getName().equals("window_sensor") || sensor.getFk_type_sensor().getName().equals("fall_sensor")) {
+			this.defaultMockSensorMessage = new MockSensorMessage(sensor, 0 , 1);
+
+		}else {
+			this.defaultMockSensorMessage = new MockSensorMessage(sensor, sensor.getFk_type_sensor().getTrigger_point_max()-1 , 1);
+		}
+		this.view = view;
 	}
 
-	public MockSensor(Sensor sensor2, Map<String, String> map) {
-		this(sensor2);
+	public MockSensor(Sensor sensor2, HistoricalClientHandler histH2, Map<String, String> map, MockSHS v) {
+		this(sensor2, histH2, v);
 		this.scenas = map;
 
 
@@ -66,52 +71,99 @@ public class MockSensor extends Thread{
 	 * send to server signal of life with
 	 */
 	public void run() {
-		while(true){
+		while(run){
+
 			//for each scenario
 			for (MockSensorMessage mockSensorMessage : messages) {
-				if(mockSensorMessage.getTime_sc()>0) {
+				if(mockSensorMessage.getTime_sc()>0) {//if sensor is not broken
 					for (int i = 0; i < mockSensorMessage.getTime_sc(); i++) {
 						//Send signal to server
-						jsonSignals(mockSensorMessage);
+						try {
+							if(run==true) {
+								jsonSignals(mockSensorMessage);
+							}
+							else {
+								break;
+							}
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 				}
 			}
 			//default messages
-			while(true) {
-				jsonSignals(defaultMockSensorMessage);
+			if(messages.isEmpty()) {
+				while(run) {
+					try {
+						if(run==true)
+							jsonSignals(defaultMockSensorMessage);
+						else 
+							break;
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}else if (messages.get(messages.size()-1).getTime_sc()>0){//if sensor is not broken
+				while(run) {
+					try {
+						if(run==true)
+							jsonSignals(defaultMockSensorMessage);
+						else 
+							break;
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}else {
+				stopMockSensor();
 			}
-			
-
 		}
 
 	}
 
 
 
-	private void jsonSignals(MockSensorMessage mockSensorMessage) {
-		Historical historic = new Historical();
-		//Calendar calendar = Calendar.getInstance();
-		//DateFormat format = new SimpleDateFormat("HH:mm:ss");
-		
-		historic.setFk_sensor(mockSensorMessage.getSensor().getId());
-		historic.setMessage(String.valueOf(mockSensorMessage.getCurrent_value()));
-		historic.setDate_signal(new Date());
-		historic.setHour_signal(new java.sql.Time(new Date().getTime()));
-		//System.out.println(historic);
-		//send to server
-		try {
-			histH.insertHistoricalToServer(historic);
-		} catch (IOException e1) {
-			System.err.println(e1.getMessage());
+	private void jsonSignals(MockSensorMessage mockSensorMessage) throws IOException {
+		synchronized (histH) {
+			Historical historic = new Historical();
+			//Calendar calendar = Calendar.getInstance();
+			//DateFormat format = new SimpleDateFormat("HH:mm:ss");
+
+			historic.setFk_sensor(mockSensorMessage.getSensor().getId());
+			historic.setMessage(String.valueOf(mockSensorMessage.getCurrent_value()));
+			historic.setDate_signal(new Date());
+			historic.setHour_signal(new java.sql.Time(new Date().getTime()));
+			//System.out.println(historic);
+			//send to server
+			try {
+				Color color =Color.BLACK;
+				if(isAlert(historic, sensor))
+					color = Color.RED;
+
+				view.addSignals(historic.toString(), color);
+
+				histH.insertHistoricalToServer(historic);
+
+			} catch (IOException e1) {
+				System.err.println("error : "+e1.getMessage());
+
+			}
+
+			//Delta of messages 
+			try {
+				Thread.sleep(ServerScenarioAccess.getDELTA_SIGNALS());
+			} catch (InterruptedException e) {
+				throw new  IOException(e.getMessage());
+			}
 		}
 
-		//Delta of messages every 1 seconde
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			System.err.println(e.getMessage());
-		}
-		
+	}
+
+	public void stopMockSensor() {
+		run=false;
 	}
 
 	@Override
@@ -119,5 +171,42 @@ public class MockSensor extends Thread{
 		return "MockSensor [sensor=" + sensor + "]";
 	}
 
+
+	/*
+	 * Check if the signal(historical receive) had a message value upper or lower than trigger points of alerts
+	 */
+	private boolean isAlert(Historical historic, Sensor sensor) {
+		boolean rep = false;
+		if (sensor.getFk_type_sensor().getName().equals("door_sensor") || sensor.getFk_type_sensor().getName().equals("window_sensor")) {
+			Time hour_min= new Time(60*60*1000*sensor.getFk_type_sensor().getTrigger_point_min());
+			Time hour_max= new Time(60*60*1000*sensor.getFk_type_sensor().getTrigger_point_max());
+
+			//Check if the hour of today is upper or lower than trigger hours
+			if ((todayTime().getTime()<= hour_min.getTime()) && (Integer.parseInt(historic.getMessage())==1)) {
+				rep=true;
+			}
+			if ((todayTime().getTime()>= hour_max.getTime()) && (Integer.parseInt(historic.getMessage())==1)) {
+				rep=true;
+			}
+		}else {//temperature, fall and smoke sensors
+			//check if value lower than trigger point min
+			if (sensor.getFk_type_sensor().getTrigger_point_min()!=0) {
+				if (Integer.parseInt(historic.getMessage())<= sensor.getFk_type_sensor().getTrigger_point_min()) {
+					rep=true;
+				}
+			}
+			//check if value upper than max trigger
+			else if (sensor.getFk_type_sensor().getTrigger_point_max()!=0) {
+				if (Integer.parseInt(historic.getMessage())>= sensor.getFk_type_sensor().getTrigger_point_max()) {
+					rep=true;
+				}
+			}
+		}
+		return rep;
+
+	}
+	private  Time todayTime() {
+		return new java.sql.Time(new Date().getTime());
+	}
 
 }

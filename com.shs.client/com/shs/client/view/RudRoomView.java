@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
+import com.shs.commons.model.LBTitle;
 import com.shs.commons.model.Room;
 import com.shs.commons.model.Type_Room;
 import com.shs.commons.model.Wing_Room;

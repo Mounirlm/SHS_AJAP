@@ -30,7 +30,7 @@ public class UserManager {
 		int n = pStmt.executeUpdate();
 		// Closing
         pStmt.close();
-        DataSource.releaseConnection(conn);
+        
         return n==1;
 	}
 	
@@ -45,7 +45,7 @@ public class UserManager {
 	    // Closing
 	    RS.close();
 	    Stmt.close();
-	    DataSource.releaseConnection(conn);
+	    
 		
 		return userList;
 	
@@ -59,7 +59,7 @@ public class UserManager {
         // closing
         RS.close();
         Stmt.close();
-        DataSource.releaseConnection(conn);
+        
 		return user;
 	}
 	
@@ -74,7 +74,7 @@ public class UserManager {
 	        }
 		
 		}finally{// Closing
-			DataSource.releaseConnection(conn);
+			
 		    rs.close();
 		    Stmt.close();
 		    
@@ -94,7 +94,7 @@ public class UserManager {
 		int n = pStmt.executeUpdate();
 		// Closing
         pStmt.close();
-        DataSource.releaseConnection(conn);
+        
         return n==1;
 	}
 	
@@ -103,7 +103,7 @@ public class UserManager {
 		int n = Stmt.executeUpdate("DELETE FROM users WHERE id=" + user.getId());
 		
         Stmt.close();
-        DataSource.releaseConnection(conn);
+        
         return n==1;
 	}
 	
@@ -112,7 +112,7 @@ public class UserManager {
 		int n = Stmt.executeUpdate("DELETE FROM users");
 		//Closing
         Stmt.close();
-        DataSource.releaseConnection(conn);
+        
         return n>0;
 	}
 	

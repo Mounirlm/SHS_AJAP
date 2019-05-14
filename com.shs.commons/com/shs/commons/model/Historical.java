@@ -4,13 +4,13 @@ import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Historical {
+public class Historical implements Comparable<Historical> {
 	private int id;
 	private Date date_signal;
 	private Time hour_signal;
 	private String message;
 	private int fk_sensor;
-	
+
 	public Historical(int id, Date date_signal, Time hour_signal, String message, int fk_sensor) {
 		super();
 		this.id = id;
@@ -19,7 +19,7 @@ public class Historical {
 		this.message = message;
 		this.fk_sensor = fk_sensor;
 	}
-	
+
 	public Historical() {
 		// TODO Auto-generated constructor stub
 	}
@@ -63,20 +63,30 @@ public class Historical {
 	public void setFk_sensor(int fk_sensor) {
 		this.fk_sensor = fk_sensor;
 	}
-	
+
 	public String getDate_signal_formatted() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		return dateFormat.format(date_signal);
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Historical [id=" + id + ", date_signal=" + getDate_signal_formatted() + ", hour_signal=" + hour_signal + ", message="
 				+ message + ", fk_sensor=" + fk_sensor + "]";
 	}
-	
-	
-	
-	
-	
+
+	@Override
+	public int compareTo(Historical o) {
+		if(this.getHour_signal().getTime()< o.getHour_signal().getTime())
+			return -1;
+		else if(this.getId()>o.getId())
+			return 1;
+		else
+			return 0;
+	}
+
+
+
+
+
 }

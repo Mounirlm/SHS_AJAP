@@ -14,7 +14,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.shs.commons.model.ServerAccess;
 import com.shs.commons.model.User;
-import com.shs.server.connection.pool.DBAccess;
+import com.shs.server.connection.pool.AccessConfig;
 
 public class UserClientHandler {
 	private Socket server;

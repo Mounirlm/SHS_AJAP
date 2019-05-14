@@ -22,7 +22,7 @@ public class HistoricalManager {
 	}
 
 
-	public static ArrayList<Historical> getHistoricals() throws SQLException, ParseException{
+	public static ArrayList<Historical> getHistoricals(String req) throws SQLException, ParseException{
 		Statement Stmt = conn.createStatement();
 
 		ArrayList<Historical>historicalList = new ArrayList<Historical>();
@@ -30,11 +30,14 @@ public class HistoricalManager {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 		try {
-			RS = Stmt.executeQuery("SELECT * FROM historical");
+			if(req.isEmpty())
+				RS = Stmt.executeQuery("SELECT * FROM historical");
+			else
+				RS = Stmt.executeQuery(req);
 
 			while(RS.next()) {
 				historicalList.add(new Historical(RS.getInt("id"),dateFormat.parse(RS.getString("date_signal")), 
-						Time.valueOf(RS.getString("hour_signal")),RS.getString("msessage"),
+						Time.valueOf(RS.getString("hour_signal")),RS.getString("message"),
 						RS.getInt("fk_sensor")));
 
 

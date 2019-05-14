@@ -6,28 +6,27 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import com.shs.commons.model.Wing_Room;
-import com.shs.server.connection.pool.DataSource;
+import com.shs.commons.model.Type_Sensor;
 
-public class Wing_RoomManager {
+public class Type_SensorManager {
 private static Connection conn;
 	
-	public Wing_RoomManager(Connection con) {
+	public Type_SensorManager(Connection con) {
 		System.out.println("ok"+con);
 		this.conn=con;
 	}
 	
-	public static ArrayList<Wing_Room> getAllWing_Rooms() throws SQLException{
+	public static ArrayList<Type_Sensor> getAllType_Sensor() throws SQLException{
 		Statement Stmt = conn.createStatement();
-        ArrayList<Wing_Room> wing_roomList = new ArrayList<Wing_Room>();
+        ArrayList<Type_Sensor> wing_roomList = new ArrayList<Type_Sensor>();
         ResultSet RS=null;
         
         try {
-        RS = Stmt.executeQuery("SELECT * FROM wing_room");
+        RS = Stmt.executeQuery("SELECT * FROM type_sensor");
         
         while(RS.next()) {
-
-        	wing_roomList.add(new Wing_Room(RS.getInt("id"), RS.getString("name")));
+        	wing_roomList.add(new Type_Sensor(RS.getInt("id"), RS.getString("name"), 
+        			RS.getInt("trigger_point_min"), RS.getInt("trigger_point_max"),RS.getInt("nb_alerts")));
         }	
         }
         finally {

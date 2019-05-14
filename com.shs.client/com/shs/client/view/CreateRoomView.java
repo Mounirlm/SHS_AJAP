@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
+import com.shs.commons.model.LBTitle;
 import com.shs.commons.model.Type_Room;
 import com.shs.commons.model.Wing_Room;
 
