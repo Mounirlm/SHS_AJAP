@@ -197,17 +197,30 @@ public class RequestHandler implements Runnable {
 	 * Check if the signal(historical receive) had a message value upper or lower than trigger points of alerts
 	 */
 	private boolean isAlertInCache(Historical historic, Sensor sensor) {
-		boolean rep = false;//TODO CHECK FOR WINDOWS AND DOOR
-		//check if value lower than trigger point min
-		if (sensor.getFk_type_sensor().getTrigger_point_min()!=0) {
-			if (Integer.parseInt(historic.getMessage())<= sensor.getFk_type_sensor().getTrigger_point_min()) {
+		boolean rep = false;
+		if (sensor.getFk_type_sensor().getName().equals("door_sensor") || sensor.getFk_type_sensor().getName().equals("window_sensor")) {
+			Time hour_min= new Time(60*60*1000*sensor.getFk_type_sensor().getTrigger_point_min());
+			Time hour_max= new Time(60*60*1000*sensor.getFk_type_sensor().getTrigger_point_max());
+			
+			//Check if the hour of today is upper or lower than trigger hours
+			if ((todayTime().getTime()<= hour_min.getTime()) && (Integer.parseInt(historic.getMessage())==1)) {
 				rep=true;
 			}
-		}
-		//check if value upper than max trigger
-		else if (sensor.getFk_type_sensor().getTrigger_point_max()!=0) {
-			if (Integer.parseInt(historic.getMessage())>= sensor.getFk_type_sensor().getTrigger_point_max()) {
+			if ((todayTime().getTime()>= hour_max.getTime()) && (Integer.parseInt(historic.getMessage())==1)) {
 				rep=true;
+			}
+		}else {//temperature, fall and smoke sensors
+			//check if value lower than trigger point min
+			if (sensor.getFk_type_sensor().getTrigger_point_min()!=0) {
+				if (Integer.parseInt(historic.getMessage())<= sensor.getFk_type_sensor().getTrigger_point_min()) {
+					rep=true;
+				}
+			}
+			//check if value upper than max trigger
+			else if (sensor.getFk_type_sensor().getTrigger_point_max()!=0) {
+				if (Integer.parseInt(historic.getMessage())>= sensor.getFk_type_sensor().getTrigger_point_max()) {
+					rep=true;
+				}
 			}
 		}
 		return rep;
@@ -241,45 +254,45 @@ public class RequestHandler implements Runnable {
 		}
 
 		//check of cache to add alert in DB
-			ArrayList<Historical> hitoricals = CACHE.get(sensor.getId());//get all signals of the sensor
-			ArrayList<Historical> last = new ArrayList<>();
+		ArrayList<Historical> hitoricals = CACHE.get(sensor.getId());//get all signals of the sensor
+		ArrayList<Historical> last = new ArrayList<>();
 
-			//get last signals
-			for (int i = hitoricals.size()-1; i+1 >= sensor.getFk_type_sensor().getNb_alerts(); i--) {
-				last.add(hitoricals.get(i));
-			}
+		//get last signals
+		for (int i = hitoricals.size()-1; i+1 >= sensor.getFk_type_sensor().getNb_alerts(); i--) {
+			last.add(hitoricals.get(i));
+		}
 
-			//check if we have a number of signals of alert of alert high
-			int cpt_alert_signals = 0;
-			for (int i = 0; i < last.size(); i++) {
-				if (isAlertInCache(last.get(i), sensor)) {
-					cpt_alert_signals++;
-				}
-			}
-			if (cpt_alert_signals==sensor.getFk_type_sensor().getNb_alerts()) {
-				isAlert=true;
-			}
-
-			//insert an alert in alert table	
-			if (isAlert) {
-				Alert alert = new Alert();
-				alert.setFk_sensor(sensor.getId());
-				alert.setDescription(historic.getMessage());
-				alert.setDate_alert(historic.getDate_signal());
-				alert.setHour_alert(historic.getHour_signal());
-				alert.setFk_user(1);
-				alert.setStatus(true);
-				try {
-					AlertManager alertManager = new AlertManager(connDB);
-					SensorManager sensorManager = new SensorManager(connDB);
-					AlertManager.create(alert);
-					sensor.setStatus(false);
-					SensorManager.update(sensor);
-				}catch(SQLException ex) {
-					System.err.println("Error Cache insert alert or sensor: "+ex.getMessage());
-				}
+		//check if we have a number of signals of alert of alert high
+		int cpt_alert_signals = 0;
+		for (int i = 0; i < last.size(); i++) {
+			if (isAlertInCache(last.get(i), sensor)) {
+				cpt_alert_signals++;
 			}
 		}
+		if (cpt_alert_signals==sensor.getFk_type_sensor().getNb_alerts()) {
+			isAlert=true;
+		}
+
+		//insert an alert in alert table	
+		if (isAlert) {
+			Alert alert = new Alert();
+			alert.setFk_sensor(sensor.getId());
+			alert.setDescription(historic.getMessage());
+			alert.setDate_alert(historic.getDate_signal());
+			alert.setHour_alert(historic.getHour_signal());
+			alert.setFk_user(1);
+			alert.setStatus(true);
+			try {
+				AlertManager alertManager = new AlertManager(connDB);
+				SensorManager sensorManager = new SensorManager(connDB);
+				AlertManager.create(alert);
+				sensor.setStatus(false);
+				SensorManager.update(sensor);
+			}catch(SQLException ex) {
+				System.err.println("Error Cache insert alert or sensor: "+ex.getMessage());
+			}
+		}
+	}
 
 
 
