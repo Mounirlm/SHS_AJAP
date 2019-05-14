@@ -63,16 +63,17 @@ public class Type_Sensor {
 	}
 
 
-	public String toString() {
-		return "Type_Sensor [id=" + id + ", name=" + name + ", trigger_point_min=" + trigger_point_min
-				+ ", trigger_point_max=" + trigger_point_max + ", nb_alerts=" + nb_alerts + "]";
+	
+	public String toString2() {
+		return "[name=" + name + "| trigger_point_min=" + trigger_point_min
+				+ "| trigger_point_max=" + trigger_point_max + "| nb_alerts=" + nb_alerts + "]";
 	}
 
 
-	/*@Override
+	@Override
 	public String toString() {//For combobox in GUI
 		return this.name;
-	}*/
+	}
 	
 	
 	

@@ -92,7 +92,7 @@ public class SensorRequestManager {
 			case "selectAll-Sensor":
 				try{
 					List<Sensor> sensors;
-					sensors= SensorManager.getSensors();
+					sensors= SensorManager.getSensors("");
 					writer.beginObject();
 					if(!sensors.isEmpty()) {
 						response=true;

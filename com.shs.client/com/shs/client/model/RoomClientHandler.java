@@ -16,7 +16,7 @@ import com.shs.commons.model.Room;
 import com.shs.commons.model.ServerAccess;
 import com.shs.commons.model.Type_Room;
 import com.shs.commons.model.Wing_Room;
-import com.shs.server.connection.pool.DBAccess;
+import com.shs.server.connection.pool.AccessConfig;
 
 public class RoomClientHandler {
 	private Socket server;

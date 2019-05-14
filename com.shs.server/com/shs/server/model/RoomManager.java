@@ -42,7 +42,7 @@ public class RoomManager {
         }
         }finally {
         // Closing
-        DataSource.releaseConnection(conn);
+        
         if(RS!=null)
 	        try{RS.close();}catch(Exception e){e.printStackTrace();} 
 		if(rstype_room!=null)
@@ -85,7 +85,7 @@ public class RoomManager {
         }
         finally {
         // Closing
-        DataSource.releaseConnection(conn);
+        
         if(RS!=null)
 	        try{RS.close();}catch(Exception e){e.printStackTrace();} 
 		if(rstype_room!=null)
@@ -102,7 +102,7 @@ public class RoomManager {
 	    return roomList;
 	}
 	
-	public static Room getRoom(int id, boolean releaseConnection) throws SQLException{
+	public static Room getRoom(int id) throws SQLException{
 		Statement Stmt = conn.createStatement();
 		Statement Stmt2 = conn.createStatement();
 		Statement Stmt3 = conn.createStatement();
@@ -125,8 +125,7 @@ public class RoomManager {
         }
 		}finally {
 	        // Closing
-			if(releaseConnection)
-				DataSource.releaseConnection(conn);
+				
 			if(RS!=null)
 		        try{RS.close();}catch(Exception e){e.printStackTrace();} 
 			if(rstype_room!=null)
@@ -160,7 +159,7 @@ public class RoomManager {
 			n = Stmt.executeUpdate(req);}
 		finally {
 		// Closing
-		DataSource.releaseConnection(conn);
+		
 		
 		if(Stmt!=null)
         	try{Stmt.close();}catch(Exception e){e.printStackTrace();} 
@@ -247,7 +246,7 @@ public class RoomManager {
 			n = Stmt.executeUpdate(reqDB);
 		}finally {
 		// Closing
-		DataSource.releaseConnection(conn);
+		
 	
 		if(Stmt!=null)
         	try{Stmt.close();}catch(Exception e){e.printStackTrace();} 
@@ -263,7 +262,7 @@ public class RoomManager {
 		n = Stmt.executeUpdate("DELETE FROM room WHERE id=" + room.getId());}
 		finally {
 		//Closing
-		DataSource.releaseConnection(conn);
+		
 		if(Stmt!=null)
         	try{Stmt.close();}catch(Exception e){e.printStackTrace();} 
 		}
@@ -277,7 +276,7 @@ public class RoomManager {
 		n = Stmt.executeUpdate("DELETE FROM room");System.out.println(n);
 		}finally {
 			//Closing
-			DataSource.releaseConnection(conn);
+			
 			if(Stmt!=null)
 	        	try{Stmt.close();}catch(Exception e){e.printStackTrace();} ;
 	        

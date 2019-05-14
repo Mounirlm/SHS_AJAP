@@ -74,7 +74,7 @@ public class RoomRequestManager {
 					String reqDB="";
 					List<Room> rooms=new ArrayList<>();
 					if(room.getId()!=null) {
-						sendRoom= RoomManager.getRoom(room.getId(), true);
+						sendRoom= RoomManager.getRoom(room.getId());
 					}else {
 						if(room.getFloor()!=null) {
 							reqDB+="floor = "+room.getFloor();

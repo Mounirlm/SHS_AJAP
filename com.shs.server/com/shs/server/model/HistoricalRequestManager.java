@@ -83,7 +83,7 @@ public class HistoricalRequestManager {
 					break;
 			case "selectAll-Historical":
 				try{
-					List<Historical> historicals = HistoricalManager.getHistoricals();
+					List<Historical> historicals = HistoricalManager.getHistoricals("");
 					writer.beginObject();
 					if(!historicals.isEmpty()) {
 						response=true;

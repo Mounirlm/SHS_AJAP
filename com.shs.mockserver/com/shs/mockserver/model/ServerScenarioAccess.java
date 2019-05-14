@@ -5,13 +5,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import com.shs.server.connection.pool.DBAccess;
+import com.shs.server.connection.pool.AccessConfig;
 
 public class ServerScenarioAccess {
 	private static ServerScenarioAccess serverScenarioAccess = new ServerScenarioAccess();
 	private static String scenarios;
+	private static Long DELTA_SIGNALS;
+	private static int ROWS_VIEWS;
 	
-	private ServerScenarioAccess() {
+	public ServerScenarioAccess() {
 		Properties prop = new Properties();
 		InputStream input = null;
 		
@@ -24,6 +26,8 @@ public class ServerScenarioAccess {
 			
 			// get the property value and print it out
 			scenarios = prop.getProperty("scenarios");
+			DELTA_SIGNALS=Long.parseLong(prop.getProperty("DELTA_SIGNALS"));
+			ROWS_VIEWS=Integer.parseInt(prop.getProperty("ROWS_VIEWS"));
 			
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -40,7 +44,6 @@ public class ServerScenarioAccess {
 	
 	//getters
 		public static ServerScenarioAccess getInstance(){
-		if(serverScenarioAccess == null)
 			serverScenarioAccess = new ServerScenarioAccess();  
 		    return serverScenarioAccess;
 		}
@@ -52,6 +55,14 @@ public class ServerScenarioAccess {
 		@Override
 		public String toString() {
 			return "ServerScenarioAccess [scenarios=" + scenarios + "]";
+		}
+
+		public static Long getDELTA_SIGNALS() {
+			return DELTA_SIGNALS;
+		}
+
+		public static int getROWS_VIEWS() {
+			return ROWS_VIEWS;
 		}
 
 		

@@ -1,10 +1,12 @@
-package com.shs.client.view;
+package com.shs.commons.model;
 
 import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
+
+import com.shs.client.view.ColorsApp;
 
 public class LBTitle extends JLabel{
 

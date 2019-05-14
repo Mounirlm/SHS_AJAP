@@ -6,10 +6,10 @@ import java.io.InputStream;
 import java.util.Properties;
 
 
-public class DBAccess {
+public class AccessConfig {
 	//singleton
 
-	private static DBAccess dbAccess = new DBAccess();
+	private static AccessConfig dbAccess = new AccessConfig();
 	private static  String DB_DRIVER_CLASS;
 	private static String DB_URL;
 	private static String DB_USERNAME;
@@ -17,9 +17,11 @@ public class DBAccess {
 	private static int INITIAL_SIZE;
 	private static int MAX_SIZE;
 	private static int PORT_SERVER;
-
+	private static long INITIAL_DELAY; 
+	private static long LAST_SIGNAL_DELAY;
+	private static long DEFAULT_DELAY;
 	//private Constructor
-	private DBAccess(){
+	private AccessConfig(){
 		Properties prop = new Properties();
 		InputStream input = null;
 		
@@ -38,6 +40,10 @@ public class DBAccess {
 			INITIAL_SIZE = Integer.parseInt(prop.getProperty("INITIAL_POOL_SIZE"));
 			MAX_SIZE = Integer.parseInt(prop.getProperty("MAX_POOL_SIZE"));
 			PORT_SERVER =  Integer.parseInt(prop.getProperty("PORT_SERVER"));
+			INITIAL_DELAY=Long.parseLong(prop.getProperty("INITIAL_DELAY"));
+			LAST_SIGNAL_DELAY=Long.parseLong(prop.getProperty("LAST_SIGNAL_DELAY"));
+			DEFAULT_DELAY=Long.parseLong(prop.getProperty("DEFAULT_DELAY"));
+			
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -52,9 +58,9 @@ public class DBAccess {
 	}
 	   
 	//getters
-	public static DBAccess getInstance(){
+	public static AccessConfig getInstance(){
 	if(dbAccess == null)
-		dbAccess = new DBAccess();  
+		dbAccess = new AccessConfig();  
 	    return dbAccess;
 	}
 	
@@ -90,6 +96,18 @@ public class DBAccess {
 
 	public static int getPORT_SERVER() {
 		return PORT_SERVER;
+	}
+
+	public static long getINITIAL_DELAY() {
+		return INITIAL_DELAY;
+	}
+
+	public static long getLAST_SIGNAL_DELAY() {
+		return LAST_SIGNAL_DELAY;
+	}
+
+	public static long getDEFAULT_DELAY() {
+		return DEFAULT_DELAY;
 	}
 	   
 }
