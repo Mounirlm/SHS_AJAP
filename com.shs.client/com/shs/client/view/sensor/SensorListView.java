@@ -20,7 +20,6 @@ import javax.swing.event.ListSelectionListener;
 
 import com.shs.commons.model.Sensor;
 import com.shs.commons.model.Type_Sensor;
-import com.sun.glass.events.MouseEvent;
 
 public class SensorListView extends JPanel {
 	
