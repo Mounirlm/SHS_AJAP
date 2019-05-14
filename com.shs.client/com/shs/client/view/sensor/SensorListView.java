@@ -66,8 +66,16 @@ public class SensorListView extends JPanel {
                 }
               }
               Type_Sensor type = getSensorType(sensorId);
-              SensorTypeView sensorConfigurationView = new SensorTypeView(type);
-              sensorConfigurationView.setVisible(true);
+              SensorTypeView sensorConfigurationView;
+			try {
+				
+				sensorConfigurationView = new SensorTypeView(type);
+				sensorConfigurationView.setVisible(true);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+              
             }
 
           });
