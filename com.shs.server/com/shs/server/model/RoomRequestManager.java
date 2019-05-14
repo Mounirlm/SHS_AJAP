@@ -185,6 +185,19 @@ public class RoomRequestManager {
 					
 				break;
 			default:
+				if(request.startsWith("countByFloor-Room")) {
+					response=true;
+					int nRooms = RoomManager.countByFloorMonthYear(Integer.valueOf(res[2]));
+					writer.beginObject();
+					writer.name("nRooms").value(nRooms);
+					writer.endObject();
+				}else if(request.startsWith("countByWing-Room")) {
+					response=true;
+					int nRooms = RoomManager.countByWing(Integer.valueOf(res[2]));
+					writer.beginObject();
+					writer.name("nRooms").value(nRooms);
+					writer.endObject();
+				}
 				break;
 			}
 			
@@ -194,7 +207,7 @@ public class RoomRequestManager {
 			message=request+"-failed: "+error;
 		
 		//Creation response Json
-		if(!res[0].equals("select") && !res[0].equals("selectAll")) {
+		if(!res[0].equals("select") && !res[0].equals("selectAll") && !res[0].startsWith("count")) {
 			writer.beginObject();
 			writer.name("response").value(message);
 			writer.endObject();	

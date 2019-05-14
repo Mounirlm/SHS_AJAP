@@ -363,4 +363,36 @@ public class SensorClientHandler {
 		
 		return nSensors;
 	}
+
+	public int countSensorsByWing(int wingInt) throws IOException {
+		getFlux();
+		int nSensors = 0;
+		try {
+			
+			String request = "countByWing-Sensor-"+wingInt;
+			//Creation request Json
+		    writer.setIndent("	");
+		    writer.beginObject();
+		    writer.name("request").value(request);
+		    writer.endObject();
+		    writer.flush();
+		    System.out.println("request:"+request);
+		    //response
+		    reader.beginObject();
+		    while(reader.hasNext()) {
+		    	String name = reader.nextName();
+		    	if(name.equals("nSensors"))
+		    		nSensors=reader.nextInt();
+		    	else
+		    		reader.skipValue();
+		    }
+		} catch (IOException ioe) { 
+	    	throw new IOException("Error communication to server ");
+		}
+	    finally {
+	    	stopFlux();
+	    }
+		
+		return nSensors;
+	}
 }

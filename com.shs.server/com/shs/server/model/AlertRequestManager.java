@@ -109,6 +109,12 @@ public class AlertRequestManager {
 					writer.beginObject();
 					writer.name("nAlerts").value(nAlerts);
 					writer.endObject();
+				}else if(request.startsWith("countByWing-Alert")){
+					response=true;
+					int nAlerts = AlertManager.countByWingMonthYear(Integer.valueOf(res[2]),Integer.valueOf(res[3]),Integer.valueOf(res[4]));
+					writer.beginObject();
+					writer.name("nAlerts").value(nAlerts);
+					writer.endObject();
 				}
 				break;
 			}

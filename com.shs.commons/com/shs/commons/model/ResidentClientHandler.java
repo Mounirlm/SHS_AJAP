@@ -75,4 +75,37 @@ public class ResidentClientHandler {
 		return nResidents;
 	}
 
+	public int countResidentByWing(int wingInt) throws IOException {
+		getFlux();
+		int nResidents = 0;
+		try {
+			
+			String request = "countByWing-Resident-"+wingInt;
+			//Creation request Json
+		    writer.setIndent("	");
+		    writer.beginObject();
+		    writer.name("request").value(request);
+		    writer.endObject();
+		    writer.flush();
+		    System.out.println("request:"+request);
+		    //response
+		    reader.beginObject();
+		    while(reader.hasNext()) {
+		    	String name = reader.nextName();
+		    	if(name.equals("nResidents"))
+		    		nResidents=reader.nextInt();
+		    	else
+		    		reader.skipValue();
+		    }
+		    reader.endObject();
+		} catch (IOException ioe) { 
+	    	throw new IOException("Error communication to server ");
+		}
+	    finally {
+	    	stopFlux();
+	    }
+		
+		return nResidents;
+	}
+
 }

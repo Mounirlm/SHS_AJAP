@@ -1,14 +1,31 @@
 package com.shs.client.view;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionListener;
+import java.util.Map;
 
 import javax.swing.JPanel;
 
-public class AnalyzeTotalView extends JPanel {
+import com.shs.client.controller.AnalyzePanel;
+
+public class AnalyzeTotalView extends JPanel implements AnalyzePanel{
 	public AnalyzeTotalView() {
 		super();
 		this.setLayout(new BorderLayout());
 		LBTitle lbTitle = new LBTitle("Analyze Wing");
 		this.add(lbTitle, BorderLayout.NORTH);
+	}
+
+	@Override
+	public void updateInfoGUI(Map<String, Integer> indicators) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addSelectComboBoxListener(ActionListener actionFloorComboBox, ActionListener actionMonthComboBox,
+			ActionListener actionYearComboBox) {
+		// TODO Auto-generated method stub
+		
 	}
 }

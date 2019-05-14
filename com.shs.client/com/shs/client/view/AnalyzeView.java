@@ -5,11 +5,14 @@ import java.awt.CardLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
+
+import com.shs.client.controller.AnalyzePanel;
 
 public class AnalyzeView extends JPanel {
 	
@@ -20,6 +23,8 @@ public class AnalyzeView extends JPanel {
 	private JButton TotalTopBarButton;
 	private CardLayout centerCardLayout;
 	private AnalyzeFloorView pFloorView;
+	private AnalyzeWingView pWing;
+	private AnalyzeTotalView pTotal;
 
 	public AnalyzeView() {
 		super();
@@ -53,9 +58,9 @@ public class AnalyzeView extends JPanel {
 		
 		pFloorView = new AnalyzeFloorView();
 		pCenter.add("floor", pFloorView);
-		AnalyzeWingView pWing = new AnalyzeWingView();
+		pWing = new AnalyzeWingView();
 		pCenter.add("wing", pWing);
-		AnalyzeTotalView pTotal = new AnalyzeTotalView();
+		pTotal = new AnalyzeTotalView();
 		pCenter.add("total", pTotal);
 		//End
 		this.add(pTop, BorderLayout.NORTH);
@@ -92,5 +97,13 @@ public class AnalyzeView extends JPanel {
 	public AnalyzeFloorView getFloorView() {
 		return pFloorView;
 	}
-	
+
+	public AnalyzeWingView getWingView() {
+		return pWing;
+	}
+
+	public AnalyzeTotalView getTotalView() {
+		return pTotal;
+	}
+
 }

@@ -39,7 +39,13 @@ public class ResidentRequestManager {
 		String[] res=request.split("-");
 		if(request.startsWith("countByFloor-Resident")) {
 			response=true;
-			int nResidents = ResidentManager.countByFloorMonthYear(Integer.valueOf(res[2]));
+			int nResidents = ResidentManager.countByFloor(Integer.valueOf(res[2]));
+			writer.beginObject();
+			writer.name("nResidents").value(nResidents);
+			writer.endObject();
+		}else if(request.startsWith("countByWing-Resident")) {
+			response=true;
+			int nResidents = ResidentManager.countByWing(Integer.valueOf(res[2]));
 			writer.beginObject();
 			writer.name("nResidents").value(nResidents);
 			writer.endObject();

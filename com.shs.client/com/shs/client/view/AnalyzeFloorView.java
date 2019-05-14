@@ -3,6 +3,7 @@ package com.shs.client.view;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.util.Map;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -10,11 +11,17 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-public class AnalyzeFloorView extends JPanel {
+import com.shs.client.controller.AnalyzePanel;
+
+public class AnalyzeFloorView extends JPanel implements AnalyzePanel{
 	
 	public JComboBox<Integer> floorComboBox;
 	public JComboBox<String> monthComboBox;
 	public JComboBox<Integer> yearComboBox;
+	private JLabel labelAlert2;
+	private JLabel labelSensor2;
+	private JLabel labelResident2;
+	private JLabel labelRoom2;
 
 	public AnalyzeFloorView() {
 		super();
@@ -26,9 +33,9 @@ public class AnalyzeFloorView extends JPanel {
 		
 		//pFloor
 		JPanel pSelect = new JPanel(new GridLayout(1, 3));
-		Integer[] floorList = {0,1,2};
+		Integer[] floorList = {0,1};
 		String[] monthList = {"January","February","March","April","May","June","July","August","September","October","November","December"};
-		Integer[] yearList = {2019,2020};
+		Integer[] yearList = {2019};
 		floorComboBox = new JComboBox<Integer>(floorList);
 		monthComboBox = new JComboBox<String>(monthList);
 		yearComboBox = new JComboBox<Integer>(yearList);
@@ -40,7 +47,7 @@ public class AnalyzeFloorView extends JPanel {
 		//pAlert
 		JPanel pAlert = new JPanel(new GridLayout(1,2));
 		JLabel labelAlert1 = new JLabel("Alerts",SwingConstants.CENTER);
-		JLabel labelAlert2 = new JLabel("5 Alertes dont 3 fausses",SwingConstants.LEFT);
+		labelAlert2 = new JLabel("",SwingConstants.LEFT);
 		pAlert.add(labelAlert1);
 		pAlert.add(labelAlert2);
 		pCenter.add(pAlert);
@@ -48,7 +55,7 @@ public class AnalyzeFloorView extends JPanel {
 		//pSensor
 		JPanel pSensor = new JPanel(new GridLayout(1,2));
 		JLabel labelSensor1 = new JLabel("Sensors",SwingConstants.CENTER);
-		JLabel labelSensor2 = new JLabel("201 sensors",SwingConstants.LEFT);
+		labelSensor2 = new JLabel("",SwingConstants.LEFT);
 		pSensor.add(labelSensor1);
 		pSensor.add(labelSensor2);
 		pCenter.add(pSensor);
@@ -56,7 +63,7 @@ public class AnalyzeFloorView extends JPanel {
 		//pResident
 		JPanel pResident = new JPanel(new GridLayout(1,2));
 		JLabel labelResident1 = new JLabel("Residents",SwingConstants.CENTER);
-		JLabel labelResident2 = new JLabel("13 residents",SwingConstants.LEFT);
+		labelResident2 = new JLabel("",SwingConstants.LEFT);
 		pResident.add(labelResident1);
 		pResident.add(labelResident2);
 		pCenter.add(pResident);
@@ -64,7 +71,7 @@ public class AnalyzeFloorView extends JPanel {
 		//pRoom
 		JPanel pRoom = new JPanel(new GridLayout(1,2));
 		JLabel labelRoom1 = new JLabel("Room",SwingConstants.CENTER);
-		JLabel labelRoom2 = new JLabel("201 rooms",SwingConstants.LEFT);
+		labelRoom2 = new JLabel("",SwingConstants.LEFT);
 		pRoom.add(labelRoom1);
 		pRoom.add(labelRoom2);
 		pCenter.add(pRoom);
@@ -74,5 +81,13 @@ public class AnalyzeFloorView extends JPanel {
 		floorComboBox.addActionListener(actionFloorComboBox);
 		monthComboBox.addActionListener(actionMonthComboBox);
 		yearComboBox.addActionListener(actionYearComboBox);
+	}
+
+	@Override
+	public void updateInfoGUI(Map<String, Integer> indicators) {
+		labelAlert2.setText(indicators.get("nAlerts") + " alerts");
+		labelSensor2.setText(indicators.get("nSensors") + " sensors");
+		labelResident2.setText(indicators.get("nResidents") + " residents");
+		labelRoom2.setText(indicators.get("nRooms") + " rooms");	
 	}
 }
