@@ -1,6 +1,7 @@
 package com.shs.client.controller;
 
 import java.awt.event.ActionEvent;
+
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
@@ -33,10 +34,10 @@ public class MenuController implements ActionListener{
 				view.getpApp().setCard("analyzeView");
 				break;
 				
-			case "Needs Equipment":
-				view.getpApp().setCard("equipmentView");
+			case "Equipment Need":
+				view.getpApp().setCard("equipmentNeed");
 				break;
-								
+								 
 			
 			case "Supervised Rooms":
 				view.getpApp().setCard("supRoomView");

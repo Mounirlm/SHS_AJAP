@@ -1,11 +1,14 @@
 package com.shs.client.view;
 
 import java.awt.CardLayout;
+
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.Collection;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
-
+ 
 public class AppView extends JPanel{
 	private CardLayout cdViewApp;
 	private ArrayList<JPanel> appView;
@@ -40,10 +43,10 @@ public class AppView extends JPanel{
 		//fill cardLayout
 		this.add("indexView", appView.get(0));
 			
-		//add other vieew for R3
+		//add other view for R3
 		this.add("mapView", appView.get(1));
 		this.add("analyzeView", appView.get(2));
-		this.add("equipmentView", appView.get(3));
+		this.add("equipmentNeed", appView.get(3));
 		this.add("supRoomView", appView.get(4));
 		
 		
@@ -61,6 +64,12 @@ public class AppView extends JPanel{
 	public SupRoomView getSupRoomView() {
 		return supRoomView;
 	}
+
+
+	public EquipmentNeed getEquipmentNeed() {
+		return equipmentNeed;
+	}
+
 
 
 }

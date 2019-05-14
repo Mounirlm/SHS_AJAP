@@ -1,6 +1,7 @@
-package com.shs.client.view;
+hpackage com.shs.client.view;
 
 import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;

@@ -1,6 +1,7 @@
 package com.shs.client.view;
 
 import java.awt.BorderLayout;
+
 import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.Font;
@@ -80,6 +81,7 @@ public class SupRoomView extends JPanel{
 				
 
 
+	
 
 	public void setCard(String name) {
 		cd.show(pCenter, name);

@@ -1,7 +1,6 @@
 package com.shs.client.view;
 
 import java.awt.BorderLayout;
-
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -15,16 +14,21 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
-import com.shs.commons.model.Room;
+import com.shs.client.view.EquipmentView.DeleteView;
+import com.shs.client.view.EquipmentView.ReadView;
+import com.shs.client.view.EquipmentView.SearchView;
+import com.shs.client.view.EquipmentView.UpdateView;
+import com.shs.client.view.EquipmentView.ReadView.ElementRead;
 
-public class RudRoomView extends JPanel {
+public class EquipmentAdd extends JPanel {
+    
 	private JPanel pSearchUpd;
 	private SearchView searchView;
 	private UpdateView updateView;
 	private	DeleteView deleteView;
 	private	ReadView readView;
 	
-	public RudRoomView() {
+	public EquipmentAdd() {
 		super();
 		this.setLayout(new BorderLayout());
 		
@@ -226,4 +230,5 @@ public class RudRoomView extends JPanel {
 
 
 	
+
 }
