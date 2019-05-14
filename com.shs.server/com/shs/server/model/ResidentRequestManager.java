@@ -49,6 +49,12 @@ public class ResidentRequestManager {
 			writer.beginObject();
 			writer.name("nResidents").value(nResidents);
 			writer.endObject();
+		}else if(request.startsWith("countAll-Resident")) {
+			response=true;
+			int nResidents = ResidentManager.count(Integer.valueOf(res[2]));
+			writer.beginObject();
+			writer.name("nResidents").value(nResidents);
+			writer.endObject();
 		}
 			
 		if(response)

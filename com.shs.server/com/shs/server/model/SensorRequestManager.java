@@ -124,6 +124,12 @@ public class SensorRequestManager {
 					writer.beginObject();
 					writer.name("nSensors").value(nSensors);
 					writer.endObject();
+				}else if(request.startsWith("countAll-Sensor")) {
+					response=true;
+					int nSensors = SensorManager.count(Integer.valueOf(res[2]));
+					writer.beginObject();
+					writer.name("nSensors").value(nSensors);
+					writer.endObject();
 				}
 				break;
 			}

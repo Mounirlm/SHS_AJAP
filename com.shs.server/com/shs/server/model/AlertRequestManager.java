@@ -115,6 +115,12 @@ public class AlertRequestManager {
 					writer.beginObject();
 					writer.name("nAlerts").value(nAlerts);
 					writer.endObject();
+				}else if(request.startsWith("countAll-Alert")){
+					response=true;
+					int nAlerts = AlertManager.count(Integer.valueOf(res[3]),Integer.valueOf(res[4]));
+					writer.beginObject();
+					writer.name("nAlerts").value(nAlerts);
+					writer.endObject();
 				}
 				break;
 			}
