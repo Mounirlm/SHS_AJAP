@@ -22,15 +22,7 @@ public class DoorSensorView extends SensorTypeGenericView {
 	@Override
 	public void display() {
 		// TODO Auto-generated method stub
-		/*Type_Sensor received = getSensorToUpdate();
 		
-		JTextField textField = new JTextField();
-        textField.setBounds(128, 28, 86, 20);
-        textField.setColumns(10);
-        if (received != null) {
-        	textField.setText(received.getTrigger_point_max().toString());
-        }
-		*/
 		JLabel lblHeureDeb = new JLabel("Heure début");
 		lblHeureDeb.setBounds(65, 31, 46, 14);
         this.add(lblHeureDeb);
