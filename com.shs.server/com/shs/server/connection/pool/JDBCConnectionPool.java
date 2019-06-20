@@ -9,14 +9,14 @@ import java.util.ArrayList;
 // La pool
 
 public class JDBCConnectionPool implements JDBCConnectionPoolInterface {
-    private static final int INITIAL_SIZE = DBAccess.getINITIAL_SIZE();
-	private static final int MAX_SIZE = DBAccess.getMAX_SIZE();
+    private static final int INITIAL_SIZE = AccessConfig.getINITIAL_SIZE();
+	private static final int MAX_SIZE = AccessConfig.getMAX_SIZE();
 	private ArrayList<Connection> connections;
     private ArrayList<Connection> usedConnections;
 	
 	public JDBCConnectionPool() throws SQLException, ClassNotFoundException  {
 		try {
-			Class.forName(DBAccess.getDB_DRIVER_CLASS());
+			Class.forName(AccessConfig.getDB_DRIVER_CLASS());
 		} catch (ClassNotFoundException  ex) {
 			throw new ClassNotFoundException("Error driver",ex);
 		}
@@ -39,7 +39,7 @@ public class JDBCConnectionPool implements JDBCConnectionPoolInterface {
 	
 	private Connection createConnection() throws SQLException{
 			try {
-				return DriverManager.getConnection(DBAccess.getDB_URL(),DBAccess.getDB_USERNAME(), DBAccess.getDB_PASSWORD());
+				return DriverManager.getConnection(AccessConfig.getDB_URL(),AccessConfig.getDB_USERNAME(), AccessConfig.getDB_PASSWORD());
 			} catch (SQLException e) {
 				throw new SQLException("Can't create connection"+e);
 			}
@@ -48,7 +48,7 @@ public class JDBCConnectionPool implements JDBCConnectionPoolInterface {
 	}
 		     
 	public int getSize() {
-		return connections.size() + usedConnections.size();
+		return usedConnections.size();
 	}
 
 	@Override

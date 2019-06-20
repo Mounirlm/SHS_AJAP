@@ -14,11 +14,16 @@ import java.util.Map.Entry;
 
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
+
+import com.shs.commons.model.LBTitle;
+import com.shs.commons.model.Type_Room;
+import com.shs.commons.model.Wing_Room;
 
 public class FormView extends JPanel {
 	private JTextField jtf;
@@ -37,8 +42,11 @@ public class FormView extends JPanel {
 	private int idTuple;
 	private JPasswordField jPass;
 	private boolean isPass;
+	private JComboBox<Type_Room> combo_type;
+	private JComboBox<Wing_Room> combo_wing;
 	
-	public FormView(String titleView,Map<String, String> tuples, List<String> but, List<String> labels, String alignement, boolean title, boolean isPassW) {
+	public FormView(String titleView,Map<String, String> tuples, List<String> but, List<String> labels,
+			List<Type_Room> listT, List<Wing_Room> listW, String alignement, boolean title, boolean isPassW) {
 		super();
 		this.setLayout(new BorderLayout());
 		pArgs = tuples;
@@ -59,18 +67,23 @@ public class FormView extends JPanel {
 		
 		
 		//Form
-		if(alignement.equals("h")) 
+		if(alignement.equals("h") && listT.isEmpty() && listW.isEmpty()) 
 			pForm = new JPanel(new GridLayout(1,tuples.size()+but.size()));
-		else 
+		else if (alignement.equals("v") && listT.isEmpty() && listW.isEmpty())
 			pForm = new JPanel(new GridLayout(tuples.size()+but.size(),1));
+		else if(alignement.equals("h") && !listT.isEmpty() && !listW.isEmpty()) 
+			pForm = new JPanel(new GridLayout(1,tuples.size()+but.size()+2));//plus 2 combobox
+		else if (alignement.equals("v") && !listT.isEmpty() && !listW.isEmpty())
+			pForm = new JPanel(new GridLayout(tuples.size()+but.size()+2,1));
 		
-		createCols();
+		
+		createCols(listT,listW);
 		
 	}
 
 
 
-	private void createCols() {
+	private void createCols(List<Type_Room> listT, List<Wing_Room> listW) {
 
 		for (Map.Entry<String, String> entry : pArgs.entrySet()) {
 			
@@ -113,6 +126,27 @@ public class FormView extends JPanel {
 				}
 				pForm.add(pCol);
 		}
+		//fill combobox
+		if(!listT.isEmpty() && !listW.isEmpty()) {
+			combo_type = new JComboBox<Type_Room>();
+			combo_wing = new JComboBox<Wing_Room>();
+			combo_type.addItem(new Type_Room(0, "null"));
+			combo_wing.addItem(new Wing_Room(0, "null"));
+			
+			for (Type_Room type_Room : listT) {
+				combo_type.addItem(type_Room);
+			}
+			
+			for (Wing_Room wing_Room : listW) {
+				combo_wing.addItem(wing_Room);
+			}
+			//add comboboxes in form
+			pForm.add(combo_type);
+			pForm.add(combo_wing);
+		}
+		
+		
+		//add buttons in form
 		for (int i = 0; i < butLB.size(); i++) {
 			//Panel Valider
 			pValidate = new JPanel();
@@ -132,9 +166,9 @@ public class FormView extends JPanel {
 
 
 
-	public FormView(String title, Map<String, String> cols, ArrayList<String> buttons2, ArrayList<String> labels2,
+	public FormView(String title, Map<String, String> cols, ArrayList<String> buttons2, ArrayList<String> labels2,List<Type_Room> list1, List<Wing_Room> list2,
 			String alignement2, boolean b,boolean isPassW,int i, int j, int k) {
-		this(title,cols, buttons2,labels2, alignement2, b, isPassW);
+		this(title,cols, buttons2,labels2, list1, list2, alignement2, b, isPassW);
 		setSizeArgs(i, j, k);
 	}
 	
@@ -227,6 +261,18 @@ public class FormView extends JPanel {
 
 	public JPasswordField getjPass() {
 		return jPass;
+	}
+
+
+
+	public JComboBox<Type_Room> getCombo_type() {
+		return combo_type;
+	}
+
+
+
+	public JComboBox<Wing_Room> getCombo_wing() {
+		return combo_wing;
 	}
 	
 	

@@ -1,7 +1,6 @@
 package com.shs.client.view;
 
 import java.awt.BorderLayout;
-
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -15,7 +14,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
+import com.shs.commons.model.LBTitle;
 import com.shs.commons.model.Room;
+import com.shs.commons.model.Type_Room;
+import com.shs.commons.model.Wing_Room;
 
 public class RudRoomView extends JPanel {
 	private JPanel pSearchUpd;
@@ -51,16 +53,20 @@ public class RudRoomView extends JPanel {
 		public SearchView() {
 			super();
 			this.setLayout(new BorderLayout());
-			Map<String, String> cols = new LinkedHashMap<>();
-			cols.put("RESEARCH ONLY BY ID","");cols.put("BY TYPE","");cols.put("BY FLOOR","");cols.put("BY ROOM NUMBER","");
 			
+			
+		}
+		
+		public void createCols(List<Type_Room> listT, List<Wing_Room> listW) {
+			Map<String, String> cols = new LinkedHashMap<>();
+			cols.put("ONLY BY ID","");cols.put("BY FLOOR","");cols.put("BY ROOM NUMBER","");cols.put("BY M²","");
+			cols.put("BY DOORS","");cols.put("BY WINDOWS","");
 			ArrayList<String> buttons = new ArrayList<>();
 			buttons.add("RESEARCH");buttons.add("RESEARCH ALL");
 			
-			formView = new FormView("Research Secured Room", cols, buttons, new ArrayList<String>(), "h", true,false);
+			formView = new FormView("Research Secured Room", cols, buttons, new ArrayList<String>(),listT, listW, "h", true,false);
 			this.add(formView, BorderLayout.CENTER);
-			
-		}
+		}	
 		public FormView getFormView() {
 			return this.formView;
 		}
@@ -73,18 +79,22 @@ public class RudRoomView extends JPanel {
 		public UpdateView() {
 			super();
 			this.setLayout(new BorderLayout());
-			Map<String, String> cols = new LinkedHashMap<>();
-			cols.put("ID","");cols.put("TYPE","");cols.put("FLOOR","");cols.put("ROOM NUMBER","");
 			
+		}
+		
+		public void createCols(List<Type_Room> listT, List<Wing_Room> listW) {
+			Map<String, String> cols = new LinkedHashMap<>();
+			cols.put("ID","");cols.put("FLOOR","");cols.put("ROOM NUMBER","");cols.put("M²","");
+			cols.put("DOORS","");cols.put("WINDOWS","");
 			ArrayList<String> buttons = new ArrayList<>();
 			buttons.add("UPDATE");
 			
 			ArrayList<String> labels = new ArrayList<>();
 			
-			formView = new FormView("Update Secured Room", cols, buttons,labels, "h",true,false);
+			formView = new FormView("Update Secured Room", cols, buttons,labels,listT, listW, "h",true,false);
 			this.add(formView, BorderLayout.CENTER);
 		}
-
+		
 		public FormView getFormView() {
 			return formView;
 		}
@@ -103,8 +113,9 @@ public class RudRoomView extends JPanel {
 			buttons.add("DELETE");buttons.add("DELETE ALL");
 			
 			ArrayList<String> labels = new ArrayList<>();
-			
-			formView = new FormView("Delete Secured Room", cols, buttons,labels, "h",true,false);
+			ArrayList<Type_Room> list1 = new ArrayList<>();
+			ArrayList<Wing_Room> list2 = new ArrayList<>();
+			formView = new FormView("Delete Secured Room", cols, buttons,labels,list1, list2, "h",true,false);
 			this.add(formView, BorderLayout.CENTER);
 		}
 
@@ -127,6 +138,7 @@ public class RudRoomView extends JPanel {
 			
 			//Elements
 			pElem = new JPanel();
+			pElem.setLayout(new GridLayout(200, 1));
 			elems = new ArrayList<>();
 			scrollElem = new JScrollPane(pElem,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 			
@@ -134,17 +146,22 @@ public class RudRoomView extends JPanel {
 			
 		}
 		
-		public void setView(List<Room> rooms) {
+		public void setView(List<Room> rooms) {System.out.println("ok"+rooms);
 			Collections.sort(rooms);
 			elems.clear();
 			pElem.removeAll();
 			scrollElem.remove(pElem);
-			this.remove(1);
-			this.validate();
-			pElem.setLayout(new GridLayout(500, 1));
-			for (int i = 0; i < rooms.size(); i++) {
-				elems.add(new ElementRead(rooms.get(i).getId(), rooms.get(i).getType_room(), rooms.get(i).getFloor(),rooms.get(i).getRoom_number(), false));
-				pElem.add(elems.get(i));
+			this.remove(scrollElem);
+			
+			if(rooms.size()>1) {
+				for (int i = 0; i < rooms.size(); i++) {
+					elems.add(new ElementRead(rooms.get(i),false));
+					pElem.add(elems.get(i));
+				}
+			}
+			else {
+				elems.add(new ElementRead(rooms.get(0),false));
+				pElem.add(elems.get(0));
 			}
 			scrollElem = new JScrollPane(pElem,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 			this.add(scrollElem);
@@ -154,19 +171,28 @@ public class RudRoomView extends JPanel {
 		public class ElementRead extends JPanel{
 			private FormView formView;
 			private Map<String, String> cols;
-			
-			public ElementRead(int id, String type, int floor,int room_number,boolean title) {
+			String room_num;
+			public ElementRead(Room room, boolean title) {
 				super();
 				this.setLayout(new BorderLayout());
 				cols = new LinkedHashMap<>();
-				cols.put("ID",""+id);cols.put("TYPE",type);cols.put("FLOOR",""+floor);cols.put("ROOM NUMBER",""+room_number);
+				cols.put("ID",""+room.getId());cols.put("FLOOR",""+room.getFloor());
+				cols.put("ROOM NUMBER",""+room.getRoom_number());
+				cols.put("TYPE",""+room.getType_room().getName());
+				cols.put("WING",""+room.getWing_room().getName());
+				cols.put("M²",""+room.getM2());
+				cols.put("DOORS",""+room.getNb_doors());
+				cols.put("WINDOWS",""+room.getNb_windows());
 				
 				ArrayList<String> buttons = new ArrayList<>();
-				
 				ArrayList<String> labels = new ArrayList<>();
-				labels.add("ID");labels.add("TYPE");labels.add("FLOOR");labels.add("ROOM NUMBER");
+				ArrayList<Type_Room> list1 = new ArrayList<>();
+				ArrayList<Wing_Room> list2 = new ArrayList<>();
+				labels.add("ID");labels.add("FLOOR");labels.add("ROOM NUMBER");
+				labels.add("TYPE");labels.add("WING");
+				labels.add("M²");labels.add("DOORS");labels.add("WINDOWS");
 				
-				formView = new FormView("Read Secured Room", cols, buttons,labels, "h",title,false,15,18,20);
+				formView = new FormView("Read Secured Room", cols, buttons,labels,list1, list2, "h",title,false,15,18,20);
 				this.add(formView, BorderLayout.CENTER);
 			}
 			
