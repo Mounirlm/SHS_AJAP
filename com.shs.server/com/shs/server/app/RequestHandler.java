@@ -82,6 +82,12 @@ public class RequestHandler implements Runnable {
 			}
 		} catch (SQLException e) {
 			System.out.println("Error DB "+e);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		finally{
 			try {
