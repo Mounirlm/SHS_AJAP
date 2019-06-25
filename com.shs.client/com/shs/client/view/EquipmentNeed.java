@@ -3,16 +3,16 @@ package com.shs.client.view;
 import javax.swing.JPanel;
 
 public class EquipmentNeed extends JPanel {
-  
+/*  
      private JTextField messageText;
      private JButton sendButton;
      private chatMessageTableModel tableModel;
      
      public void init(){
         buildFrame();
-     }
+     }*/
 }
-
+/*
 private void buildFrame(){
     setLayout(new MigLayout("", "[][grow]", "[][grow]"));
     add(new JLabel("Message: "), "cell 0 0");
@@ -33,3 +33,4 @@ private void buildFrame(){
     table.setFocusable(false); 
     add(new JScrollPane(table), "cell 0 1 3 1,grow"); 
 }
+*/
