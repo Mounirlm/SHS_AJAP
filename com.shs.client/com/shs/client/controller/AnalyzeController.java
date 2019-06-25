@@ -210,6 +210,10 @@ public class AnalyzeController{
 			year = (int) analyzeWingView.yearComboBox.getSelectedItem();
 			wing = (String) analyzeWingView.wingComboBox.getSelectedItem();
 		}
+		else if(currentView.equals(analyzeTotalView)) {
+			year = (int) analyzeWingView.yearComboBox.getSelectedItem();
+			wing = (String) analyzeWingView.wingComboBox.getSelectedItem();
+		} 
 
 	}
 	

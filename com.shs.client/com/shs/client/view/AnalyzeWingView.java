@@ -81,7 +81,7 @@ public class AnalyzeWingView extends JPanel implements AnalyzePanel{
 		labelAlert2.setText(indicators.get("nAlerts") + " alerts");
 		labelSensor2.setText(indicators.get("nSensors") + " sensors");
 		labelResident2.setText(indicators.get("nResidents") + " residents");
-		labelRoom2.setText(indicators.get("nRooms") + " rooms");	// TODO Auto-generated method stub
+		labelRoom2.setText(indicators.get("nRooms") + " rooms");
 	}
 
 	@Override
