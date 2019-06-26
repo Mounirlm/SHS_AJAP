@@ -300,9 +300,8 @@ public class RoomManager {
 		return rs.getInt(1);
 	}
 
-	public static int count(Integer wing) throws SQLException {
+	public static int count() throws SQLException {
 		PreparedStatement pStmt = conn.prepareStatement("SELECT COUNT(*) FROM room");
-		pStmt.setInt(1, wing);
 		ResultSet rs = pStmt.executeQuery();
 		rs.next();
 		return rs.getInt(1);

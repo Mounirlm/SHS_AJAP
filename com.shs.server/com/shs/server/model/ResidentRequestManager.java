@@ -51,7 +51,7 @@ public class ResidentRequestManager {
 			writer.endObject();
 		}else if(request.startsWith("countAll-Resident")) {
 			response=true;
-			int nResidents = ResidentManager.count(Integer.valueOf(res[2]));
+			int nResidents = ResidentManager.count();
 			writer.beginObject();
 			writer.name("nResidents").value(nResidents);
 			writer.endObject();

@@ -229,9 +229,8 @@ public class SensorManager {
 		return rs.getInt(1);
 	}
 	
-	public static int count(Integer wing) throws SQLException {
-		PreparedStatement pStmt = conn.prepareStatement("SELECT COUNT(*) FROM sensor INNER JOIN room r ON fk_room = r.id");
-		pStmt.setInt(1, wing);
+	public static int count() throws SQLException {
+		PreparedStatement pStmt = conn.prepareStatement("SELECT COUNT(*) FROM sensor");
 		ResultSet rs = pStmt.executeQuery();
 		rs.next();
 		return rs.getInt(1);

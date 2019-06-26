@@ -126,7 +126,7 @@ public class SensorRequestManager {
 					writer.endObject();
 				}else if(request.startsWith("countAll-Sensor")) {
 					response=true;
-					int nSensors = SensorManager.count(Integer.valueOf(res[2]));
+					int nSensors = SensorManager.count();
 					writer.beginObject();
 					writer.name("nSensors").value(nSensors);
 					writer.endObject();

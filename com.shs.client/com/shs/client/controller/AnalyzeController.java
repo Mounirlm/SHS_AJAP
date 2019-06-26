@@ -64,6 +64,7 @@ public class AnalyzeController{
 		analyzeWingView.addSelectComboBoxListener(actionComboBox);
 		
 		analyzeTotalView = analyzeView.getTotalView();
+		analyzeTotalView.addSelectComboBoxListener(actionComboBox);
 		currentView = analyzeFloorView;
 		updateInfoFromComboBox();
 		Map<String, Integer> indicators = searchFloorIndicators(floor,month,year);
@@ -211,8 +212,8 @@ public class AnalyzeController{
 			wing = (String) analyzeWingView.wingComboBox.getSelectedItem();
 		}
 		else if(currentView.equals(analyzeTotalView)) {
-			year = (int) analyzeWingView.yearComboBox.getSelectedItem();
-			wing = (String) analyzeWingView.wingComboBox.getSelectedItem();
+			month = (String) analyzeTotalView.monthComboBox.getSelectedItem();	
+			year = (int) analyzeTotalView.yearComboBox.getSelectedItem();
 		} 
 
 	}

@@ -108,9 +108,37 @@ public class ResidentClientHandler {
 		return nResidents;
 	}
 
-	public int countResident() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int countResident() throws IOException {
+		getFlux();
+		int nResidents = 0;
+		try {
+			
+			String request = "countAll-Resident";
+			//Creation request Json
+		    writer.setIndent("	");
+		    writer.beginObject();
+		    writer.name("request").value(request);
+		    writer.endObject();
+		    writer.flush();
+		    System.out.println("request:"+request);
+		    //response
+		    reader.beginObject();
+		    while(reader.hasNext()) {
+		    	String name = reader.nextName();
+		    	if(name.equals("nResidents"))
+		    		nResidents=reader.nextInt();
+		    	else
+		    		reader.skipValue();
+		    }
+		    reader.endObject();
+		} catch (IOException ioe) { 
+	    	throw new IOException("Error communication to server ");
+		}
+	    finally {
+	    	stopFlux();
+	    }
+		
+		return nResidents;
 	}
 
 }

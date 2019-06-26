@@ -26,7 +26,7 @@ public class AnalyzeWingView extends JPanel implements AnalyzePanel{
 	public AnalyzeWingView() {
 		super();
 		this.setLayout(new BorderLayout());
-		LBTitle lbTitle = new LBTitle("Analyze Total");
+		LBTitle lbTitle = new LBTitle("Analyze Wing");
 		this.add(lbTitle, BorderLayout.NORTH);
 		JPanel pCenter = new JPanel(new GridLayout(6, 1));
 		

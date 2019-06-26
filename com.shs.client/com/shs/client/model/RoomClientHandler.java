@@ -401,8 +401,36 @@ public class RoomClientHandler {
 		return nRooms;
 	}
 
-	public int countRoom() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int countRoom() throws IOException {
+		getFlux();
+		int nRooms = 0;
+		try {
+			
+			String request = "countAll-Room";
+			//Creation request Json
+		    writer.setIndent("	");
+		    writer.beginObject();
+		    writer.name("request").value(request);
+		    writer.endObject();
+		    writer.flush();
+		    System.out.println("request:"+request);
+		    //response
+		    reader.beginObject();
+		    while(reader.hasNext()) {
+		    	String name = reader.nextName();
+		    	if(name.equals("nRooms"))
+		    		nRooms=reader.nextInt();
+		    	else
+		    		reader.skipValue();
+		    }
+		    reader.endObject();
+		} catch (IOException ioe) { 
+	    	throw new IOException("Error communication to server ");
+		}
+	    finally {
+	    	stopFlux();
+	    }
+		
+		return nRooms;
 	}
 }

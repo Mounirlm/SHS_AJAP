@@ -35,9 +35,8 @@ public class ResidentManager {
 		return rs.getInt(1);
 	}
 	
-	public static int count(Integer wing) throws SQLException {
+	public static int count() throws SQLException {
 		PreparedStatement pStmt = conn.prepareStatement("SELECT COUNT(*) FROM resident INNER JOIN room r ON fk_resident_room = r.id;");
-		pStmt.setInt(1, wing);
 		ResultSet rs = pStmt.executeQuery();
 		rs.next();
 		return rs.getInt(1);

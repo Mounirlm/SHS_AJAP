@@ -14,8 +14,8 @@ import javax.swing.SwingConstants;
 import com.shs.commons.model.LBTitle;
 
 public class AnalyzeTotalView extends JPanel implements AnalyzePanel{
-	private JComboBox<String> monthComboBox;
-	private JComboBox<Integer> yearComboBox;
+	public JComboBox<String> monthComboBox;
+	public JComboBox<Integer> yearComboBox;
 	private JLabel labelAlert2;
 	private JLabel labelSensor2;
 	private JLabel labelResident2;
@@ -24,7 +24,7 @@ public class AnalyzeTotalView extends JPanel implements AnalyzePanel{
 	public AnalyzeTotalView() {
 		super();
 		this.setLayout(new BorderLayout());
-		LBTitle lbTitle = new LBTitle("Analyze Wing");
+		LBTitle lbTitle = new LBTitle("Analyze Total");
 		this.add(lbTitle, BorderLayout.NORTH);
 		JPanel pCenter = new JPanel(new GridLayout(6, 1));
 		

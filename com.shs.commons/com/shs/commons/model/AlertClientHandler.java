@@ -315,9 +315,37 @@ public class AlertClientHandler {
 		return nAlerts;
 	}
 
-	public int countAlert(int monthValue, int year2) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int countAlert(int month2, int year2) throws IOException {
+		getFlux();
+		int nAlerts = 0;
+		try {
+			
+			String request = "countAll-Alert-"+month2+"-"+year2;
+			//Creation request Json
+		    writer.setIndent("	");
+		    writer.beginObject();
+		    writer.name("request").value(request);
+		    writer.endObject();
+		    writer.flush();
+		    System.out.println("request:"+request);
+		    //response
+		    reader.beginObject();
+		    while(reader.hasNext()) {
+		    	String name = reader.nextName();
+		    	if(name.equals("nAlerts"))
+		    		nAlerts=reader.nextInt();
+		    	else
+		    		reader.skipValue();
+		    }
+		    reader.endObject();
+		} catch (IOException ioe) { 
+	    	throw new IOException("Error communication to server ");
+		}
+	    finally {
+	    	stopFlux();
+	    }
+		
+		return nAlerts;
 	}
 	
 

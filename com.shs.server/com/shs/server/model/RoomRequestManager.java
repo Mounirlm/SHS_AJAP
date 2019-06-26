@@ -199,7 +199,7 @@ public class RoomRequestManager {
 					writer.endObject();
 				}else if(request.startsWith("countAll-Room")) {
 					response=true;
-					int nRooms = RoomManager.count(Integer.valueOf(res[2]));
+					int nRooms = RoomManager.count();
 					writer.beginObject();
 					writer.name("nRooms").value(nRooms);
 					writer.endObject();
