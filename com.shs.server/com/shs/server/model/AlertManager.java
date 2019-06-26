@@ -147,10 +147,18 @@ public class AlertManager {
 
 
 		public static int countByFloorMonthYear(int floor, int month, int year) throws SQLException {
-			PreparedStatement pStmt = conn.prepareStatement("SELECT COUNT(*) FROM alert INNER JOIN sensor s ON fk_sensor = s.id INNER JOIN room r ON fk_room = r.id  WHERE r.floor=? and DATE_PART('month', date_alert)=? and DATE_PART('year', date_alert)=?;");
-			pStmt.setInt(1, floor);
-			pStmt.setInt(2, month);
-			pStmt.setInt(3, year);
+			PreparedStatement pStmt;
+			if(month==0) {
+				pStmt = conn.prepareStatement("SELECT COUNT(*) FROM alert INNER JOIN sensor s ON fk_sensor = s.id INNER JOIN room r ON fk_room = r.id  WHERE r.floor=? and DATE_PART('year', date_alert)=?;");
+				pStmt.setInt(1, floor);
+				pStmt.setInt(2, year);
+			}
+			else {
+				pStmt = conn.prepareStatement("SELECT COUNT(*) FROM alert INNER JOIN sensor s ON fk_sensor = s.id INNER JOIN room r ON fk_room = r.id  WHERE r.floor=? and DATE_PART('month', date_alert)=? and DATE_PART('year', date_alert)=?;");
+				pStmt.setInt(1, floor);
+				pStmt.setInt(2, month);
+				pStmt.setInt(3, year);
+			}
 			ResultSet rs = pStmt.executeQuery();
 			rs.next();
 			return rs.getInt(1);
@@ -158,19 +166,34 @@ public class AlertManager {
 
 
 		public static int countByWingMonthYear(int wing, int month, int year) throws SQLException {
-			PreparedStatement pStmt = conn.prepareStatement("SELECT COUNT(*) FROM alert INNER JOIN sensor s ON fk_sensor = s.id INNER JOIN room r ON fk_room = r.id WHERE r.fk_wing_room=? and DATE_PART('month', date_alert)=? and DATE_PART('year', date_alert)=?;");
-			pStmt.setInt(1, wing);
-			pStmt.setInt(2, month);
-			pStmt.setInt(3, year);
+			PreparedStatement pStmt;
+			if(month==0) {
+				pStmt = conn.prepareStatement("SELECT COUNT(*) FROM alert INNER JOIN sensor s ON fk_sensor = s.id INNER JOIN room r ON fk_room = r.id WHERE r.fk_wing_room=? and DATE_PART('year', date_alert)=?;");
+				pStmt.setInt(1, wing);
+				pStmt.setInt(2, year);
+			}
+			else {
+				pStmt = conn.prepareStatement("SELECT COUNT(*) FROM alert INNER JOIN sensor s ON fk_sensor = s.id INNER JOIN room r ON fk_room = r.id WHERE r.fk_wing_room=? and DATE_PART('month', date_alert)=? and DATE_PART('year', date_alert)=?;");
+				pStmt.setInt(1, wing);
+				pStmt.setInt(2, month);
+				pStmt.setInt(3, year);
+			}
 			ResultSet rs = pStmt.executeQuery();
 			rs.next();
 			return rs.getInt(1);
 		}
 		
 		public static int count(int month, int year) throws SQLException {
-			PreparedStatement pStmt = conn.prepareStatement("SELECT COUNT(*) FROM alert INNER JOIN sensor s ON fk_sensor = s.id INNER JOIN room r ON fk_wing_room = r.id  WHERE DATE_PART('month', date_alert)=? and DATE_PART('year', date_alert)=?;");
-			pStmt.setInt(1, month);
-			pStmt.setInt(2, year);
+			PreparedStatement pStmt;
+			if(month==0) {
+				pStmt = conn.prepareStatement("SELECT COUNT(*) FROM alert INNER JOIN sensor s ON fk_sensor = s.id INNER JOIN room r ON fk_wing_room = r.id  WHERE DATE_PART('year', date_alert)=?;");
+				pStmt.setInt(1, year);
+			}
+			else {
+				pStmt = conn.prepareStatement("SELECT COUNT(*) FROM alert INNER JOIN sensor s ON fk_sensor = s.id INNER JOIN room r ON fk_wing_room = r.id  WHERE DATE_PART('month', date_alert)=? and DATE_PART('year', date_alert)=?;");
+				pStmt.setInt(1, month);
+				pStmt.setInt(2, year);
+			}
 			ResultSet rs = pStmt.executeQuery();
 			rs.next();
 			return rs.getInt(1);

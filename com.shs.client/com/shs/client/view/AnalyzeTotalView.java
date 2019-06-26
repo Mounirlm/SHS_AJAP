@@ -30,7 +30,7 @@ public class AnalyzeTotalView extends JPanel implements AnalyzePanel{
 		
 		//pSelect
 		JPanel pSelect = new JPanel(new GridLayout(1, 2));
-		String[] monthList = {"January","February","March","April","May","June","July","August","September","October","November","December"};
+		String[] monthList = {"All","January","February","March","April","May","June","July","August","September","October","November","December"};
 		Integer[] yearList = {2019};
 		monthComboBox = new JComboBox<String>(monthList);
 		yearComboBox = new JComboBox<Integer>(yearList);

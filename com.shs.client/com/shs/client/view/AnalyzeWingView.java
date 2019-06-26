@@ -33,7 +33,7 @@ public class AnalyzeWingView extends JPanel implements AnalyzePanel{
 		this.add(pCenter);
 		//pFloor
 		JPanel pSelect = new JPanel(new GridLayout(1, 3));
-		String[] monthList = {"January","February","March","April","May","June","July","August","September","October","November","December"};
+		String[] monthList = {"All","January","February","March","April","May","June","July","August","September","October","November","December"};
 		Integer[] yearList = {2019};
 		wingComboBox = new JComboBox<String>();
 		monthComboBox = new JComboBox<String>(monthList);

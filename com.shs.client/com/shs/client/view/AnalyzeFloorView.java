@@ -34,7 +34,7 @@ public class AnalyzeFloorView extends JPanel implements AnalyzePanel{
 		//pFloor
 		JPanel pSelect = new JPanel(new GridLayout(1, 3));
 		Integer[] floorList = {0,1};
-		String[] monthList = {"January","February","March","April","May","June","July","August","September","October","November","December"};
+		String[] monthList = {"All","January","February","March","April","May","June","July","August","September","October","November","December"};
 		Integer[] yearList = {2019};
 		floorComboBox = new JComboBox<Integer>(floorList);
 		monthComboBox = new JComboBox<String>(monthList);

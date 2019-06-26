@@ -132,7 +132,7 @@ public class AnalyzeController{
 		int nResidents=0;
 		int nRooms=0;
 		try {
-			int monthValue = Month.valueOf(month2.toUpperCase()).getValue();
+			int monthValue = (month2.equals("All")) ? 0 : Month.valueOf(month2.toUpperCase()).getValue();
 			nAlerts = alertH.countAlertByFloor(floor2,monthValue,year2);
 			nSensors = sensorH.countSensorsByFloor(floor2);
 			nResidents = residentH.countResidentByFloor(floor2);
@@ -154,7 +154,7 @@ public class AnalyzeController{
 		int nResidents=0;
 		int nRooms=0;
 		try {
-			int monthValue = Month.valueOf(month2.toUpperCase()).getValue();
+			int monthValue = (month2.equals("All")) ? 0 : Month.valueOf(month2.toUpperCase()).getValue();
 			nAlerts = alertH.countAlert(monthValue,year2);
 			nSensors = sensorH.countSensors();
 			nResidents = residentH.countResident();
@@ -177,7 +177,7 @@ public class AnalyzeController{
 		int nRooms=0;
 		try {
 			int wingInt = getWingId(wing2);
-			int monthValue = Month.valueOf(month2.toUpperCase()).getValue();
+			int monthValue = (month2.equals("All")) ? 0 : Month.valueOf(month2.toUpperCase()).getValue();
 			nAlerts = alertH.countAlertByWing(wingInt,monthValue,year2);
 			nSensors = sensorH.countSensorsByWing(wingInt);
 			nResidents = residentH.countResidentByWing(wingInt);
