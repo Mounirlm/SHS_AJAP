@@ -20,7 +20,6 @@ private void buildFrame(){
     add(messageText, "cell 1 0, grow");
     sendButton = new JButton("Send");
     add(sendButton, "cell 2 0");
-
     table = new JXTable(); 
     tableModel = new ChatMessageTableModel(); 
     table.setModel(tableModel); 
