@@ -18,7 +18,7 @@ public class Sensor {
 	private Integer scope_sensor;
 	private String date_setup_formatted;
 	private String x ;
-	private String y ;
+	private String y;
 	
 	public Sensor() {
 		// TODO Auto-generated constructor stub
@@ -151,6 +151,10 @@ public class Sensor {
 	public void setY(String y) {
 		this.y = y;
 	}
+
+	
+
+	
 	
 	
 }
