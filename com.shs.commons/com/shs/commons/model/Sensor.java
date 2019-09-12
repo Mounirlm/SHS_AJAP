@@ -26,7 +26,7 @@ public class Sensor {
 	
 	public Sensor(int id, String sensor_name, String ip_address, String mac_address, Date date_setup, Boolean status,
 			Boolean installed, Wing_Room fk_position, Float price, Room fk_room, Type_Sensor fk_type_sensor,
-			Integer scope_sensor) {
+			Integer scope_sensor,Integer x, Integer y) {
 		super();
 		this.id = id;
 		this.sensor_name = sensor_name;
@@ -40,6 +40,8 @@ public class Sensor {
 		this.fk_room = fk_room;
 		this.fk_type_sensor = fk_type_sensor;
 		this.scope_sensor = scope_sensor;
+		this.x=x;
+		this.y=y;
 	}
 
 	
