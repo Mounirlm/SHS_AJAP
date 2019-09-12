@@ -61,8 +61,8 @@ public class SensorManager {
 							new Type_Sensor(rstype_sensor.getInt("id"), rstype_sensor.getString("name"),
 									rstype_sensor.getInt("trigger_point_min"),rstype_sensor.getInt("trigger_point_max"),
 									rstype_sensor.getInt("nb_alerts")),
-							RS.getInt("scope_sensor")));
-
+							RS.getInt("scope_sensor"),RS.getInt("x"),RS.getInt("y")));
+				
 				}
 			}	
 		}
@@ -107,6 +107,7 @@ public class SensorManager {
 				if ( rswing_room.next()  && rstype_sensor.next()) {
 					Room room = new Room();
 					room.setId(RS.getInt("fk_room"));
+				
 					sensor = new Sensor(RS.getInt("id"),RS.getString("sensor_name"), RS.getString("ip_address"), RS.getString("mac_address"),
 							dateFormat.parse(RS.getString("date_setup")), RS.getBoolean("status"), RS.getBoolean("installed"),
 							new Wing_Room(rswing_room.getInt("id"), rswing_room.getString("name")),
@@ -115,7 +116,7 @@ public class SensorManager {
 							new Type_Sensor(rstype_sensor.getInt("id"), rstype_sensor.getString("name"),
 									rstype_sensor.getInt("trigger_point_min"),rstype_sensor.getInt("trigger_point_max"),
 									rstype_sensor.getInt("nb_alerts")),
-							RS.getInt("scope_sensor"));
+							RS.getInt("scope_sensor"),RS.getInt("x"),RS.getInt("y"));
 
 				}
 			}	
@@ -147,7 +148,8 @@ public class SensorManager {
 				+ "'"+sensor.getMac_address()+"', '"+sensor.getDate_setup_formatted()+"', "
 				+ ""+sensor.getStatus()+", "+sensor.getInstalled()+", "+sensor.getFk_position().getId()+","
 				+ " "+sensor.getPrice()+", "+sensor.getFk_room().getId()+", "
-				+ ""+sensor.getFk_type_sensor().getId()+", "+sensor.getScope_sensor()+");";
+				+ ""+sensor.getFk_type_sensor().getId()+", "+sensor.getScope_sensor()+","
+				+ ""+sensor.getX()+", "+sensor.getY()+");";
 		int n=0;
 		try {
 			n = Stmt.executeUpdate(req);}
@@ -169,7 +171,8 @@ public class SensorManager {
 				+ " date_setup='"+sensor.getDate_setup_formatted()+"', status="+sensor.getStatus()+", installed="+sensor.getInstalled()+", "
 				+ "fk_position="+sensor.getFk_position().getId()+", price="+sensor.getPrice()+", "
 				+ "fk_room="+sensor.getFk_room().getId()+", fk_type_sensor="+sensor.getFk_type_sensor().getId()+", "
-				+ "scope_sensor="+sensor.getScope_sensor()+" where id="+sensor.getId()+";";
+				+ "scope_sensor="+sensor.getScope_sensor()+" where id="+sensor.getId()+","
+				+ ""+sensor.getX()+", "+sensor.getY()+";";
 		int n=0;
 		try {
 			n = Stmt.executeUpdate(req);}
