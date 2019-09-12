@@ -17,8 +17,8 @@ public class Sensor {
 	private Type_Sensor fk_type_sensor;
 	private Integer scope_sensor;
 	private String date_setup_formatted;
-	private String x ;
-	private String y;
+	private Integer x ;
+	private Integer y;
 	
 	public Sensor() {
 		// TODO Auto-generated constructor stub
@@ -136,19 +136,19 @@ public class Sensor {
 		return array;
 	}
 
-	public String getX() {
+	public Integer getX() {
 		return x;
 	}
 
-	public void setX(String x) {
+	public void setX(Integer x) {
 		this.x = x;
 	}
 
-	public String getY() {
+	public Integer getY() {
 		return y;
 	}
 
-	public void setY(String y) {
+	public void setY(Integer y) {
 		this.y = y;
 	}
 
