@@ -20,6 +20,7 @@ public class Sensor {
 	private Integer x ;
 	private Integer y;
 	
+	
 	public Sensor() {
 		// TODO Auto-generated constructor stub
 	}
@@ -42,6 +43,7 @@ public class Sensor {
 		this.scope_sensor = scope_sensor;
 		this.x=x;
 		this.y=y;
+		
 	}
 
 	
@@ -124,17 +126,19 @@ public class Sensor {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		return dateFormat.format(date_setup);
 	}
+	
+	
 	@Override
 	public String toString() {
-		
 		return "Sensor [id=" + id + ", sensor_name=" + sensor_name + ", ip_address=" + ip_address + ", mac_address="
-				+ mac_address + ", date_setup=" + getDate_setup_formatted() + ", status=" + status + ", installed=" + installed
+				+ mac_address + ", date_setup=" + date_setup + ", status=" + status + ", installed=" + installed
 				+ ", fk_position=" + fk_position + ", price=" + price + ", fk_room=" + fk_room + ", fk_type_sensor="
-				+ fk_type_sensor + ", scope_sensor=" + scope_sensor + "]";
+				+ fk_type_sensor + ", scope_sensor=" + scope_sensor + ", date_setup_formatted=" + date_setup_formatted
+				+ ", x=" + x + ", y=" + y + "]";
 	}
-	
+
 	public Object[] getAsArray() {
-		Object[] array = {id, sensor_name, ip_address, mac_address, date_setup, status, installed, fk_position, price, fk_room, fk_type_sensor, scope_sensor};
+		Object[] array = {id, sensor_name, ip_address, mac_address, date_setup, status, installed, fk_position, price, fk_room, fk_type_sensor, scope_sensor,x,y};
 		return array;
 	}
 
@@ -153,6 +157,8 @@ public class Sensor {
 	public void setY(Integer y) {
 		this.y = y;
 	}
+
+	
 
 	
 
