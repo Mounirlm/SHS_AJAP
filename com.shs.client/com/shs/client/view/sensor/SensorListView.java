@@ -39,7 +39,9 @@ public class SensorListView extends JPanel {
                                 "Price",
                                 "Room",
                                 "Type Sensor",
-                                "Scope Sensor"};
+                                "Scope Sensor",
+                                "X",
+                                "Y"};
         
         sensors = pSensors != null ? pSensors : new ArrayList<>();
         List<Object []> data = sensors.stream().map(s -> s.getAsArray()).collect(Collectors.toList());
