@@ -17,6 +17,8 @@ public class Sensor {
 	private Type_Sensor fk_type_sensor;
 	private Integer scope_sensor;
 	private String date_setup_formatted;
+	private String x ;
+	private String y ;
 	
 	public Sensor() {
 		// TODO Auto-generated constructor stub
@@ -132,6 +134,22 @@ public class Sensor {
 	public Object[] getAsArray() {
 		Object[] array = {id, sensor_name, ip_address, mac_address, date_setup, status, installed, fk_position, price, fk_room, fk_type_sensor, scope_sensor};
 		return array;
+	}
+
+	public String getX() {
+		return x;
+	}
+
+	public void setX(String x) {
+		this.x = x;
+	}
+
+	public String getY() {
+		return y;
+	}
+
+	public void setY(String y) {
+		this.y = y;
 	}
 	
 	
