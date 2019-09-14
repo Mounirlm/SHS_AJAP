@@ -67,6 +67,8 @@ public class AppView extends JPanel{
 		return analyzeView;
 	}
 
-
+	public MapView getMapView() {
+		return mapView;
+	}
 
 }
