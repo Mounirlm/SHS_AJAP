@@ -17,7 +17,7 @@ public class Sensor {
 	private Type_Sensor fk_type_sensor;
 	private Integer scope_sensor;
 	private String date_setup_formatted;
-	private Integer x ;
+	private Integer x;
 	private Integer y;
 	
 	
@@ -27,7 +27,7 @@ public class Sensor {
 	
 	public Sensor(int id, String sensor_name, String ip_address, String mac_address, Date date_setup, Boolean status,
 			Boolean installed, Wing_Room fk_position, Float price, Room fk_room, Type_Sensor fk_type_sensor,
-			Integer scope_sensor,Integer x, Integer y) {
+			Integer scope_sensor) {
 		super();
 		this.id = id;
 		this.sensor_name = sensor_name;
@@ -41,8 +41,7 @@ public class Sensor {
 		this.fk_room = fk_room;
 		this.fk_type_sensor = fk_type_sensor;
 		this.scope_sensor = scope_sensor;
-		this.x=x;
-		this.y=y;
+		
 		
 	}
 
@@ -133,12 +132,11 @@ public class Sensor {
 		return "Sensor [id=" + id + ", sensor_name=" + sensor_name + ", ip_address=" + ip_address + ", mac_address="
 				+ mac_address + ", date_setup=" + date_setup + ", status=" + status + ", installed=" + installed
 				+ ", fk_position=" + fk_position + ", price=" + price + ", fk_room=" + fk_room + ", fk_type_sensor="
-				+ fk_type_sensor + ", scope_sensor=" + scope_sensor + ", date_setup_formatted=" + date_setup_formatted
-				+ ", x=" + x + ", y=" + y + "]";
+				+ fk_type_sensor + ", scope_sensor=" + scope_sensor + ", date_setup_formatted=" + date_setup_formatted+ "]";
 	}
 
 	public Object[] getAsArray() {
-		Object[] array = {id, sensor_name, ip_address, mac_address, date_setup, status, installed, fk_position, price, fk_room, fk_type_sensor, scope_sensor,x,y};
+		Object[] array = {id, sensor_name, ip_address, mac_address, date_setup, status, installed, fk_position, price, fk_room, fk_type_sensor, scope_sensor};
 		return array;
 	}
 
@@ -157,6 +155,8 @@ public class Sensor {
 	public void setY(Integer y) {
 		this.y = y;
 	}
+
+	
 
 	
 
