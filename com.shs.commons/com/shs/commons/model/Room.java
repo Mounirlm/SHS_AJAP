@@ -1,5 +1,7 @@
 package com.shs.commons.model;
 
+import java.util.ArrayList;
+
 public class Room implements Comparable<Room>{
 
 	private Integer id;
@@ -10,7 +12,14 @@ public class Room implements Comparable<Room>{
 	private Wing_Room wing_room;
 	private Integer nb_doors;
 	private Integer nb_windows;
-
+	private Integer x;
+	private Integer y;
+	private Integer width;
+	private Integer height;
+	private Floor fk_floor;
+	
+	
+	private ArrayList<Sensor> sensors;
 
 	public Room(Integer id, Integer floor, Integer room_number, Integer m2, Type_Room type_room, Wing_Room wing_room,
 			int nb_doors, int nb_windows) {
@@ -23,9 +32,27 @@ public class Room implements Comparable<Room>{
 		this.wing_room = wing_room;
 		this.nb_doors = nb_doors;
 		this.nb_windows = nb_windows;
+		
 	}
 
-
+	public Room(Integer id, Integer floor, Integer room_number, Integer m2, Type_Room type_room, Wing_Room wing_room,
+			int nb_doors, int nb_windows,Integer x,Integer y,Integer width, Integer height,Floor fk_floor) {
+		super();
+		this.id = id;
+		this.floor = floor;
+		this.room_number = room_number;
+		this.m2 = m2;
+		this.type_room = type_room;
+		this.wing_room = wing_room;
+		this.nb_doors = nb_doors;
+		this.nb_windows = nb_windows;
+		this.x=x;
+		this.y=y;
+		this.width=width;
+		this.height=height;
+		this.fk_floor=fk_floor;
+		
+	}
 
 	public Room() {
 	}
@@ -121,6 +148,70 @@ public class Room implements Comparable<Room>{
 				+ "]";
 	}
 
+
+
+	public Integer getX() {
+		return x;
+	}
+
+
+
+	public void setX(Integer x) {
+		this.x = x;
+	}
+
+
+
+	public Integer getY() {
+		return y;
+	}
+
+
+
+	public void setY(Integer y) {
+		this.y = y;
+	}
+
+
+
+	public Integer getWidth() {
+		return width;
+	}
+
+
+
+	public void setWidth(Integer width) {
+		this.width = width;
+	}
+
+
+
+	public Integer getHeight() {
+		return height;
+	}
+
+
+
+	public void setHeight(Integer height) {
+		this.height = height;
+	}
+
+	public ArrayList<Sensor> getSensors()
+	{
+		return sensors;
+	}
+	
+	public void setSensors(ArrayList<Sensor> sensors) {
+		this.sensors = sensors;
+	}
+
+	public Floor getFk_floor() {
+		return fk_floor;
+	}
+
+	public void setFk_floor(Floor fk_floor) {
+		this.fk_floor = fk_floor;
+	}
 
 
 
