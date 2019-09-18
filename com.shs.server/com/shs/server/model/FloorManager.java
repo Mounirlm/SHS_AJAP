@@ -1,6 +1,9 @@
-package com.shs.server.map;
+package com.shs.server.model;
 
+
+import java.sql.Array;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -24,6 +27,51 @@ public class FloorManager {
 		this.conn=con;
 	}
 	
+	
+public static ArrayList<Floor> getFloor() throws SQLException{
+		
+		Statement Stmt = conn.createStatement();
+		Statement Stmt2 = conn.createStatement();
+		
+		
+        ArrayList<Floor> floorList = new ArrayList<Floor>();
+       
+        ResultSet RS=null;
+        ResultSet rsbuilding=null;
+        
+             	
+        try {
+        	//
+        RS = Stmt.executeQuery("SELECT * FROM floor");
+        
+        while(RS.next()) {
+        	
+        	rsbuilding=Stmt2.executeQuery("SELECT * FROM building WHERE id="+1);
+        	
+        	floorList.add(new Floor(RS.getInt("id"),RS.getString("name"),RS.getString("image_path"),
+        			new Building(rsbuilding.getInt("id"),rsbuilding.getString("name"),rsbuilding.getString("type"))));
+        	
+        	}
+        }	
+        
+        finally {
+        // Closing
+        
+        if(RS!=null)
+	        try{RS.close();}catch(Exception e){e.printStackTrace();} 
+        
+        if(rsbuilding!=null)
+        	try{rsbuilding.close();}catch(Exception e){e.printStackTrace();}
+		
+        if(Stmt!=null)
+        	try{Stmt.close();}catch(Exception e){e.printStackTrace();} 
+        if(Stmt2!=null)
+        	try{Stmt2.close();}catch(Exception e){e.printStackTrace();}
+        
+        }
+	    return floorList;
+	}
+	
 	public static ArrayList<Room> getRoomWithPostion() throws SQLException {
 		
 		Statement Stmt = conn.createStatement();
@@ -38,7 +86,7 @@ public class FloorManager {
 		ResultSet rsfloor=null;
 		ResultSet rsbuilding=null;
 		try {
-        RS = Stmt.executeQuery("SELECT * FROM room WHERE fk_floor IS NOT NULL");
+        RS = Stmt.executeQuery("SELECT * FROM room WHERE fk_floor_map IS NOT NULL");
         
         while(RS.next()) {
         	rstype_room=Stmt2.executeQuery("SELECT * FROM type_room WHERE id="+RS.getInt("fk_type_room"));
@@ -51,8 +99,8 @@ public class FloorManager {
 		    			new Type_Room(rstype_room.getInt("id"), rstype_room.getString("name")),
 		    			new Wing_Room(rswing_room.getInt("id"), rswing_room.getString("name")),
 	        			RS.getInt("nb_doors"), RS.getInt("nb_windows"),RS.getInt("x"),RS.getInt("y"),RS.getInt("width"),RS.getInt("height"),
-	        			new Floor(rsfloor.getString("name"),rsfloor.getString("image_path") ,
-	        			new Building(rsbuilding.getString("name"),rsbuilding.getString("type")) ) ));
+	        			new Floor(rsfloor.getInt("id"),rsfloor.getString("name"),rsfloor.getString("image_path") ,
+	        			new Building(rsbuilding.getInt("id"),rsbuilding.getString("name"),rsbuilding.getString("type")) ) ));
         	}
         }
 		}finally {
@@ -82,5 +130,20 @@ public class FloorManager {
 	        	try{Stmt5.close();}catch(Exception e){e.printStackTrace();} 
 		}
         return roomList;
+	}
+	
+	public static ArrayList<Room> getRoom2()throws SQLException {
+		ArrayList<Room> roomList = new ArrayList<Room>();
+		PreparedStatement pStmt = conn.prepareStatement("SELECT * FROM room INNER JOIN floor f ON fk_floor_map = f.id");
+		ResultSet rs = pStmt.executeQuery();
+		while(rs.next()) {
+			roomList.add(new Room(rs.getInt("id"),rs.getInt("floor"), rs.getInt("room_number"), rs.getInt("m2"),
+		    			new Type_Room(rs.getInt("id"), rs.getString("name")),
+		    			new Wing_Room(rs.getInt("id"), rs.getString("name")),
+	        			rs.getInt("nb_doors"), rs.getInt("nb_windows"),rs.getInt("x"),rs.getInt("y"),rs.getInt("width"),rs.getInt("height"),
+	        			new Floor(rs.getInt("id"),rs.getString("name"),rs.getString("image_path") ,
+	        			new Building(rs.getInt("id"),rs.getString("name"),rs.getString("type")) ) )) ;
+        	}
+		return roomList;
 	}
 }
