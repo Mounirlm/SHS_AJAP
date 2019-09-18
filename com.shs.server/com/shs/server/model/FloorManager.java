@@ -42,15 +42,17 @@ public static ArrayList<Floor> getFloor() throws SQLException{
              	
         try {
         	//
-        RS = Stmt.executeQuery("SELECT * FROM floor");
+        RS = Stmt.executeQuery("SELECT * FROM floor_map");
         
         while(RS.next()) {
+        	       	
+        	rsbuilding=Stmt2.executeQuery ("SELECT * FROM building WHERE id="+RS.getInt("fk_building"));
         	
-        	rsbuilding=Stmt2.executeQuery("SELECT * FROM building WHERE id="+1);
-        	
+        	if (rsbuilding.next()){
+        		
         	floorList.add(new Floor(RS.getInt("id"),RS.getString("name"),RS.getString("image_path"),
         			new Building(rsbuilding.getInt("id"),rsbuilding.getString("name"),rsbuilding.getString("type"))));
-        	
+        		}
         	}
         }	
         
@@ -71,6 +73,23 @@ public static ArrayList<Floor> getFloor() throws SQLException{
         }
 	    return floorList;
 	}
+
+
+public static ArrayList<Floor> getFloor2()throws SQLException {
+	ArrayList<Floor> floorList = new ArrayList<Floor>();
+	Statement Stmt2 = conn.createStatement();
+	ResultSet rsbuilding=null;
+	PreparedStatement pStmt = conn.prepareStatement("SELECT * FROM floor INNER JOIN building b ON fk_building = b.id;");
+	ResultSet rs = pStmt.executeQuery();
+	while(rs.next()) {
+		rsbuilding=Stmt2.executeQuery ("SELECT * FROM building WHERE id="+rsbuilding.getInt("fk_building"));
+    	if (rsbuilding.next()){
+		floorList.add(new Floor(rs.getInt("id"),rs.getString("name"),rs.getString("image_path"), 
+    			new Building(rsbuilding.getInt("id"),rsbuilding.getString("name"), rsbuilding.getString("type")) ) );
+    	}
+    	}
+	return floorList;
+}
 	
 	public static ArrayList<Room> getRoomWithPostion() throws SQLException {
 		
