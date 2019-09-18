@@ -25,6 +25,8 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.shs.commons.model.Alert;
+import com.shs.commons.model.Building;
+import com.shs.commons.model.Floor;
 import com.shs.commons.model.Historical;
 import com.shs.commons.model.Resident;
 import com.shs.commons.model.Room;
@@ -35,6 +37,8 @@ import com.shs.server.connection.pool.AccessConfig;
 import com.shs.server.connection.pool.DataSource;
 import com.shs.server.model.AlertManager;
 import com.shs.server.model.AlertRequestManager;
+import com.shs.server.model.BuildingRequestManager;
+import com.shs.server.model.FloorRequestManager;
 import com.shs.server.model.HistoricalManager;
 import com.shs.server.model.HistoricalRequestManager;
 import com.shs.server.model.ResidentRequestManager;
@@ -122,6 +126,12 @@ public class RequestHandler implements Runnable {
 					object = new Gson().fromJson(objectJson, Alert.class);
 				if(className.equals("Historical"))
 					object = new Gson().fromJson(objectJson, Historical.class);
+				if(className.equals("Building"))
+					object = new Gson().fromJson(objectJson, Building.class);
+				if(className.equals("Floor"))
+					object = new Gson().fromJson(objectJson, Floor.class);
+				
+
 
 			}else {
 				reader.skipValue();
@@ -186,6 +196,19 @@ public class RequestHandler implements Runnable {
 			ResidentRequestManager reqResident = new ResidentRequestManager(connDB, reader, writer, resident, request);
 			message=reqResident.requestManager();
 			break;
+		
+		case "Building":
+			
+			System.out.println(request);
+			BuildingRequestManager reqBuilding = new BuildingRequestManager(connDB, reader, writer, request);
+			message=reqBuilding.requestManager();
+			
+			break;	
+		case "Floor":
+			FloorRequestManager reqFloor = new FloorRequestManager(connDB, reader, writer, request);
+			message=reqFloor.requestManager();
+			break;	
+		
 
 		default:
 			break;
