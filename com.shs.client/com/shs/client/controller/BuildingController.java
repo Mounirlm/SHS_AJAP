@@ -36,8 +36,5 @@ public class BuildingController {
 		return floorService.getFloor("select-Floor");
 	}
 	
-//	protected List<Building> searchAllBuilding() throws IOException {
-//		 return servH.getBuilding();
-//			
-//		}
+
 }
