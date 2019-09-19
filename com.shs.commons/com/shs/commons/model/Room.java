@@ -1,5 +1,6 @@
 package com.shs.commons.model;
 
+import java.awt.Point;
 import java.util.ArrayList;
 
 public class Room implements Comparable<Room>{
@@ -16,7 +17,7 @@ public class Room implements Comparable<Room>{
 	private Integer y;
 	private Integer width;
 	private Integer height;
-	private Floor fk_floor;
+	private Floor fk_floor_map;
 	
 	
 	private ArrayList<Sensor> sensors;
@@ -50,11 +51,16 @@ public class Room implements Comparable<Room>{
 		this.y=y;
 		this.width=width;
 		this.height=height;
-		this.fk_floor=fk_floor;
+		this.fk_floor_map=fk_floor;
 		
 	}
 
 	public Room() {
+	}
+	
+	public boolean isPointInRoom(Point p)
+	{
+		return (p.getX()>this.x && p.getY()>this.y && p.getX()<this.x+this.width && p.getY()<this.y+this.height);
 	}
 
 	public Integer getId() {
@@ -129,27 +135,6 @@ public class Room implements Comparable<Room>{
 
 
 
-	@Override
-	public int compareTo(Room o) {
-		if(this.getId()<o.getId())
-			return -1;
-		else if(this.getId()>o.getId())
-			return 1;
-		else
-			return 0;
-	}
-
-
-
-	@Override
-	public String toString() {
-		return "Room [id=" + id + ", floor=" + floor + ", room_number=" + room_number + ", m2=" + m2 + ", type_room="
-				+ type_room + ", wing_room=" + wing_room + ", nb_doors=" + nb_doors + ", nb_windows=" + nb_windows
-				+ "]";
-	}
-
-
-
 	public Integer getX() {
 		return x;
 	}
@@ -206,13 +191,31 @@ public class Room implements Comparable<Room>{
 	}
 
 	public Floor getFk_floor() {
-		return fk_floor;
+		return fk_floor_map;
 	}
 
 	public void setFk_floor(Floor fk_floor) {
-		this.fk_floor = fk_floor;
+		this.fk_floor_map = fk_floor;
 	}
 
 
+	@Override
+	public int compareTo(Room o) {
+		if(this.getId()<o.getId())
+			return -1;
+		else if(this.getId()>o.getId())
+			return 1;
+		else
+			return 0;
+	}
+
+
+
+	@Override
+	public String toString() {
+		return "Room [id=" + id + ", floor=" + floor + ", room_number=" + room_number + ", m2=" + m2 + ", type_room="
+				+ type_room + ", wing_room=" + wing_room + ", nb_doors=" + nb_doors + ", nb_windows=" + nb_windows
+				+ "]";
+	}
 
 }
