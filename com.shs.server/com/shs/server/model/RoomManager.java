@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import com.shs.commons.model.Building;
 import com.shs.commons.model.Floor;
+import com.shs.commons.model.FloorClientHandler;
 import com.shs.commons.model.Room;
 import com.shs.commons.model.Type_Room;
 import com.shs.commons.model.Wing_Room;
@@ -309,36 +310,42 @@ public class RoomManager {
 		return rs.getInt(1);
 	}
 
-	public static Room getRoomWithPostion() throws SQLException {
+	public static ArrayList<Room> getRoomsWithPostion(int idFloor) throws SQLException {
+		
+		
 		Statement Stmt = conn.createStatement();
 		Statement Stmt2 = conn.createStatement();
 		Statement Stmt3 = conn.createStatement();
-		Statement Stmt4 = conn.createStatement();
-		Statement Stmt5 = conn.createStatement();
-		Room room = null;
+
+		
 		ResultSet RS=null;
 		ResultSet rstype_room=null;
 		ResultSet rswing_room=null;
-		ResultSet rsfloor=null;
-		ResultSet rsbuilding=null;
+
+		
+		ArrayList<Room> roomList = new ArrayList<Room>();
+		Floor floor = null;
+		for (Floor f : FloorManager.getFloor())
+		{
+			if (f.getId()==idFloor)  floor=f;
+		}
+		
+		RS = Stmt.executeQuery("SELECT * FROM room");
+		
 		try {
-        RS = Stmt.executeQuery("SELECT * FROM room");
+		while(RS.next()) {
+			rstype_room=Stmt2.executeQuery("SELECT * FROM type_room" );
+        	rswing_room=Stmt3.executeQuery("SELECT * FROM wing_room" );
         
-        if(RS.next()) {
-        	rstype_room=Stmt2.executeQuery("SELECT * FROM type_room WHERE id="+RS.getInt("fk_type_room"));
-        	rswing_room=Stmt3.executeQuery("SELECT * FROM wing_room WHERE id="+RS.getInt("fk_wing_room"));
-        	rsfloor=Stmt4.executeQuery("SELECT * FROM floor_map WHERE id="+RS.getInt("fk_floor_map"));
-        	rsbuilding=Stmt5.executeQuery("SELECT * FROM building WHERE id="+RS.getInt("fk_building"));
-        	
-        	if ( rstype_room.next() && rswing_room.next() && rsfloor.next() && rsbuilding.next()) {
-		        room=new Room(RS.getInt("id"),RS.getInt("floor"), RS.getInt("room_number"), RS.getInt("m2"),
-		    			new Type_Room(rstype_room.getInt("id"), rstype_room.getString("name")),
-		    			new Wing_Room(rswing_room.getInt("id"), rswing_room.getString("name")),
-	        			RS.getInt("nb_doors"), RS.getInt("nb_windows"),RS.getInt("x"),RS.getInt("y"),RS.getInt("width"),RS.getInt("height"),
-	        			new Floor(rsfloor.getString("name"),rsfloor.getString("image_path") ,
-	        			new Building(rsbuilding.getString("name"),rsbuilding.getString("type")) ) );
-        	}
-        }
+       	
+      	if ( rstype_room.next() && rswing_room.next()) {
+		
+			roomList.add(new Room(RS.getInt("id"),RS.getInt("floor"), RS.getInt("room_number"), RS.getInt("m2"),
+					new Type_Room(rstype_room.getInt("id"), rstype_room.getString("name")),new Wing_Room(rswing_room.getInt("id"), rswing_room.getString("name")),
+        			RS.getInt("nb_doors"), RS.getInt("nb_windows"),RS.getInt("x"),RS.getInt("y"),RS.getInt("width"),RS.getInt("height"),	 
+        			floor));
+    	}
+		}
 		}finally {
 	        // Closing
 				
@@ -356,7 +363,13 @@ public class RoomManager {
 	        	try{Stmt3.close();}catch(Exception e){e.printStackTrace();}     
 		    
 		}
-        return room;
+        return roomList;
+	}
+	
+
+	public static Room getRoomWithPostion() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 		
 	
