@@ -14,6 +14,8 @@ import com.shs.commons.model.Sensor;
 import com.shs.commons.model.Type_Room;
 import com.shs.commons.model.Type_Sensor;
 import com.shs.commons.model.Wing_Room;
+import com.shs.commons.model.Building;
+import com.shs.commons.model.Floor;
 import com.shs.commons.model.Room;
 import com.shs.server.connection.pool.DataSource;
 
@@ -238,44 +240,64 @@ public class SensorManager {
 		return rs.getInt(1);
 	}
 	
-	public static ArrayList<Sensor> getSensorsWithPosition(String req) throws SQLException, ParseException{
+	public static ArrayList<Sensor> getSensorsWithPosition() throws SQLException, ParseException{
 		Statement Stmt = conn.createStatement();
 		Statement Stmt2 = conn.createStatement();
 		Statement Stmt3 = conn.createStatement();
 		Statement Stmt4 = conn.createStatement();
+		Statement Stmt5 = conn.createStatement();
+		Statement Stmt6 = conn.createStatement();
+		Statement Stmt7 = conn.createStatement();
 
 		ArrayList<Sensor> sensorsList = new ArrayList<Sensor>();
 		ResultSet RS=null;
 		ResultSet rswing_room=null;
 		ResultSet rstype_sensor=null;
+		ResultSet rsroom=null;
+		ResultSet rsfloor =null;
+		ResultSet rstype_room=null;
+		ResultSet  rsbuilding = null;
+	
+		
 		
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 		try {
-			if (req.isEmpty()) {
+			
 				RS = Stmt.executeQuery("SELECT * FROM sensor");
-			}else {
-				RS = Stmt.executeQuery(req);
-			}
+			
 			
 
 			while(RS.next()) {
-				rswing_room=Stmt2.executeQuery("SELECT * FROM wing_room WHERE id="+RS.getInt("fk_position"));
-				rstype_sensor=Stmt3.executeQuery("SELECT * FROM type_sensor WHERE id="+RS.getInt("fk_type_sensor"));
-				
+				rswing_room=Stmt2.executeQuery("SELECT * FROM wing_room ");
+				rstype_sensor=Stmt3.executeQuery("SELECT * FROM type_sensor");
+				rsroom=Stmt4.executeQuery("SELECT * FROM room");
+				rsfloor=Stmt5.executeQuery("SELECT * FROM floor_map");
+				rstype_room=Stmt6.executeQuery("SELECT * FROM type_room");
+				rsbuilding=Stmt7.executeQuery("SELECT * FROM building");
 				
 
-				if ( rswing_room.next()  && rstype_sensor.next()) {
+				if ( rswing_room.next()  && rstype_sensor.next()&& rsroom.next()&& rsfloor.next()&& rsbuilding.next()&& rstype_room.next()) {
+					
 					Room room = new Room();
 					RoomManager room_manager = new RoomManager(conn);
-					room = RoomManager.getRoomWithPostion();
-
+					room = RoomManager.getRoom(RS.getInt("fk_room")); 
+					
+					
+					
 					sensorsList.add(new Sensor(RS.getInt("id"),RS.getString("sensor_name"), RS.getString("ip_address"), RS.getString("mac_address"),
 							dateFormat.parse(RS.getString("date_setup")), RS.getBoolean("status"), RS.getBoolean("installed"),
 							new Wing_Room(rswing_room.getInt("id"), rswing_room.getString("name")),
 							RS.getFloat("price"),
-							room,
+							new Room(rsroom.getInt("id"),rsroom.getInt("floor"), rsroom.getInt("room_number"), rsroom.getInt("m2"),
+									new Type_Room(rstype_room.getInt("id"), rstype_room.getString("name")),
+									new Wing_Room(rswing_room.getInt("id"), rswing_room.getString("name")),
+									rsroom.getInt("nb_doors"), rsroom.getInt("nb_windows"),rsroom.getInt("x"),rsroom.getInt("y"),rsroom.getInt("width"),rsroom.getInt("height"),	 
+				        			
+									new Floor(rsfloor.getInt("id"),rsfloor.getString("name"),rsfloor.getString("image_path"),
+				                			new Building(rsbuilding.getInt("id"),rsbuilding.getString("name"),rsbuilding.getString("type")))),
+							
 							new Type_Sensor(rstype_sensor.getInt("id"), rstype_sensor.getString("name"),
 									rstype_sensor.getInt("trigger_point_min"),rstype_sensor.getInt("trigger_point_max"),
 									rstype_sensor.getInt("nb_alerts")),
@@ -298,7 +320,9 @@ public class SensorManager {
 			if(Stmt2!=null)
 				try{Stmt2.close();}catch(Exception e){e.printStackTrace();} 
 			if(Stmt3!=null)
-				try{Stmt3.close();}catch(Exception e){e.printStackTrace();}  
+				try{Stmt3.close();}catch(Exception e){e.printStackTrace();} 
+			if(Stmt4!=null)
+				try{Stmt4.close();}catch(Exception e){e.printStackTrace();}
 		}
 		return sensorsList;
 	}
