@@ -1,30 +1,27 @@
 package com.shs.client.view;
 
 import java.awt.BorderLayout;
-import java.io.IOException;
-import java.net.UnknownHostException;
-import java.util.List;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import com.shs.client.controller.BuildingController;
 import com.shs.client.controller.SensorController;
 import com.shs.client.view.sensor.SensorListView;
-import com.shs.commons.model.Building;
-import com.shs.commons.model.Floor;
-import com.shs.commons.model.Sensor;
 
 public class MapView extends JPanel {
+	
+	
 private SensorListView sensorList;
 private SensorController sensorController;
 
 // apres 
 private BuildingListView buildingList;
-private BuildingController buildingController;
 
-MapTotalView pTotal;
+private JButton jbMap;
 
-public MapView() {
+
+public MapView(){
 	super();
 //	try {
 //	    sensorController = new SensorController();
@@ -36,34 +33,51 @@ public MapView() {
 //	}
 //	this.add(sensorList, BorderLayout.CENTER);
 //	
-	/// /////////////////ici cest moun
+	
+	//  ici cest mounir
+	
+	jbMap=new JButton("MAP");
+	
+	jbMap.addActionListener(new ActionListener() 
+	{
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			MapSHS m =null;
+			m = new MapSHS();
+			m.setVisible(true);
+	
+		}
+	});
+	
 	
 	this.setLayout(new BorderLayout());	
+    this.add(jbMap,BorderLayout.CENTER);
 	
 	
-	try {
-		buildingController = new BuildingController();
-		List<Building> buildings=buildingController.getBuildingList();
-		buildingList= new BuildingListView(buildings);
-		this.add(buildingList,BorderLayout.CENTER);
-		
-	} catch (UnknownHostException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		//buildingList = new BuildingListView(null);
-		e.printStackTrace();
-	}
+//	try {
+//		
+//		try {
+//			buildingList= new BuildingListView();
+//		} catch (ClassNotFoundException | SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		this.add(buildingList,BorderLayout.CENTER);
+//		
+//	} catch (UnknownHostException e) {
+//		// TODO Auto-generated catch block
+//		e.printStackTrace();
+//	} catch (IOException e) {
+//		// TODO Auto-generated catch block
+//		//buildingList = new BuildingListView(null);
+//		e.printStackTrace();
+//	}
+//	
 	
 	
-	
-	
-	
-	//pTotal = new MapTotalView();
 }
 
- public MapTotalView getTotalView() {
-	return pTotal;
-}
+ 
 }
