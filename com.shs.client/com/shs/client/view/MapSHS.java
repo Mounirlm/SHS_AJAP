@@ -136,27 +136,24 @@ public class MapSHS extends JFrame implements IUpdatable{
 				System.out.println(f.getId());
 				
 				try {
-					buildingController.getSensorBindToRoom(f.getId());
-				} catch (IOException e1) {
+					
+					
+					f.setRoom((buildingController.getRoomListInFloor(f.getId())));
+					buildingController.getSensorInROOM(f);
+					f.getSensors();
+						
+					
+				} catch (IOException e2) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					e2.printStackTrace();
 				}
+		        
 				
-//				try {
-//					int idFloor=buildingController.getFloorId(f);
-//					System.out.println("idFloor");					
-//					buildingController.getRoomListInFloor(idFloor);
-//					buildingController.getSensorBindToRoom(idFloor);
-//				} catch (IOException e1) {
-//					// TODO Auto-generated catch block
-//					e1.printStackTrace();
-//				}
-//				
-//				List<Room> rooms=f.getRoom();
-//				f.setRoom(rooms);
-//				System.out.println(f.getRoom());
-				
+
+						
 				itemsListSensor.setListData(f.getSensors().toArray());
+				
+				
 				
 				plan.setCurrent_floor(f);
 				
