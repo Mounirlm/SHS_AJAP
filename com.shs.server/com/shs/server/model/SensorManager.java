@@ -272,7 +272,7 @@ public class SensorManager {
 			while(RS.next()) {
 				rswing_room=Stmt2.executeQuery("SELECT * FROM wing_room ");
 				rstype_sensor=Stmt3.executeQuery("SELECT * FROM type_sensor");
-				rsroom=Stmt4.executeQuery("SELECT * FROM room");
+				rsroom=Stmt4.executeQuery("SELECT * FROM room ");
 				rsfloor=Stmt5.executeQuery("SELECT * FROM floor_map");
 				rstype_room=Stmt6.executeQuery("SELECT * FROM type_room");
 				rsbuilding=Stmt7.executeQuery("SELECT * FROM building");
@@ -326,6 +326,68 @@ public class SensorManager {
 		}
 		return sensorsList;
 	}
-
+	
+	public static ArrayList<Sensor> getSensorsInRoom(int idRoom) throws SQLException, ParseException{
+		
+		Statement Stmt = conn.createStatement();
+		Statement Stmt2 = conn.createStatement();
+		Statement Stmt3 = conn.createStatement();
+		
+		
+		ArrayList<Sensor> sensorsList = new ArrayList<Sensor>();
+		ResultSet RS=null;
+		ResultSet rswing_room=null;
+		ResultSet rstype_sensor=null;
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		
+		String SQL_SELECT = "SELECT * FROM  sensor WHERE fk_room="+ idRoom;
+		try {
+		
+	    RS = Stmt.executeQuery(SQL_SELECT);
+		
+		while (RS.next()) {
+			
+			rswing_room=Stmt2.executeQuery("SELECT * FROM wing_room ");
+			rstype_sensor=Stmt3.executeQuery("SELECT * FROM type_sensor");
+			
+			if ( rswing_room.next()  && rstype_sensor.next()){
+			
+			Room room = new Room();
+			room.setId(idRoom);
+			
+			
+			sensorsList.add(new Sensor(RS.getInt("id"),RS.getString("sensor_name"), RS.getString("ip_address"), RS.getString("mac_address"),
+					dateFormat.parse(RS.getString("date_setup")), RS.getBoolean("status"), RS.getBoolean("installed"),
+					new Wing_Room(rswing_room.getInt("id"), rswing_room.getString("name")),
+					RS.getFloat("price"),
+					room,
+					new Type_Sensor(rstype_sensor.getInt("id"), rstype_sensor.getString("name"),
+							rstype_sensor.getInt("trigger_point_min"),rstype_sensor.getInt("trigger_point_max"),
+							rstype_sensor.getInt("nb_alerts")),
+					RS.getInt("scope_sensor"),RS.getInt("x"),RS.getInt("y")));
+			 }	
+        			
+		 }
+	 }   
+	finally {
+		// Closing
+		
+		if(RS!=null)
+			try{RS.close();}catch(Exception e){e.printStackTrace();} 
+		if(rstype_sensor!=null)
+			try{rstype_sensor.close();}catch(Exception e){e.printStackTrace();} 
+		if(rswing_room!=null)
+			try{rswing_room.close();}catch(Exception e){e.printStackTrace();}  
+		if(Stmt!=null)
+			try{Stmt.close();}catch(Exception e){e.printStackTrace();} 
+		if(Stmt2!=null)
+			try{Stmt2.close();}catch(Exception e){e.printStackTrace();} 
+		if(Stmt3!=null)
+			try{Stmt3.close();}catch(Exception e){e.printStackTrace();} 
+		
+			}		
+		
+		return sensorsList;
+	}
 	
 }
