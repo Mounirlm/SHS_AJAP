@@ -141,6 +141,13 @@ public class MapSHS extends JFrame implements IUpdatable{
 					f.setRoom((buildingController.getRoomListInFloor(f.getId())));
 					buildingController.getSensorInROOM(f);
 					f.getSensors();
+					
+					
+					itemsListSensor.setListData(f.getSensors().toArray());
+					
+					
+					
+					plan.setCurrent_floor(f);
 						
 					
 				} catch (IOException e2) {
@@ -151,11 +158,7 @@ public class MapSHS extends JFrame implements IUpdatable{
 				
 
 						
-				itemsListSensor.setListData(f.getSensors().toArray());
 				
-				
-				
-				plan.setCurrent_floor(f);
 				
 			}
 		});

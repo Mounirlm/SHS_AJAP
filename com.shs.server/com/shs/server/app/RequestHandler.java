@@ -205,7 +205,8 @@ public class RequestHandler implements Runnable {
 			
 			break;	
 		case "Floor":
-			FloorRequestManager reqFloor = new FloorRequestManager(connDB, reader, writer, request);
+			Floor floor =(Floor) object;
+			FloorRequestManager reqFloor = new FloorRequestManager(connDB, reader, writer, floor, request );
 			message=reqFloor.requestManager();
 			break;	
 		

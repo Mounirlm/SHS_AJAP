@@ -364,13 +364,8 @@ public class RoomManager {
 		    
 		}
         return roomList;
+        
 	}
 	
-
-	public static Room getRoomWithPostion() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-		
 	
 }

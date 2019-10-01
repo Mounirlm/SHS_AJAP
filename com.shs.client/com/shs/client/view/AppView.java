@@ -2,6 +2,8 @@ package com.shs.client.view;
 
 import java.awt.CardLayout;
 import java.awt.GridLayout;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -15,7 +17,8 @@ public class AppView extends JPanel{
 	private AnalyzeView analyzeView;
 	private EquipmentNeed equipmentNeed;
 	
-	public AppView() {
+	
+	public AppView()  {
 		super();
 		this.setBackground(ColorsApp.getBgApp());
 		
@@ -28,6 +31,7 @@ public class AppView extends JPanel{
 		analyzeView = new AnalyzeView();
 		equipmentNeed = new EquipmentNeed();
 		supRoomView = new SupRoomView();
+	
 		
 		//add views in list views
 		appView.add(indexView);

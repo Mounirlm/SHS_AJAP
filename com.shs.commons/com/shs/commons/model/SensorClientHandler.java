@@ -290,7 +290,11 @@ public class SensorClientHandler {
 	    	stopFlux();
 	    }
 	}
-
+	
+	
+	
+	
+	
 	/*
 	 * @return all positions of sensors
 	 */
@@ -426,5 +430,126 @@ public class SensorClientHandler {
 	    }
 		
 		return nSensors;
+	}
+	
+	public List<Sensor> searchSensorWithPositionToServer() throws IOException {
+		//connections
+     	getFlux();
+		List<Sensor> list=new ArrayList<>(); 
+		try {
+			//Type class
+			String request="selectPosition-Sensor";
+			
+	     	//Creation request Json
+		    writer.setIndent("	");
+		    writer.beginObject();
+		    writer.name("request").value(request);
+		    writer.endObject();
+		    writer.flush();
+		    System.out.println("request:"+request+"\n");
+		    //response
+		  //response
+		    reader.beginObject();
+		    while (reader.hasNext()) {
+			    String name= reader.nextName();
+			    if(name.equals("null")) {
+			    	System.out.println(reader.nextString());
+			    }else {
+				   String objectJson=reader.nextString();
+				   	list.add(new Gson().fromJson(objectJson, Sensor.class));
+				 }
+		    }
+		    reader.endObject();
+		    System.out.println(list);
+		    return list;
+		    
+		    
+	      } 
+	    catch (IOException ioe) { 
+	    	throw new IOException("Error communication to server ");
+		}
+	    finally {
+	    	stopFlux();
+	    }
+		
+	}
+
+	public Type_Sensor selectSensorType(String Name) throws IOException {
+		//connections
+     	getFlux();
+		Type_Sensor ts =new Type_Sensor();
+		try {
+			//Type class
+			String request="select-Type_Sensor"+Name;
+			//Creation request Json
+		    writer.setIndent("	");
+		    writer.beginObject();
+		    writer.name("request").value(request);
+		    writer.endObject();
+		    writer.flush();
+		    System.out.println("request:"+request+"\n");
+		    //response
+		  //response
+		    reader.beginObject();
+		    while (reader.hasNext()) {
+			    String name= reader.nextName();
+			    if(name.equals("null")) {
+			    	System.out.println(reader.nextString());
+			    }else {
+				   String objectJson=reader.nextString();
+				   	ts=new Gson().fromJson(objectJson, Type_Sensor.class);
+				 }
+		    }
+		    reader.endObject();
+		    System.out.println(ts);
+		    return ts;
+		 } 
+	    catch (IOException ioe) { 
+	    	throw new IOException("Error communication to server ");
+		}
+	    finally {
+	    	stopFlux();
+	    }
+	}
+	public ArrayList<Sensor> selectSensorInRoom(int id) throws IOException {
+		//connections
+     	getFlux();
+     	ArrayList<Sensor> list=new ArrayList<Sensor>(); 
+		try {
+			//Type class
+			String request="selectRoom-Sensor-"+id;
+			
+	     	//Creation request Json
+		    writer.setIndent("	");
+		    writer.beginObject();
+		    writer.name("request").value(request);
+		    writer.endObject();
+		    writer.flush();
+		    System.out.println("request:"+request+"\n");
+		    //response
+		  //response
+		    reader.beginObject();
+		    while (reader.hasNext()) {
+			    String name= reader.nextName();
+			    
+			    if(name.equals("null")) {
+			    	System.out.println(reader.nextString());
+			    }else {
+				   String objectJson=reader.nextString();
+				   	list.add(new Gson().fromJson(objectJson, Sensor.class));
+				 }
+		    }
+		    reader.endObject();
+		    System.out.println(list);
+		    return list;
+		    
+		    
+	      } 
+	    catch (IOException ioe) { 
+	    	throw new IOException("Error communication to server ");
+		}
+	    finally {
+	    	stopFlux();
+	    }
 	}
 }

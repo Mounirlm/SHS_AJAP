@@ -54,8 +54,19 @@ public class Room implements Comparable<Room>{
 		this.fk_floor_map=fk_floor;
 		
 	}
+	
+	
 
+	public Room(Integer x,Integer y,Integer width, Integer height,Floor fk_floor) {
+		this.x=x;
+		this.y=y;
+		this.width=width;
+		this.height=height;
+		this.fk_floor_map=fk_floor;
+	}
+	
 	public Room() {
+		
 	}
 	
 	public boolean isPointInRoom(Point p)

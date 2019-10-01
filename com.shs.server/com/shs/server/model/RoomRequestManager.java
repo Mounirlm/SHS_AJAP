@@ -9,6 +9,7 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import com.shs.commons.model.Floor;
 import com.shs.commons.model.Room;
 import com.shs.commons.model.User;
 
@@ -184,8 +185,34 @@ public class RoomRequestManager {
 		        }	
 					
 				break;
+
 			default:
-				if(request.startsWith("countByFloor-Room")) {
+				if(request.startsWith("selectPosition-Room")) {
+					try{
+						List<Room> rooms;
+						
+						
+							
+						rooms=RoomManager.getRoomsWithPostion(Integer.valueOf(res[2]));
+						writer.beginObject();
+						if(!rooms.isEmpty()) {
+							response=true;
+							Gson gson = new Gson();
+							for (Room r : rooms) {
+								writer.name("room").value(gson.toJson(r));
+							}
+						}else {
+							writer.name("null").value("null");	
+						}
+						writer.endObject();
+					}catch(SQLException e) {
+			        	error="Error select Room position "+e;
+			        }	
+				}
+				
+				
+				
+				else if(request.startsWith("countByFloor-Room")) {
 					response=true;
 					int nRooms = RoomManager.countByFloorMonthYear(Integer.valueOf(res[2]));
 					writer.beginObject();
@@ -213,7 +240,7 @@ public class RoomRequestManager {
 			message=request+"-failed: "+error;
 		
 		//Creation response Json
-		if(!res[0].equals("select") && !res[0].equals("selectAll") && !res[0].startsWith("count")) {
+		if(!res[0].equals("select") && !res[0].equals("selectAll") && !res[0].startsWith("count") &&!res[0].equals("selectPosition")) {
 			writer.beginObject();
 			writer.name("response").value(message);
 			writer.endObject();	

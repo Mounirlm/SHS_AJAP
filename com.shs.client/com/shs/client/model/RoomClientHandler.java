@@ -12,6 +12,7 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import com.shs.commons.model.Floor;
 import com.shs.commons.model.Room;
 import com.shs.commons.model.ServerAccess;
 import com.shs.commons.model.Type_Room;
@@ -432,5 +433,46 @@ public class RoomClientHandler {
 	    }
 		
 		return nRooms;
+	}
+	
+	public ArrayList<Room> selectRoomsWithPosition(int idFloor) throws IOException {
+		List<Room> list = new ArrayList<>();
+		//connections
+     	getFlux();
+     	Room room;
+     	//communication to server
+		try {
+			String request="selectPosition-Room-"+idFloor;
+			
+	     	//Creation request Json
+		    writer.setIndent("	");
+		    writer.beginObject();
+		    writer.name("request").value(request);
+		    writer.endObject();
+		    writer.flush();
+		    System.out.println("request:"+request);
+		    //response
+		    reader.beginObject();
+		    while (reader.hasNext()) {
+			    String name= reader.nextName();
+			    if(name.equals("room")) {
+			    	
+			    	String objectJson=reader.nextString();
+				   	list.add(new Gson().fromJson(objectJson, Room.class));
+				   
+			    }else {
+		    		reader.skipValue();
+				 }
+		    }
+		    reader.endObject();
+			System.out.println(list);
+		    return (ArrayList<Room>) list;
+	      } 
+	    catch (IOException ioe) { 
+	    	throw new IOException("Error communication to server ");
+		}
+	    finally {
+	    	stopFlux();
+	    }
 	}
 }

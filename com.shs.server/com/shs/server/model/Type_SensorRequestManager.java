@@ -8,6 +8,7 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import com.shs.commons.model.Room;
 import com.shs.commons.model.Type_Sensor;
 
 public class Type_SensorRequestManager {
@@ -52,18 +53,45 @@ public class Type_SensorRequestManager {
 		        }	
 					
 				break;
-			default:
-				break;
-			}
+			   default:
+				if(request.startsWith("select-Type_Sensor")) {
+					try{
+						Type_Sensor ts= new Type_Sensor();
+						
+							ts=Type_SensorManager.getType_Sensor(res[2]);
+							writer.beginObject();
+							writer.beginObject();
+							if (ts!=null) {
+								response=true;
+								writer.name("type_sensor").value(new Gson().toJson(ts));
+							}
+							else {
+								writer.name("null").value("null");
+							}
+							writer.endObject();
+						}catch(SQLException e) {
+				        	error="Error select all "+e;
+				        	writer.name("null").value(error);
+				        }
+				}
+					break;
+				}
+				
+				if(response)
+					message=request+"-succusful";
+				else
+					message=request+"-failed: "+error;
+				
+				//Creation response Json
+				if(!res[0].equals("select") && !res[0].equals("selectAll") && !res[0].startsWith("count") &&!res[0].equals("selectPosition")) {
+					writer.beginObject();
+					writer.name("response").value(message);
+					writer.endObject();	
+				}
+				writer.flush();
+				
+				return message;
 			
-		if(response)
-			message=request+"-succusful";
-		else
-			message=request+"-failed: "+error;
 		
-		//send to client
-		writer.flush();
-		
-		return message;
 	}
 }

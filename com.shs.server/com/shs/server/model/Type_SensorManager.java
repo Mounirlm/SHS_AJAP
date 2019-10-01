@@ -38,4 +38,36 @@ private static Connection conn;
         }
 	    return wing_roomList;
 	}
+	
+   public static Type_Sensor getType_Sensor(String name) throws SQLException {
+		
+		Statement Stmt = conn.createStatement();
+		Type_Sensor ts = new Type_Sensor();
+	       
+        ResultSet RS=null;
+       	
+        try {
+        	//
+        RS = Stmt.executeQuery("SELECT * FROM type_sensor WHERE name="+name);
+        
+        while(RS.next()) {
+        	
+        	ts=new Type_Sensor(RS.getInt("id"),RS.getString("name"),RS.getInt("trigger_point_min"), RS.getInt("Integer trigger_point_max"), RS.getInt("Integer nb_alerts"));
+        	}
+        }	
+        
+        finally {
+        // Closing
+        
+        if(RS!=null)
+	        try{RS.close();}catch(Exception e){e.printStackTrace();} 
+		
+        if(Stmt!=null)
+        	try{Stmt.close();}catch(Exception e){e.printStackTrace();} 
+        
+        
+        }
+	    return ts;
+		
+	}
 }

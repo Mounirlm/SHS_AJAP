@@ -45,14 +45,14 @@ public class FloorClientHandler {
         	throw new IOException("Error closed flux "+e);
         }
     }
-	public List<Floor> getFloor(String request) throws IOException {
+	public List<Floor> getFloorInBuilding() throws IOException {
 		
 		List<Floor > list= new ArrayList<>();
 		getFlux();
 		
 		try {
 			
-			request = "select-Floor";
+			String request = "select-Floor";
 			//Creation request Json
 			
 			writer.setIndent("	");
@@ -87,4 +87,5 @@ public class FloorClientHandler {
 	    	stopFlux();
 	    }
 	}
+	
 }

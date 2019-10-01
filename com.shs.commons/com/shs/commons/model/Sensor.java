@@ -1,7 +1,12 @@
 package com.shs.commons.model;
 
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+
 
 public class Sensor {
 	private int id;
@@ -20,10 +25,16 @@ public class Sensor {
 	private Integer x;
 	private Integer y;
 	
+	private Room room;
+	
+	//transferable : Classe qui permet a des composants swing d'échanger 
+		//des transferables  par Dragndrop
+		public static final DataFlavor SENSOR_DATA_FLAVOR = new DataFlavor(Sensor.class, "java/ListItem");
+	
 	
 	public Sensor() {
 		// TODO Auto-generated constructor stub
-	}
+	}	
 	
 	public Sensor(int id, String sensor_name, String ip_address, String mac_address, Date date_setup, Boolean status,
 			Boolean installed, Wing_Room fk_position, Float price, Room fk_room, Type_Sensor fk_type_sensor,
@@ -44,7 +55,27 @@ public class Sensor {
 		
 		
 	}
-
+    
+	public Sensor(int id, String sensor_name, String ip_address, String mac_address, Date date_setup, Boolean status,
+			Boolean installed, Wing_Room fk_position, Float price, Room fk_room, Type_Sensor fk_type_sensor,
+			Integer scope_sensor,int x,int y) {
+		super();
+		this.id = id;
+		this.sensor_name = sensor_name;
+		this.ip_address = ip_address;
+		this.mac_address = mac_address;
+		this.date_setup = date_setup;
+		this.status = status;
+		this.installed = installed;
+		this.fk_position = fk_position;
+		this.price = price;
+		this.fk_room = fk_room;
+		this.fk_type_sensor = fk_type_sensor;
+		this.scope_sensor = scope_sensor;
+		this.x=x;
+		this.y=y;
+		
+	}
 	
 	public int getId() {
 		return id;
@@ -157,7 +188,36 @@ public class Sensor {
 	}
 
 	
+	//Les données glissées sont identifiées par des données de type DataFlavor
+	
+		public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+			
+			if (!isDataFlavorSupported(flavor)) {
+				throw new UnsupportedFlavorException(flavor);
+				}
+		     return this;
+			
+		}
 
+		public DataFlavor[] getTransferDataFlavors() 
+		{
+			DataFlavor[] flavors = new DataFlavor[1];
+			flavors[0]= SENSOR_DATA_FLAVOR;
+			return flavors;
+		}
+
+		public boolean isDataFlavorSupported(DataFlavor flavor) 
+		{
+			return(flavor.equals(SENSOR_DATA_FLAVOR));
+		}
+
+		public Room getRoom() {
+			return room;
+		}
+
+		public void setRoom(Room room) {
+			this.room = room;
+		}
 	
 
 	

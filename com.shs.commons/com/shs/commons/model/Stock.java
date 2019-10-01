@@ -9,13 +9,14 @@ public class Stock {
 	private static String name = "stock";
 	private List<Sensor>sensors ;
 	
+	
 
 	public Stock() {
 		super();
 		sensors = new ArrayList<Sensor>();
 		Stock.name=getName();
 	}
-	// commentaires essai testgdfhs
+	
 	private String getName() {
 		// TODO Auto-generated method stub
 		return Stock.name;

@@ -76,6 +76,9 @@ public class Type_Sensor {
 	}
 	
 	
-	
+	public int getSensorTypeID(String name) {
+		 
+		return this.getId();
+	}
 	
 }

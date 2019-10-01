@@ -1,4 +1,4 @@
-package com.shs.server.map;
+package com.shs.commons.model;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,11 +11,6 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.shs.commons.model.Building;
-import com.shs.commons.model.Floor;
-import com.shs.commons.model.Room;
-import com.shs.commons.model.Sensor;
-import com.shs.commons.model.ServerAccess;
 
 public class BuildingClientHandler {
 	private Socket server;
@@ -49,29 +44,25 @@ public class BuildingClientHandler {
         	throw new IOException("Error closed flux "+e);
         }
     }
-	public List<Building> getBuilding() throws IOException {
+	public List<Building> getBuilding(String request) throws IOException {
 		
-		List<Building > list= new ArrayList<Building>();
-		Building building;
+		List<Building > list= new ArrayList<>();
 		getFlux();
 		
 		try {
 			
-			String request = "select-Building";
+			request = "select-Building";
 			//Creation request Json
 			
 			writer.setIndent("	");
 		    writer.beginObject();
 		    writer.name("request").value(request);
-		    
 		    writer.endObject();
 		    writer.flush();
 		    System.out.println("request:"+request);
 		    
 		    //response
 		    reader.beginObject();
-		    System.out.println("il fait bo "); 
-		    
 		    while (reader.hasNext()) {
 			    String name= reader.nextName();
 			    if(name.equals("null")) {
@@ -82,12 +73,12 @@ public class BuildingClientHandler {
 			    list.add(new Gson().fromJson(objectJson, Building.class));
 		    	
 		    	System.out.println(list); 	
-		    }
+			    }
 		   
-	    }
+		    }
 		    reader.endObject();
 		    return  list;
-	      } 
+	    } 
 	    catch (IOException ioe) { 
 	    	throw new IOException("Error communication to server ");
 		}

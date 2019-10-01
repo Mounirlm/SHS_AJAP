@@ -21,6 +21,7 @@ public class Application {
 		menuController = new MenuController(appWindow);
 		loginController= new LoginController(appWindow);
 		analyzeController = new AnalyzeController(appWindow);
+		
 	}
 	
 	public void start() throws SQLException {

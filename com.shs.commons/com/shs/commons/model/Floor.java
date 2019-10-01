@@ -4,16 +4,18 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
 public class Floor {
-	
+	private int id;
 	String name;
 	String imagePath; 
-	ArrayList<Room> room;
+	static ArrayList<Room> room;
 	transient BufferedImage floorcache =null;
 	private Building fk_building;
+	static ArrayList<Sensor> ret = new ArrayList<Sensor>();
 	
 	public Floor()
 	{
@@ -21,7 +23,8 @@ public class Floor {
 		room=new ArrayList<Room>();
 	}
 	
-	public Floor(String name, String path, Building fk_building){
+	public Floor(int id,String name, String path, Building fk_building){
+		this.id=id;
 		this.name=name;
 		imagePath=path;
 		this.fk_building=fk_building;
@@ -42,12 +45,12 @@ public class Floor {
 		name = name;
 	}
 
-	public ArrayList<Room> getRoom() {
+	public static ArrayList<Room> getRoom() {
 		return room;
 	}
 
-	public void setRoom(ArrayList<Room> room) {
-		this.room = room;
+	public void setRoom(List<Room> list) {
+		this.room = (ArrayList<Room>) list;
 	}
 
 	public String getImagePath() {
@@ -59,14 +62,30 @@ public class Floor {
 	}
 	
 	
-	public ArrayList<Sensor> getSensors()
-	{		ArrayList<Sensor> ret = new ArrayList<>();
-		for (Room r : getRoom()) {
-			ret.addAll(r.getSensors());
-		}
+	public static ArrayList<Sensor> getSensors()
+	{	
+//		ArrayList<Sensor> ret = new ArrayList<>();
+//		
+//		for (Room r : getRoom()) {
+//			ret.addAll(r.getSensors());
+//		}
 		return ret;
 	}
+
+	public void setSensors(ArrayList<Sensor> arrayList) {
+		ret = arrayList;
+	}
 	
+	public static Sensor[] getSensorsArray(ArrayList<Sensor> sensors2) {
+		Sensor[] sArray=new Sensor[sensors2.size()];
+		for (int i=0; i<sensors2.size();i++)
+		{
+			sArray[i]=sensors2.get(i);
+		}
+		
+		return sArray;
+		
+	}
 	
 	public BufferedImage getFloorImage()
 	{
@@ -87,10 +106,7 @@ public class Floor {
 		
 	}
 	
-	@Override
-	public String toString() {
-		return getName();
-	}
+	
 
 	public Building getFk_building() {
 		return fk_building;
@@ -100,4 +116,21 @@ public class Floor {
 		this.fk_building = fk_building;
 	}
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	@Override
+	public String toString() {
+		return "Floor [id=" + id + ", name=" + name + "]";
+	}
+
+	
+	
+		
+	
 }

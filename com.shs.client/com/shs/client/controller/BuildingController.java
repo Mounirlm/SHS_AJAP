@@ -25,11 +25,15 @@ public class BuildingController {
 	
 	private static BuildingClientHandler buildingService;
 	private static FloorClientHandler    floorService;
-	private RoomClientHandler     roomService;
-	private SensorController     sensorService;
+	private static RoomClientHandler     roomService;
+	private static SensorController     sensorService;
 	private static TypeSensorController  typeSensorService;
 	
-	static Building building;
+	private  Building building;
+	private  Floor    floor;
+	private  Sensor    sensor;
+	private  Room      room;
+		
 	
 	private SHSView view;
     
@@ -39,11 +43,45 @@ public class BuildingController {
 		
 		//mapView = view.getpApp().getMapView();
 		
+		building = new Building();
+		Room room= new Room();
+		floor=new Floor();
+		
+		
+		
 		buildingService = new BuildingClientHandler();
 		floorService = new FloorClientHandler();
 		roomService =new RoomClientHandler();
 		sensorService= new SensorController();
 		typeSensorService =new TypeSensorController();
+		
+		
+		building.setFloor(floorService.getFloorInBuilding());
+		
+	    
+		//sensorService.getSensorsInRoom(idRoom);
+		getRoomListInFloor(1);
+		
+		//System.out.println("il fait bo aujourdhui");
+		//getSensorInROOM(1);
+		//System.out.println("toto");
+		
+		//room.setSensors();
+		//floor = getFloor();
+//		System.out.println(floor);
+//		int idFloor =getFloorId(floor);
+//		System.out.println(idFloor);
+//		getRoomListInFloor(1) ;
+		
+//		floor.setId(floor.getId());
+//		System.out.println(floor);
+//		room.setSensors(this.getSensorBindToRoom(floor.getId()));
+//		System.out.println(room.getSensors());
+//		floor.getSensors();
+	
+		
+		
+		
 		
 	}
 	// Test if they are several building
@@ -55,11 +93,12 @@ public class BuildingController {
 	
 	// At this case, we have one building with id=1 and name ="Residence-1"
 	
-	public static Building getBuilding() throws IOException{
-		  
-		   for(Building b : getBuildingList())
+	public Building getBuilding() throws IOException{
+		   
+	
+		   for(Building b : buildingService.getBuilding("select-Building"))
 		   {
-			   if (b.getName()=="Residence1")   building=b;
+			   if (b.getName()=="Residence-1")   this.building=b;
 		   }
 		  return building;
 	}
@@ -79,32 +118,59 @@ public class BuildingController {
 	}
 		
 		
-	public static Floor getFloor(int idFloor) throws IOException{
-			   
-			Floor floor=null;
+	public static Integer getFloorId(Floor fl) throws IOException{
+			
+		    Integer id=null;
+			
 			
 			   for(Floor f: getBuildingFloorList())
 			   {
-				   if (f.getId()==idFloor)   floor=f;
+				    if (f==fl)  	id=f.getId();	   
 			   }
 			   
-			  return floor;
+			  return id;
 		}
+	
+	
+	public static Floor getFloor() throws IOException{
+		   
+		Floor floor= new Floor();
+		
+		   for(Floor f: getBuildingFloorList())
+		   {
+			    floor.setId(f.getId());
+			    floor.setName(f.getName());
+			    floor.setImagePath(f.getImagePath());
+			    floor.setFk_building(f.getFk_building());
+			    floor.setRoom(getRoomListInFloor(floor.getId()));
+			 
+			    
+		   }
+		   
+		  return floor;
+	}
 	
 	//At this case we have one floor, so this method return only rooms belonging to this floor (id=1).
 	
-	public List<Room>getRoomListInFloor(int idFloor) throws IOException 
+	public static List<Room>getRoomListInFloor(int idFloor) throws IOException 
 	{
 		
-//		Floor floor = null;
-//	
-//		for (Floor f : floorService.getFloorInBuilding())
-//		{
-//			if (f.getId()==idFloor)  floor.setRoom((roomService.selectRoomsWithPosition(idFloor)));
-//		  
-//		}
+		Room room = new Room();
+		ArrayList <Room> rooms=new ArrayList<Room>();
+	
+		for (Room r : roomService.selectRoomsWithPosition(idFloor))
+		{
+			 room.setFk_floor(r.getFk_floor());
+			 room.setHeight(r.getHeight());
+			 room.setWidth(r.getWidth());
+			 room.setX(r.getX());
+			 room.setY(r.getY());
+			 
+			 rooms.add(room);
+		  
+		}
 		
-		return roomService.selectRoomsWithPosition(idFloor);
+		return rooms;
 		     
 	}
 	
@@ -112,7 +178,7 @@ public class BuildingController {
 	
 	public List <Sensor> getSensorWithPosition () throws IOException 
 	{
-
+       
 		  return sensorService.getAllSensorsWithPosition();
 				
 	}
@@ -137,6 +203,32 @@ public class BuildingController {
 		 return typeSensorService.getSensorType(name);
 		 
 	 }
+	
+	public static void  getSensorInROOM(Floor f) throws IOException {
+		
+		int cpt=0;
+		ArrayList<Room> rooms  =roomService.selectRoomsWithPosition(f.getId());
+		
+		while (cpt<rooms.size())
+		{			
+			 
+			System.out.println("toto");
+			
+			rooms.get(cpt).setSensors(sensorService.getSensorsInRoom(rooms.get(cpt).getId()));
+			System.out.println(rooms.get(cpt));
+			System.out.println( "toti");
+			cpt++;
+		}
+		
+	    f.setRoom(rooms);
+		
+		
+	}
+	
+	
+	
+	
+	
 	 
 	 
 		

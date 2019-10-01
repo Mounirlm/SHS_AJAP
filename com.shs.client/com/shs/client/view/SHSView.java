@@ -3,6 +3,8 @@ package com.shs.client.view;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.swing.AbstractButton;
 import javax.swing.JFrame;
@@ -39,7 +41,6 @@ public class SHSView {
 		appPanel=new JPanel(new BorderLayout());
 		//Panel Menu
 		pMenu = new MenuView();
-		//Panel App
 		pApp= new AppView();
 		appPanel.add(pMenu, BorderLayout.WEST);
 		appPanel.add(pApp, BorderLayout.CENTER);
