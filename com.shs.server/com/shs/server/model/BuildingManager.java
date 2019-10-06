@@ -15,10 +15,12 @@ public class BuildingManager {
 
 	private static Connection conn;
 	
+	
 	public BuildingManager(Connection con) {
 		this.conn=con;
 	}
 	
+	// retrieve list of building
 	public static ArrayList<Building> getBuilding() throws SQLException{
 		
 		Statement Stmt = conn.createStatement();
